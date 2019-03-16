@@ -8,7 +8,19 @@ Using through their go source files as an example, I wrote this in C#.
 
 ## Installation
 
-TODO
+To install as a [.NET Core Tool](https://docs.microsoft.com/en-us/dotnet/core/tools/global-tools) (requires [NET Core 2.1 SDK](https://dotnet.microsoft.com/download/dotnet-core/2.1))
+
+```
+dotnet tool install -g jaytwo.ejson.CommandLine
+```
+
+## Normal Usage
+
+To view help:
+
+```bash
+ejson --help
+```
 
 ## Encryption Library
 
@@ -17,4 +29,4 @@ Encryption is hard to get right.  Like any good developer, I'm leveraging a libr
 * `libsodium-core` is a .NET Core version of [libsodium-net](https://github.com/adamcaudill/libsodium-net)
 * `libsodium-net` is a wrapper around [libsodium](https://github.com/jedisct1/libsodium) for .NET
 * `libsodium` is a portable, cross-compilable, installable, packageable fork of [NaCl](http://nacl.cr.yp.to/)
-* `NaCl` (__N__etworking __a__nd __C__ryptography __l__ibrary) is a great library that does all hard things
+* `NaCl` (Networking and Cryptography library) is a great library that does all hard things
