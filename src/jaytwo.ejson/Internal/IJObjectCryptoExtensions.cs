@@ -7,34 +7,34 @@ namespace jaytwo.ejson.Internal
 {
     internal static class IJObjectCryptoExtensions
     {
-        public static string EncryptJson(this IJObjectCrypto jObjectCrypto, string json, byte[] privateKey)
+        public static string EncryptJson(this IJObjectCrypto jObjectCrypto, string json, byte[] publicKey)
         {
             var jObject = JObjectTools.GetJObject(json);
-            jObjectCrypto.Encrypt(jObject, privateKey);
+            jObjectCrypto.Encrypt(jObject, publicKey);
             return JObjectTools.GetJson(jObject);
         }
 
-        public static string Encrypt(this IJObjectCrypto jObjectCrypto, Stream stream, byte[] privateKey)
+        public static string Encrypt(this IJObjectCrypto jObjectCrypto, Stream stream, byte[] publicKey)
         {
             var jObject = JObjectTools.GetJObject(stream);
-            jObjectCrypto.Encrypt(jObject, privateKey);
+            jObjectCrypto.Encrypt(jObject, publicKey);
             return JObjectTools.GetJson(jObject);
         }
 
-        public static string EncryptJson(this IJObjectCrypto jObjectCrypto, string json, string privateKey)
+        public static string EncryptJson(this IJObjectCrypto jObjectCrypto, string json, string publicKey)
         {
-            var privateKeyBytes = Utilities.HexToBinary(privateKey);
-            return jObjectCrypto.EncryptJson(json, privateKeyBytes);
+            var publicKeyBytes = Utilities.HexToBinary(publicKey);
+            return jObjectCrypto.EncryptJson(json, publicKeyBytes);
         }
-        public static string Encrypt(this IJObjectCrypto jObjectCrypto, Stream stream, string privateKey)
+        public static string Encrypt(this IJObjectCrypto jObjectCrypto, Stream stream, string publicKey)
         {
-            var privateKeyBytes = Utilities.HexToBinary(privateKey);
-            return jObjectCrypto.Encrypt(stream, privateKeyBytes);
+            var publicKeyBytes = Utilities.HexToBinary(publicKey);
+            return jObjectCrypto.Encrypt(stream, publicKeyBytes);
         }
-        public static void Encrypt(this IJObjectCrypto jObjectCrypto, JObject jObject, string privateKey)
+        public static void Encrypt(this IJObjectCrypto jObjectCrypto, JObject jObject, string publicKey)
         {
-            var privateKeyBytes = Utilities.HexToBinary(privateKey);
-            jObjectCrypto.Encrypt(jObject, privateKeyBytes);
+            var publicKeyBytes = Utilities.HexToBinary(publicKey);
+            jObjectCrypto.Encrypt(jObject, publicKeyBytes);
         }
 
         public static string DecryptJson(this IJObjectCrypto jObjectCrypto, string json, byte[] privateKey)

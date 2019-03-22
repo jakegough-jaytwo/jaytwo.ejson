@@ -23,10 +23,10 @@ namespace jaytwo.ejson.Internal
             return boxedMessageCrypto.Decrypt(boxedMessage, privateKeyBytes);
         }
 
-        public static BoxedMessage Encrypt(this IBoxedMessageCrypto boxedMessageCrypto, string nessage, string privateKey)
+        public static BoxedMessage Encrypt(this IBoxedMessageCrypto boxedMessageCrypto, string nessage, string publicKey)
         {
-            var privateKeyBytes = Utilities.HexToBinary(privateKey);
-            return boxedMessageCrypto.Encrypt(nessage, privateKeyBytes);
+            var publicKeyBytes = Utilities.HexToBinary(publicKey);
+            return boxedMessageCrypto.Encrypt(nessage, publicKeyBytes);
         }
     }
 }

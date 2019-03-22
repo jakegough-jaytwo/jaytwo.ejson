@@ -17,18 +17,18 @@ namespace jaytwo.ejson.Internal
             _boxedMessageCrypto = boxedMessageCrypto;
         }
 
-        public void Encrypt(JObject jObject, byte[] privateKey)
+        public void Encrypt(JObject jObject, byte[] publicKey)
         {
-            EncryptTokenRecursive(jObject, privateKey);
+            EncryptTokenRecursive(jObject, publicKey);
         }
 
-        private void EncryptTokenRecursive(JToken jToken, byte[] privateKey)
+        private void EncryptTokenRecursive(JToken jToken, byte[] publicKey)
         {
             if (jToken.HasValues)
             {
                 foreach (var child in jToken)
                 {
-                    EncryptTokenRecursive(child, privateKey);
+                    EncryptTokenRecursive(child, publicKey);
                 }
             }
             else if (IsEncryptable(jToken))
@@ -38,7 +38,7 @@ namespace jaytwo.ejson.Internal
                     var valueStirng = jToken.Value<string>();
                     if (!BoxedMessage.IsBoxedMessage(valueStirng))
                     {
-                        var encryptedValue = _boxedMessageCrypto.Encrypt(valueStirng, privateKey).ToString();
+                        var encryptedValue = _boxedMessageCrypto.Encrypt(valueStirng, publicKey).ToString();
                         ((JProperty)jToken.Parent).Value = encryptedValue;
                     };
                 }

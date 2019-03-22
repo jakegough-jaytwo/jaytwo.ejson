@@ -102,10 +102,8 @@ namespace jaytwo.ejson
         private JObject GetEncryptedJObject(Stream stream)
         {
             var jObject = JObjectTools.GetJObject(stream);
-            var publicKey = GetPublicKey(jObject);
-            var privateKey = GetPrivateKey(publicKey);
-
-            _jObjectCrypto.Encrypt(jObject, privateKey);
+            var publicKey = GetPublicKey(jObject);            
+            _jObjectCrypto.Encrypt(jObject, publicKey);
 
             return jObject;
         }

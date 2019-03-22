@@ -6,7 +6,6 @@ namespace jaytwo.ejson.Internal.Sodium
     internal interface IPublicKeyBox
     {
         byte[] Create(byte[] message, byte[] nonce, byte[] secretKey, byte[] publicKey);
-        byte[] GenerateRandomPublicKey();
         KeyPair GenerateKeyPair();
         byte[] GenerateNonce();
         byte[] Open(byte[] cipherText, byte[] nonce, byte[] secretKey, byte[] publicKey);

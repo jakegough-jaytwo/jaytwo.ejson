@@ -11,11 +11,11 @@ namespace jaytwo.ejson.Tests.Internal
     public class BoxedMessageCryptoTests
     {
         [Fact]
-        public void Decrypt_works_as_expected()
+        public void Decrypt_works_with_values_from_original_shopify_ejson()
         {
             // arrange
-            var privateKey = "5f349a6bf95d692830a8930aa657b5d553073e589564925f153c018b5c27c8b6";
-            var secretText = "EJ[1:EtX9E9y07M9ppTIeiLgdMysdWgmWNPvdNRBMtHKuDQo=:ZQqM6wGxUUiRy2kXYVinPKEFIyMRubvL:OR5Owty2fMOPTownI2/xngsWISvD]";
+            var privateKey = "a749f5b3003787d633ee61dda991f973a34528496babdf6c22fddd50a8959067";
+            var secretText = "EJ[1:KNN7o/ZQEVNz+u4Fi6xlp4c9oqll840ney9iM1Wo3Xw=:PwqUnJ+zoUDqjh60UQpar5t0Z1qMizCu:PSDeMTcyetIp0ue9gRR4Nk/Rg4FS]";
             var expectedDecrypted = "hello";
 
             var crypto = new BoxedMessageCrypto();
@@ -28,42 +28,16 @@ namespace jaytwo.ejson.Tests.Internal
         }
 
         [Fact]
-        public void Encrypt_works_as_expected()
-        {
-            // arrange
-            var privateKey = Utilities.HexToBinary("5f349a6bf95d692830a8930aa657b5d553073e589564925f153c018b5c27c8b6");
-
-            var mockPublicKeyBox = new Mock<PublicKeyBoxWrapper> { CallBase = true };
-            mockPublicKeyBox
-                .Setup(x => x.GenerateNonce())
-                .Returns(Convert.FromBase64String("ZQqM6wGxUUiRy2kXYVinPKEFIyMRubvL"));
-
-            mockPublicKeyBox
-                .Setup(x => x.GenerateRandomPublicKey())
-                .Returns(Convert.FromBase64String("EtX9E9y07M9ppTIeiLgdMysdWgmWNPvdNRBMtHKuDQo="));
-
-            var boxedMessageCrypto = new BoxedMessageCrypto(Encoding.UTF8, mockPublicKeyBox.Object);
-
-
-            // act
-            var encryptedBoxMessage = boxedMessageCrypto.Encrypt("hello", privateKey);
-
-            // assert
-            Assert.Equal("EJ[1:EtX9E9y07M9ppTIeiLgdMysdWgmWNPvdNRBMtHKuDQo=:ZQqM6wGxUUiRy2kXYVinPKEFIyMRubvL:OR5Owty2fMOPTownI2/xngsWISvD]", encryptedBoxMessage.ToString());
-        }
-
-        [Fact]
         public void Encrypt_and_Decrypt_works_as_expected()
         {
             // arrange
-            var privateKey = "5f349a6bf95d692830a8930aa657b5d553073e589564925f153c018b5c27c8b6";
+            var keyPair = new PublicKeyBoxWrapper().GenerateKeyPair();
             var plain = "hello";
-
             var crypto = new BoxedMessageCrypto();
 
             // act
-            var encrypted = crypto.Encrypt(plain, privateKey);
-            var decrypted = crypto.Decrypt(encrypted, privateKey);
+            var encrypted = crypto.Encrypt(plain, keyPair.PublicKey);
+            var decrypted = crypto.Decrypt(encrypted, keyPair.PrivateKey);
 
             // assert
             Assert.Equal(decrypted, plain);
