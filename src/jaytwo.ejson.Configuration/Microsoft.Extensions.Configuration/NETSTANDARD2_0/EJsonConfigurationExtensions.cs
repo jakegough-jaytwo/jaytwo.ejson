@@ -1,4 +1,6 @@
-﻿using System;
+﻿#if NETSTANDARD2_0
+
+using System;
 using System.Collections.Generic;
 using System.Text;
 using jaytwo.ejson.Configuration;
@@ -6,10 +8,12 @@ using Microsoft.Extensions.FileProviders;
 
 namespace Microsoft.Extensions.Configuration
 {
-    public static class ConfigurationBuilderExtensions
+    // https://github.com/aspnet/Extensions/blob/release/2.2/src/Configuration/Config.Json/src/JsonConfigurationExtensions.cs
+
+    public static class EJsonConfigurationExtensions
     {
         /// <summary>
-        /// Adds the JSON configuration provider at <paramref name="path"/> to <paramref name="builder"/>.
+        /// Adds the EJSON configuration provider at <paramref name="path"/> to <paramref name="builder"/>.
         /// </summary>
         /// <param name="builder">The <see cref="IConfigurationBuilder"/> to add to.</param>
         /// <param name="path">Path relative to the base path stored in 
@@ -21,7 +25,7 @@ namespace Microsoft.Extensions.Configuration
         }
 
         /// <summary>
-        /// Adds the JSON configuration provider at <paramref name="path"/> to <paramref name="builder"/>.
+        /// Adds the EJSON configuration provider at <paramref name="path"/> to <paramref name="builder"/>.
         /// </summary>
         /// <param name="builder">The <see cref="IConfigurationBuilder"/> to add to.</param>
         /// <param name="path">Path relative to the base path stored in 
@@ -34,7 +38,7 @@ namespace Microsoft.Extensions.Configuration
         }
 
         /// <summary>
-        /// Adds the JSON configuration provider at <paramref name="path"/> to <paramref name="builder"/>.
+        /// Adds the EJSON configuration provider at <paramref name="path"/> to <paramref name="builder"/>.
         /// </summary>
         /// <param name="builder">The <see cref="IConfigurationBuilder"/> to add to.</param>
         /// <param name="path">Path relative to the base path stored in 
@@ -48,7 +52,7 @@ namespace Microsoft.Extensions.Configuration
         }
 
         /// <summary>
-        /// Adds a JSON configuration source to <paramref name="builder"/>.
+        /// Adds a EJSON configuration source to <paramref name="builder"/>.
         /// </summary>
         /// <param name="builder">The <see cref="IConfigurationBuilder"/> to add to.</param>
         /// <param name="provider">The <see cref="IFileProvider"/> to use to access the file.</param>
@@ -65,29 +69,27 @@ namespace Microsoft.Extensions.Configuration
             }
             if (string.IsNullOrEmpty(path))
             {
-                //TODO
-                //throw new ArgumentException(Resources.Error_InvalidFilePath, nameof(path));
+                throw new ArgumentException("File path must be a non-empty string.", nameof(path));
             }
 
-            var source = new EJsonConfigurationSource
+            return builder.AddEJsonFile(s =>
             {
-                FileProvider = provider,
-                Path = path,
-                Optional = optional,
-                ReloadOnChange = reloadOnChange,
-            };
-
-            source.ResolveFileProvider();
-
-            return builder.AddEJsonFile(source);
+                s.FileProvider = provider;
+                s.Path = path;
+                s.Optional = optional;
+                s.ReloadOnChange = reloadOnChange;
+                s.ResolveFileProvider();
+            });
         }
 
         /// <summary>
-        /// Adds a JSON configuration source to <paramref name="builder"/>.
+        /// Adds a EJSON configuration source to <paramref name="builder"/>.
         /// </summary>
         /// <param name="builder">The <see cref="IConfigurationBuilder"/> to add to.</param>
         /// <param name="configureSource">Configures the source.</param>
         /// <returns>The <see cref="IConfigurationBuilder"/>.</returns>
-        public static IConfigurationBuilder AddEJsonFile(this IConfigurationBuilder builder, EJsonConfigurationSource configureSource) => builder.Add(configureSource);
+        public static IConfigurationBuilder AddEJsonFile(this IConfigurationBuilder builder, Action<EJsonConfigurationSource> configureSource) => builder.Add(configureSource);
     }
 }
+
+#endif

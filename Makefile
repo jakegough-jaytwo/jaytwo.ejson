@@ -35,6 +35,9 @@ unit-test: build
 	dotnet test ./test/jaytwo.ejson.Tests \
 		--results-directory ../../out/testResults \
 		--logger "trx;LogFileName=jaytwo.ejson.Tests.trx"
+	dotnet test ./test/jaytwo.ejson.CommandLine.Tests \
+		--results-directory ../../out/testResults \
+		--logger "trx;LogFileName=jaytwo.ejson.CommandLine.Tests.trx"
 
 pack: build
 	rm -rf out/packed

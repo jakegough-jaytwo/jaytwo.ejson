@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace jaytwo.ejson.NetCoreWeb.Controllers
+namespace jaytwo.ejson.example.AspNetCore2_1.Controllers
 {
     public class HomeController : Controller
     {
@@ -18,7 +18,7 @@ namespace jaytwo.ejson.NetCoreWeb.Controllers
 
         public IActionResult Index()
         {
-            return Content("Your super secret is: " + _configuration["supersecret"]);
+            return Content($"[{GetType().Assembly.GetName().Name}] Your super secret is: " + _configuration["supersecret"]);
         }
     }
 }

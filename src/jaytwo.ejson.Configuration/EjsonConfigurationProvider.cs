@@ -15,14 +15,14 @@ namespace jaytwo.ejson.Configuration
         private readonly IEJsonCrypto _eJsonCrypto;
         
         public EJsonConfigurationProvider(EJsonConfigurationSource source)
-            : this(source, new EJsonCrypto())
+            : this(source, null)
         {
         }
 
         internal EJsonConfigurationProvider(EJsonConfigurationSource source, IEJsonCrypto eJsonCrypto) 
             : base(source)
         {
-            _eJsonCrypto = eJsonCrypto;
+            _eJsonCrypto = eJsonCrypto ?? new EJsonCrypto();
         }
 
         public override void Load(Stream stream)

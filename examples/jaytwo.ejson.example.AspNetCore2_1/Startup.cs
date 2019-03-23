@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace jaytwo.ejson.NetCoreWeb
+namespace jaytwo.ejson.example.AspNetCore2_1
 {
     public class Startup
     {
