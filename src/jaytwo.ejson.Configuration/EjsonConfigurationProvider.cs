@@ -27,7 +27,8 @@ namespace jaytwo.ejson.Configuration
 
         public override void Load(Stream stream)
         {
-            var decryptedJson = _eJsonCrypto.GetDecryptedJson(stream);
+            var keyDir = "";
+            var decryptedJson = _eJsonCrypto.GetDecryptedJson(stream, keyDir);
 
             using (var memoryStream = new MemoryStream())
             using (var streamWriter = new StreamWriter(memoryStream))

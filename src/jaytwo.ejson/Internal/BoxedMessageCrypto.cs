@@ -43,18 +43,21 @@ namespace jaytwo.ejson.Internal
         {
             var messageBytes = _encoding.GetBytes(nessage);
             var nonce = _publicKeyBox.GenerateNonce();
-            var ephemeralKeyPair = _publicKeyBox.GenerateKeyPair();
-            var encryptedBytes = _publicKeyBox.Create(messageBytes, nonce, ephemeralKeyPair.PrivateKey, publicKey);
 
-            var boxedMessage = new BoxedMessage
+            using (var ephemeralKeyPair = _publicKeyBox.GenerateKeyPair())
             {
-                EncryptedMessageBase64 = Convert.ToBase64String(encryptedBytes),
-                PublicKeyBase64 = Convert.ToBase64String(ephemeralKeyPair.PublicKey),
-                NonceBase64 = Convert.ToBase64String(nonce),
-                SchemaVersion = SchemaVersion,
-            };
+                var encryptedBytes = _publicKeyBox.Create(messageBytes, nonce, ephemeralKeyPair.PrivateKey, publicKey);
 
-            return boxedMessage;
+                var boxedMessage = new BoxedMessage
+                {
+                    EncryptedMessageBase64 = Convert.ToBase64String(encryptedBytes),
+                    PublicKeyBase64 = Convert.ToBase64String(ephemeralKeyPair.PublicKey),
+                    NonceBase64 = Convert.ToBase64String(nonce),
+                    SchemaVersion = SchemaVersion,
+                };
+
+                return boxedMessage;
+            }
         }
     }
 }

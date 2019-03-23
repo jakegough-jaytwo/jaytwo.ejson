@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "jaytwo.ejson.Configuration"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "jaytwo.ejson.CommandLine", "src\jaytwo.ejson.CommandLine\jaytwo.ejson.CommandLine.csproj", "{D2E8AF10-45E1-455A-B40B-5CE3B20A3674}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "jaytwo.ejson.CommandLine.Tests", "test\jaytwo.ejson.CommandLine.Tests\jaytwo.ejson.CommandLine.Tests.csproj", "{C6C2668D-6CD3-4193-86BE-6DA6F0EBC47F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,6 +75,18 @@ Global
 		{D2E8AF10-45E1-455A-B40B-5CE3B20A3674}.Release|x64.Build.0 = Release|Any CPU
 		{D2E8AF10-45E1-455A-B40B-5CE3B20A3674}.Release|x86.ActiveCfg = Release|Any CPU
 		{D2E8AF10-45E1-455A-B40B-5CE3B20A3674}.Release|x86.Build.0 = Release|Any CPU
+		{C6C2668D-6CD3-4193-86BE-6DA6F0EBC47F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6C2668D-6CD3-4193-86BE-6DA6F0EBC47F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6C2668D-6CD3-4193-86BE-6DA6F0EBC47F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C6C2668D-6CD3-4193-86BE-6DA6F0EBC47F}.Debug|x64.Build.0 = Debug|Any CPU
+		{C6C2668D-6CD3-4193-86BE-6DA6F0EBC47F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C6C2668D-6CD3-4193-86BE-6DA6F0EBC47F}.Debug|x86.Build.0 = Debug|Any CPU
+		{C6C2668D-6CD3-4193-86BE-6DA6F0EBC47F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6C2668D-6CD3-4193-86BE-6DA6F0EBC47F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6C2668D-6CD3-4193-86BE-6DA6F0EBC47F}.Release|x64.ActiveCfg = Release|Any CPU
+		{C6C2668D-6CD3-4193-86BE-6DA6F0EBC47F}.Release|x64.Build.0 = Release|Any CPU
+		{C6C2668D-6CD3-4193-86BE-6DA6F0EBC47F}.Release|x86.ActiveCfg = Release|Any CPU
+		{C6C2668D-6CD3-4193-86BE-6DA6F0EBC47F}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -82,6 +96,7 @@ Global
 		{057ED855-D876-4AFE-8F71-554F45DCC837} = {CC08E816-00C6-4FDC-80C2-2C33CE2FC944}
 		{CEE9A471-0899-4524-B930-A6C4B0F145D2} = {0CF080B9-0E83-4322-89F5-32C7E7DC2E8E}
 		{D2E8AF10-45E1-455A-B40B-5CE3B20A3674} = {0CF080B9-0E83-4322-89F5-32C7E7DC2E8E}
+		{C6C2668D-6CD3-4193-86BE-6DA6F0EBC47F} = {CC08E816-00C6-4FDC-80C2-2C33CE2FC944}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E0817D05-7B14-4215-BD9E-E64943A70264}

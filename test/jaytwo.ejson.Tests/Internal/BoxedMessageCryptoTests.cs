@@ -31,16 +31,18 @@ namespace jaytwo.ejson.Tests.Internal
         public void Encrypt_and_Decrypt_works_as_expected()
         {
             // arrange
-            var keyPair = new PublicKeyBoxWrapper().GenerateKeyPair();
             var plain = "hello";
             var crypto = new BoxedMessageCrypto();
 
-            // act
-            var encrypted = crypto.Encrypt(plain, keyPair.PublicKey);
-            var decrypted = crypto.Decrypt(encrypted, keyPair.PrivateKey);
+            using (var keyPair = new PublicKeyBoxWrapper().GenerateKeyPair())
+            {
+                // act
+                var encrypted = crypto.Encrypt(plain, keyPair.PublicKey);
+                var decrypted = crypto.Decrypt(encrypted, keyPair.PrivateKey);
 
-            // assert
-            Assert.Equal(decrypted, plain);
+                // assert
+                Assert.Equal(decrypted, plain);
+            }
         }
     }
 }

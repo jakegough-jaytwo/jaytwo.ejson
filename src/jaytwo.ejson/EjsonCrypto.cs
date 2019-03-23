@@ -38,15 +38,27 @@ namespace jaytwo.ejson
             _publicKeyBox = publicKeyBox;
         }
 
-        public string GetDecryptedJson(Stream stream)
+        public string GetDecryptedJson(Stream stream, string keyDir)
         {
-            var jObject = GetDecryptJObject(stream);            
+            var jObject = GetDecryptJObject(stream, keyDir);            
             return JObjectTools.GetJson(jObject);
         }
 
-        public void Decrypt(Stream stream)
+        public string SaveDecryptedJson(Stream stream, string outputFile, string keyDir)
         {
-            var jObject = GetDecryptJObject(stream);
+            var json = GetDecryptedJson(stream, keyDir);
+
+            using (var file = File.CreateText(outputFile))
+            {
+                file.WriteLine(json);
+            }
+
+            return "Saved to: " + outputFile;
+        }
+
+        public void Decrypt(Stream stream, string keyDir)
+        {
+            var jObject = GetDecryptJObject(stream, keyDir);
             JObjectTools.Write(jObject, stream);
         }
 
@@ -62,7 +74,7 @@ namespace jaytwo.ejson
             JObjectTools.Write(jObject, stream);
         }
 
-        public string GenerateKeyPair(bool write)
+        public string GenerateKeyPair()
         {
             using (var keyPair = _publicKeyBox.GenerateKeyPair())
             {
@@ -70,29 +82,41 @@ namespace jaytwo.ejson
                 var publicKeyHex = Utilities.BinaryToHex(keyPair.PublicKey);
                 var privateKeyHex = Utilities.BinaryToHex(keyPair.PrivateKey);
 
-                if (write)
-                {
-                    _privateKeyProvider.SavePrivateKey(publicKeyHex, privateKeyHex);
-                    output.AppendLine(publicKeyHex);
-                }
-                else
-                {
-                    output.AppendLine("Public Key:");
-                    output.AppendLine(publicKeyHex);
+                output.AppendLine("Public Key:");
+                output.AppendLine(publicKeyHex);
 
-                    output.AppendLine("Private Key:");
-                    output.AppendLine(privateKeyHex);
-                }
+                output.AppendLine("Private Key:");
+                output.AppendLine(privateKeyHex);
 
                 return output.ToString().Trim();
             }
         }
 
-        private JObject GetDecryptJObject(Stream stream)
+        public string SaveKeyPair(string keyDir)
+        {
+            using (var keyPair = _publicKeyBox.GenerateKeyPair())
+            {
+                var output = new StringBuilder();
+                var publicKeyHex = Utilities.BinaryToHex(keyPair.PublicKey);
+                var privateKeyHex = Utilities.BinaryToHex(keyPair.PrivateKey);
+
+                var filePath = Path.Combine(keyDir, publicKeyHex);
+                using (var file = File.CreateText(filePath))
+                {
+                    file.Write(privateKeyHex);
+                }
+
+                output.AppendLine(publicKeyHex);
+
+                return output.ToString().Trim();
+            }
+        }
+
+        private JObject GetDecryptJObject(Stream stream, string keyDir)
         {
             var jObject = JObjectTools.GetJObject(stream);
             var publicKey = GetPublicKey(jObject);
-            var privateKey = GetPrivateKey(publicKey);
+            var privateKey = GetPrivateKey(publicKey, keyDir);
 
             _jObjectCrypto.Decrypt(jObject, privateKey);
 
@@ -121,14 +145,22 @@ namespace jaytwo.ejson
             throw new MissingPublicKeyException();
         }
 
-        private string GetPrivateKey(string publicKey)
+        private string GetPrivateKey(string publicKey, string keyDir)
         {
-            if (_privateKeyProvider.TryGetPrivateKey(publicKey, out string privateKey))
+            string result = null;
+
+            var keyFile = Path.Combine(keyDir, publicKey);
+            if (File.Exists(keyFile))
             {
-                return privateKey;
+                result = File.ReadAllText(keyFile)?.Trim();
             }
 
-            throw new InvalidOperationException($"Could not find private key for: {publicKey}");
+            if (string.IsNullOrWhiteSpace(result))
+            {
+                throw new InvalidOperationException($"Could not find private key for: {publicKey}");
+            }
+
+            return result;
         }
     }
 }

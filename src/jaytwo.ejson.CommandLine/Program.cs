@@ -1,11 +1,16 @@
 ﻿using System;
 using System.IO;
+using System.Runtime.InteropServices;
 using Microsoft.Extensions.CommandLineUtils;
 
 namespace jaytwo.ejson.CommandLine
 {
     public class Program
     {
+        public const string KeyDirEnvironmentVariable = "EJSON_KEYDIR";
+        public const string DefaultWindowsKeyDir = "~/.ejson/keys";
+        public const string DefaultUnixKeyDir = "/opt/ejson/keys";
+
         public static int Main(string[] args) => new Program().Run(args);
 
         private readonly IEJsonCrypto _eJsonCrypto;
@@ -14,18 +19,18 @@ namespace jaytwo.ejson.CommandLine
 
 
         public Program()
-            : this(new EJsonCrypto(), Console.Out, Console.Error)
+            : this(null, null, null)
         {
         }
 
         internal Program(IEJsonCrypto eJsonCrypto, TextWriter standardOut, TextWriter standardError)
         {
-            _eJsonCrypto = eJsonCrypto;
-            _standardOut = standardOut;
-            _standardError = standardError;
+            _eJsonCrypto = eJsonCrypto ?? new EJsonCrypto();
+            _standardOut = standardOut ?? Console.Out;
+            _standardError = standardError ?? Console.Error;
         }
 
-        public int Run(string[] args)
+        public int Run(params string[] args)
         {
             var app = new CommandLineApplication();
             app.Name = "ejson";
@@ -34,9 +39,12 @@ namespace jaytwo.ejson.CommandLine
             app.Out = _standardOut;
             app.Error = _standardError;
 
-            SetupKeygenCommand(app);
+
+            var keyDirOption = app.Option("--keydir|-k", "Directory containing EJSON keys [$EJSON_KEYDIR]", CommandOptionType.SingleValue);
+
+            SetupKeygenCommand(app, keyDirOption);
             SetupEncryptCommand(app);
-            SetupDecryptCommand(app);
+            SetupDecryptCommand(app, keyDirOption);
 
             app.OnExecute(() =>
             {
@@ -47,20 +55,37 @@ namespace jaytwo.ejson.CommandLine
             return app.Execute(args);
         }
 
-        private void SetupKeygenCommand(CommandLineApplication app)
+        private void SetupKeygenCommand(CommandLineApplication app, CommandOption keyDirOption)
         {
-            app.Command("keygen", context =>
+            //SetupKeygenCommand(app, keyDirOption, "g");
+            SetupKeygenCommand(app, keyDirOption, "keygen");
+        }
+
+        private CommandLineApplication SetupKeygenCommand(CommandLineApplication app, CommandOption keyDirOption, string name)
+        {
+            return app.Command(name, context =>
             {
-                context.Description = "generates a new key";
+                context.Out = _standardOut;
+                context.Error = _standardError;
+                context.Description = "generate a new EJSON keypair";
                 context.HelpOption("--help");
 
                 var writeOption = context.Option("-w", "writes to disk", CommandOptionType.NoValue);
 
                 context.OnExecute(() =>
                 {
-                    var keyPair = _eJsonCrypto.GenerateKeyPair(writeOption.HasValue());
-                    context.Out.WriteLine(keyPair);
+                    string output;
+                    if (writeOption.HasValue())
+                    {
+                        var keyDir = GetKeyDirOrDefault(keyDirOption);
+                        output = _eJsonCrypto.SaveKeyPair(keyDir);
+                    }
+                    else
+                    {
+                        output = _eJsonCrypto.GenerateKeyPair();
+                    }
 
+                    context.Out.WriteLine(output);
                     return 0;
                 });
             });
@@ -68,24 +93,64 @@ namespace jaytwo.ejson.CommandLine
 
         private void SetupEncryptCommand(CommandLineApplication app)
         {
-            app.Command("encrypt", context =>
+            //SetupEncryptCommand(app, "e");
+            SetupEncryptCommand(app, "encrypt");
+        }
+
+        private CommandLineApplication SetupEncryptCommand(CommandLineApplication app, string name)
+        {
+            return app.Command(name, context =>
             {
-                context.Description = "encrypts the thing";
+                context.Out = _standardOut;
+                context.Error = _standardError;
+                context.Description = "(re-)encrypt one or more EJSON files";
                 context.HelpOption("--help");
 
-                var fileNameArgument = context.Argument("<file name>", "name of the file to encrypt");
-
-                var writeOption = context.Option("-w", "writes to disk", CommandOptionType.NoValue);
+                var fileNameArgument = context.Argument("<files>", "names of the files to decrypt", true);
 
                 context.OnExecute(() =>
                 {
-                    if (writeOption.HasValue())
+                    foreach (var value in fileNameArgument.Values)
                     {
                         _eJsonCrypto.Encrypt(fileNameArgument.Value);
                     }
+
+                    return 0;
+                });
+            });
+        }
+
+        private void SetupDecryptCommand(CommandLineApplication app, CommandOption keyDirOption)
+        {
+            //SetupDecryptCommand(app, keyDirOption, "d");
+            SetupDecryptCommand(app, keyDirOption, "decrypt");
+        }
+
+        private CommandLineApplication SetupDecryptCommand(CommandLineApplication app, CommandOption keyDirOption, string name)
+        {
+            return app.Command(name, context =>
+            {
+                context.Out = _standardOut;
+                context.Error = _standardError;
+                context.Description = "decrypt an EJSON file";
+                context.HelpOption("--help");
+
+                var fileNameArgument = context.Argument("<file>", "name of the file to decrypt");
+
+                var outputToFileOption = context.Option("-o", "print output to the provided file, rather than stdout", CommandOptionType.SingleValue);
+
+                context.OnExecute(() =>
+                {
+                    var keyDir = GetKeyDirOrDefault(keyDirOption);
+                    
+                    if (outputToFileOption.HasValue())
+                    {
+                        var output = _eJsonCrypto.SaveDecryptedJson(fileNameArgument.Value, outputToFileOption.Value(), keyDir);
+                        context.Out.WriteLine(output);
+                    }
                     else
                     {
-                        var json = _eJsonCrypto.GetEncryptedJson(fileNameArgument.Value);
+                        var json = _eJsonCrypto.GetDecryptedJson(fileNameArgument.Value, keyDir);
                         context.Out.WriteLine(json);
                     }
 
@@ -94,32 +159,39 @@ namespace jaytwo.ejson.CommandLine
             });
         }
 
-        private void SetupDecryptCommand(CommandLineApplication app)
+        private string GetKeyDirOrDefault(CommandOption keyDirOption)
         {
-            app.Command("decrypt", context =>
+            var keyDirOptionValue = keyDirOption.Value();
+            return GetKeyDirOrDefault(keyDirOptionValue);
+        }
+
+        internal string GetKeyDirOrDefault(string keyDirOptionValue)
+        {
+            var keyDir = keyDirOptionValue;
+
+            if (string.IsNullOrWhiteSpace(keyDir))
             {
-                context.Description = "decrypts the thing";
-                context.HelpOption("--help");
+                keyDir = Environment.GetEnvironmentVariable(KeyDirEnvironmentVariable);
+            }
 
-                var fileNameArgument = context.Argument("<file name>", "name of the file to decrypt");
+            if (string.IsNullOrWhiteSpace(keyDir))
+            {
+                keyDir = GetDefaultKeyDir();
+            }
 
-                var writeOption = context.Option("-w", "writes to disk", CommandOptionType.NoValue);
+            return keyDir;
+        }
 
-                context.OnExecute(() =>
-                {
-                    if (writeOption.HasValue())
-                    {
-                        _eJsonCrypto.Decrypt(fileNameArgument.Value);
-                    }
-                    else
-                    {
-                        var json = _eJsonCrypto.GetDecryptedJson(fileNameArgument.Value);
-                        context.Out.WriteLine(json);
-                    }
-
-                    return 0;
-                });
-            });
+        internal string GetDefaultKeyDir()
+        {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                return DefaultWindowsKeyDir;
+            }
+            else
+            {
+                return DefaultUnixKeyDir;
+            }
         }
     }
 }

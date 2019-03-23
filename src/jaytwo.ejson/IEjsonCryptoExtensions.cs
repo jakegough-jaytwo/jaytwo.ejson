@@ -7,11 +7,11 @@ namespace jaytwo.ejson
 {
     public static class IEJsonCryptoExtensions
     {
-        public static void Decrypt(this IEJsonCrypto eJsonCrypto, string fileName)
+        public static void Decrypt(this IEJsonCrypto eJsonCrypto, string fileName, string keyDir)
         {
             using (var stream = new FileStream(fileName, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite))
             {
-                eJsonCrypto.Decrypt(stream);
+                eJsonCrypto.Decrypt(stream, keyDir);
             }
         }
 
@@ -23,13 +23,22 @@ namespace jaytwo.ejson
             }
         }
 
-        public static string GetDecryptedJson(this IEJsonCrypto eJsonCrypto, string fileName)
+        public static string GetDecryptedJson(this IEJsonCrypto eJsonCrypto, string fileName, string keyDir)
         {
             using (var stream = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
-                return eJsonCrypto.GetDecryptedJson(stream);
+                return eJsonCrypto.GetDecryptedJson(stream, keyDir);
             }
         }
+
+        public static string SaveDecryptedJson(this IEJsonCrypto eJsonCrypto, string fileName, string outputFile, string keyDir)
+        {
+            using (var stream = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read))
+            {
+                return eJsonCrypto.SaveDecryptedJson(stream, outputFile, keyDir);
+            }
+        }
+
 
         public static string GetEncryptedJson(this IEJsonCrypto eJsonCrypto, string fileName)
         {
