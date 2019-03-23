@@ -19,8 +19,17 @@ build: restore
 	dotnet build ./test/jaytwo.ejson.Tests
 
 run: build
-	dotnet run  --project ./src/jaytwo.ejson.CommandLine
+	dotnet run --project ./src/jaytwo.ejson.CommandLine
+  
+try-keygen:
+	dotnet run --project ./src/jaytwo.ejson.CommandLine keygen
 
+try-encrypt:
+	dotnet run --project ./src/jaytwo.ejson.CommandLine encrypt
+  
+try-decrypt:
+	dotnet run --project ./src/jaytwo.ejson.CommandLine decrypt
+  
 unit-test: build
 	rm -rf out/testResults
 	dotnet test ./test/jaytwo.ejson.Tests \

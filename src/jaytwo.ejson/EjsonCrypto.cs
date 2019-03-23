@@ -40,7 +40,13 @@ namespace jaytwo.ejson
 
         public string GetDecryptedJson(Stream stream, string keyDir)
         {
-            var jObject = GetDecryptJObject(stream, keyDir);            
+            var jObject = GetDecryptJObject(stream, keyDir);
+            return JObjectTools.GetJson(jObject);
+        }
+
+        public string GetDecryptedJson(Stream stream, IPrivateKeyProvider keyProvider)
+        {
+            var jObject = GetDecryptJObject(stream, keyProvider);
             return JObjectTools.GetJson(jObject);
         }
 
@@ -56,9 +62,27 @@ namespace jaytwo.ejson
             return "Saved to: " + outputFile;
         }
 
+        public string SaveDecryptedJson(Stream stream, string outputFile, IPrivateKeyProvider keyProvider)
+        {
+            var json = GetDecryptedJson(stream, keyProvider);
+
+            using (var file = File.CreateText(outputFile))
+            {
+                file.WriteLine(json);
+            }
+
+            return "Saved to: " + outputFile;
+        }
+
         public void Decrypt(Stream stream, string keyDir)
         {
             var jObject = GetDecryptJObject(stream, keyDir);
+            JObjectTools.Write(jObject, stream);
+        }
+
+        public void Decrypt(Stream stream, IPrivateKeyProvider keyProvider)
+        {
+            var jObject = GetDecryptJObject(stream, keyProvider);
             JObjectTools.Write(jObject, stream);
         }
 
@@ -94,6 +118,8 @@ namespace jaytwo.ejson
 
         public string SaveKeyPair(string keyDir)
         {
+            Directory.CreateDirectory(keyDir);
+
             using (var keyPair = _publicKeyBox.GenerateKeyPair())
             {
                 var output = new StringBuilder();
@@ -123,10 +149,24 @@ namespace jaytwo.ejson
             return jObject;
         }
 
+        private JObject GetDecryptJObject(Stream stream, IPrivateKeyProvider keyProvider)
+        {
+            var jObject = JObjectTools.GetJObject(stream);
+            var publicKey = GetPublicKey(jObject);
+
+            if (keyProvider.TryGetPrivateKey(publicKey, out string privateKey))
+            {
+                _jObjectCrypto.Decrypt(jObject, privateKey);
+                return jObject;
+            }
+
+            throw new InvalidOperationException($"Could not find private key for: {publicKey}");
+        }
+
         private JObject GetEncryptedJObject(Stream stream)
         {
             var jObject = JObjectTools.GetJObject(stream);
-            var publicKey = GetPublicKey(jObject);            
+            var publicKey = GetPublicKey(jObject);
             _jObjectCrypto.Encrypt(jObject, publicKey);
 
             return jObject;

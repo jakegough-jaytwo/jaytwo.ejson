@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace jaytwo.ejson.Internal
+namespace jaytwo.ejson
 {
-    internal class EnvironmentPrivateKeyProvider : IPrivateKeyProvider
+    public class EnvironmentPrivateKeyProvider : IPrivateKeyProvider
     {
         public const string EJsonKeyPrefixEnvironmentVairable = "EJSON_KEYPREFIX";
         public const string DefaultEJsonKeyEnvironmentVariablePrefix = "EJK_";

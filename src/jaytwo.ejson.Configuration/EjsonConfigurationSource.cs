@@ -14,7 +14,7 @@ namespace jaytwo.ejson.Configuration
         public override IConfigurationProvider Build(IConfigurationBuilder builder)
         {
             EnsureDefaults(builder);
-            return new JsonConfigurationProvider(this);
+            return new EJsonConfigurationProvider(this);
         }
     }
 }

@@ -8,7 +8,6 @@ namespace jaytwo.ejson.CommandLine
     public class Program
     {
         public const string KeyDirEnvironmentVariable = "EJSON_KEYDIR";
-        public const string DefaultWindowsKeyDir = "~/.ejson/keys";
         public const string DefaultUnixKeyDir = "/opt/ejson/keys";
 
         public static int Main(string[] args) => new Program().Run(args);
@@ -186,7 +185,11 @@ namespace jaytwo.ejson.CommandLine
         {
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                return DefaultWindowsKeyDir;
+                return Environment.GetEnvironmentVariable("USERPROFILE") + "/.ejson/keys";
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                return Environment.GetEnvironmentVariable("HOME") + "/.ejson/keys";
             }
             else
             {

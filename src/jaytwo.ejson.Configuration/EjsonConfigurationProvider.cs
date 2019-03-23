@@ -27,8 +27,8 @@ namespace jaytwo.ejson.Configuration
 
         public override void Load(Stream stream)
         {
-            var keyDir = "";
-            var decryptedJson = _eJsonCrypto.GetDecryptedJson(stream, keyDir);
+            var keyProvider = new EnvironmentPrivateKeyProvider("ejson__");
+            var decryptedJson = _eJsonCrypto.GetDecryptedJson(stream, keyProvider);
 
             using (var memoryStream = new MemoryStream())
             using (var streamWriter = new StreamWriter(memoryStream))
@@ -37,7 +37,7 @@ namespace jaytwo.ejson.Configuration
                 streamWriter.Flush();
                 memoryStream.Position = 0;
 
-                base.Load(stream);
+                base.Load(memoryStream);
             }
         }
     }

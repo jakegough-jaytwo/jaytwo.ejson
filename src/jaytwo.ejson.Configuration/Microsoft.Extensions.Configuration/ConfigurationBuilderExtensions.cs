@@ -79,7 +79,7 @@ namespace Microsoft.Extensions.Configuration
 
             source.ResolveFileProvider();
 
-            return builder.AddEjsonFile(source);
+            return builder.AddEJsonFile(source);
         }
 
         /// <summary>
@@ -88,6 +88,6 @@ namespace Microsoft.Extensions.Configuration
         /// <param name="builder">The <see cref="IConfigurationBuilder"/> to add to.</param>
         /// <param name="configureSource">Configures the source.</param>
         /// <returns>The <see cref="IConfigurationBuilder"/>.</returns>
-        public static IConfigurationBuilder AddEjsonFile(this IConfigurationBuilder builder, EJsonConfigurationSource configureSource) => builder.Add(configureSource);
+        public static IConfigurationBuilder AddEJsonFile(this IConfigurationBuilder builder, EJsonConfigurationSource configureSource) => builder.Add(configureSource);
     }
 }

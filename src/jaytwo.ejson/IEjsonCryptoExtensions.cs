@@ -1,4 +1,5 @@
-﻿using System;
+﻿using jaytwo.ejson.Internal;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -13,6 +14,12 @@ namespace jaytwo.ejson
             {
                 eJsonCrypto.Decrypt(stream, keyDir);
             }
+        }
+
+        public static void Decrypt(this IEJsonCrypto eJsonCrypto, Stream stream, string keyDir)
+        {
+            var keyProvider = new FileSystemPrivateKeyProvider(keyDir);
+            eJsonCrypto.Decrypt(stream, keyProvider);
         }
 
         public static void Encrypt(this IEJsonCrypto eJsonCrypto, string fileName)
@@ -31,6 +38,12 @@ namespace jaytwo.ejson
             }
         }
 
+        public static string GetDecryptedJson(this IEJsonCrypto eJsonCrypto, Stream stream, string keyDir)
+        {
+            var keyProvider = new FileSystemPrivateKeyProvider(keyDir);
+            return eJsonCrypto.GetDecryptedJson(stream, keyProvider);
+        }
+
         public static string SaveDecryptedJson(this IEJsonCrypto eJsonCrypto, string fileName, string outputFile, string keyDir)
         {
             using (var stream = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read))
@@ -39,6 +52,11 @@ namespace jaytwo.ejson
             }
         }
 
+        public static string SaveDecryptedJson(this IEJsonCrypto eJsonCrypto, Stream stream, string outputFile, string keyDir)
+        {
+            var keyProvider = new FileSystemPrivateKeyProvider(keyDir);
+            return eJsonCrypto.SaveDecryptedJson(stream, outputFile, keyDir);
+        }
 
         public static string GetEncryptedJson(this IEJsonCrypto eJsonCrypto, string fileName)
         {
