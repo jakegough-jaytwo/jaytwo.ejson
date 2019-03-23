@@ -7,10 +7,7 @@ namespace jaytwo.ejson
     public interface IPrivateKeyProvider
     {
         bool TryGetPrivateKey(string publicKey, out string privateKey);
-    }
-
-    public interface IWriteablePrivateKeyProvider : IPrivateKeyProvider
-    {
-        void SavePrivateKey(string publicKey, string privateKey);
+        bool CanSavePrivateKey { get; }
+        string SavePrivateKey(string publicKey, string privateKey);        
     }
 }

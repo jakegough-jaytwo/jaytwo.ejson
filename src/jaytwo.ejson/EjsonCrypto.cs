@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Text;
 using jaytwo.ejson.Exceptions;
 using jaytwo.ejson.Internal;
@@ -11,91 +10,49 @@ namespace jaytwo.ejson
 {
     public class EJsonCrypto : IEJsonCrypto
     {
-        private readonly IWriteablePrivateKeyProvider _privateKeyProvider;
+        private readonly IFileSystem _fileSystem;
         private readonly IJObjectCrypto _jObjectCrypto;
         private readonly IPublicKeyBox _publicKeyBox;
 
         public EJsonCrypto()
-            : this(new DefaultPrivateKeyProvider())
-        {
-        }
-
-        public EJsonCrypto(IWriteablePrivateKeyProvider privateKeyProvider)
-            : this(
-                  privateKeyProvider,
-                  new JObjectCrypto(),
-                  new PublicKeyBoxWrapper())
+            : this(null, null, null)
         {
         }
 
         internal EJsonCrypto(
-            IWriteablePrivateKeyProvider privateKeyProvider,
+            IFileSystem fileSystem,
             IJObjectCrypto jObjectCrypto,
             IPublicKeyBox publicKeyBox)
         {
-            _privateKeyProvider = privateKeyProvider;
-            _jObjectCrypto = jObjectCrypto;
-            _publicKeyBox = publicKeyBox;
+            _fileSystem = fileSystem ?? new FileSystemWrapper();
+            _jObjectCrypto = jObjectCrypto ?? new JObjectCrypto();
+            _publicKeyBox = publicKeyBox ?? new PublicKeyBoxWrapper();
         }
 
-        public string GetDecryptedJson(Stream stream, string keyDir)
+        public string GetDecryptedJson(string json, IPrivateKeyProvider keyProvider = null)
         {
-            var jObject = GetDecryptJObject(stream, keyDir);
+            var jObject = GetDecryptJObject(json, keyProvider);
             return JObjectTools.GetJson(jObject);
         }
 
-        public string GetDecryptedJson(Stream stream, IPrivateKeyProvider keyProvider)
+        public string SaveDecryptedJson(string json, string outputFile, IPrivateKeyProvider keyProvider = null)
         {
-            var jObject = GetDecryptJObject(stream, keyProvider);
-            return JObjectTools.GetJson(jObject);
-        }
-
-        public string SaveDecryptedJson(Stream stream, string outputFile, string keyDir)
-        {
-            var json = GetDecryptedJson(stream, keyDir);
-
-            using (var file = File.CreateText(outputFile))
-            {
-                file.WriteLine(json);
-            }
-
+            var decryptedJson = GetDecryptedJson(json, keyProvider);
+            _fileSystem.WriteAllText(outputFile, decryptedJson);
             return "Saved to: " + outputFile;
         }
 
-        public string SaveDecryptedJson(Stream stream, string outputFile, IPrivateKeyProvider keyProvider)
+        public string SaveEncryptedJson(string json, string outputFile)
         {
-            var json = GetDecryptedJson(stream, keyProvider);
-
-            using (var file = File.CreateText(outputFile))
-            {
-                file.WriteLine(json);
-            }
-
+            var encryptedJson = GetEncryptedJson(json);
+            _fileSystem.WriteAllText(outputFile, encryptedJson);
             return "Saved to: " + outputFile;
         }
 
-        public void Decrypt(Stream stream, string keyDir)
+        public string GetEncryptedJson(string json)
         {
-            var jObject = GetDecryptJObject(stream, keyDir);
-            JObjectTools.Write(jObject, stream);
-        }
-
-        public void Decrypt(Stream stream, IPrivateKeyProvider keyProvider)
-        {
-            var jObject = GetDecryptJObject(stream, keyProvider);
-            JObjectTools.Write(jObject, stream);
-        }
-
-        public string GetEncryptedJson(Stream stream)
-        {
-            var jObject = GetEncryptedJObject(stream);
+            var jObject = GetEncryptedJObject(json);
             return JObjectTools.GetJson(jObject);
-        }
-
-        public void Encrypt(Stream stream)
-        {
-            var jObject = GetEncryptedJObject(stream);
-            JObjectTools.Write(jObject, stream);
         }
 
         public string GenerateKeyPair()
@@ -116,44 +73,31 @@ namespace jaytwo.ejson
             }
         }
 
-        public string SaveKeyPair(string keyDir)
+        public string SaveKeyPair(IPrivateKeyProvider keyProvider = null)
         {
-            Directory.CreateDirectory(keyDir);
+            var output = new StringBuilder();
+
+            keyProvider = keyProvider ?? new DefaultPrivateKeyProvider();
 
             using (var keyPair = _publicKeyBox.GenerateKeyPair())
-            {
-                var output = new StringBuilder();
+            {                
                 var publicKeyHex = Utilities.BinaryToHex(keyPair.PublicKey);
                 var privateKeyHex = Utilities.BinaryToHex(keyPair.PrivateKey);
 
-                var filePath = Path.Combine(keyDir, publicKeyHex);
-                using (var file = File.CreateText(filePath))
-                {
-                    file.Write(privateKeyHex);
-                }
-
+                keyProvider.SavePrivateKey(publicKeyHex, privateKeyHex);
+                
                 output.AppendLine(publicKeyHex);
-
-                return output.ToString().Trim();
             }
+
+            return output.ToString().Trim();
         }
 
-        private JObject GetDecryptJObject(Stream stream, string keyDir)
+        private JObject GetDecryptJObject(string json, IPrivateKeyProvider keyProvider)
         {
-            var jObject = JObjectTools.GetJObject(stream);
-            var publicKey = GetPublicKey(jObject);
-            var privateKey = GetPrivateKey(publicKey, keyDir);
-
-            _jObjectCrypto.Decrypt(jObject, privateKey);
-
-            return jObject;
-        }
-
-        private JObject GetDecryptJObject(Stream stream, IPrivateKeyProvider keyProvider)
-        {
-            var jObject = JObjectTools.GetJObject(stream);
+            var jObject = JObjectTools.GetJObject(json);
             var publicKey = GetPublicKey(jObject);
 
+            keyProvider = keyProvider ?? new DefaultPrivateKeyProvider();
             if (keyProvider.TryGetPrivateKey(publicKey, out string privateKey))
             {
                 _jObjectCrypto.Decrypt(jObject, privateKey);
@@ -163,9 +107,9 @@ namespace jaytwo.ejson
             throw new InvalidOperationException($"Could not find private key for: {publicKey}");
         }
 
-        private JObject GetEncryptedJObject(Stream stream)
+        private JObject GetEncryptedJObject(string json)
         {
-            var jObject = JObjectTools.GetJObject(stream);
+            var jObject = JObjectTools.GetJObject(json);
             var publicKey = GetPublicKey(jObject);
             _jObjectCrypto.Encrypt(jObject, publicKey);
 
@@ -183,24 +127,6 @@ namespace jaytwo.ejson
             }
 
             throw new MissingPublicKeyException();
-        }
-
-        private string GetPrivateKey(string publicKey, string keyDir)
-        {
-            string result = null;
-
-            var keyFile = Path.Combine(keyDir, publicKey);
-            if (File.Exists(keyFile))
-            {
-                result = File.ReadAllText(keyFile)?.Trim();
-            }
-
-            if (string.IsNullOrWhiteSpace(result))
-            {
-                throw new InvalidOperationException($"Could not find private key for: {publicKey}");
-            }
-
-            return result;
         }
     }
 }

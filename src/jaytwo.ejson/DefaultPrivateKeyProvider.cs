@@ -4,7 +4,7 @@ using jaytwo.ejson.Internal;
 
 namespace jaytwo.ejson
 {
-    public class DefaultPrivateKeyProvider : IWriteablePrivateKeyProvider, IPrivateKeyProvider
+    public class DefaultPrivateKeyProvider : IPrivateKeyProvider
     {
         private readonly IPrivateKeyProvider[] _providers;
 
@@ -25,19 +25,18 @@ namespace jaytwo.ejson
             _providers = providers;
         }
 
-        public void SavePrivateKey(string publicKey, string privateKey)
+        public bool CanSavePrivateKey => _providers.Any(x => x.CanSavePrivateKey);
+
+        public string SavePrivateKey(string publicKey, string privateKey)
         {
-            var writeableProvider = _providers
-                .Where(x => x as IWriteablePrivateKeyProvider != null)
-                .Cast<IWriteablePrivateKeyProvider>()
-                .FirstOrDefault();
+            var writeableProvider = _providers.FirstOrDefault(x => x.CanSavePrivateKey);
 
             if (writeableProvider == null)
             {
                 throw new InvalidOperationException("No writeable key providers!");
             }
 
-            writeableProvider.SavePrivateKey(publicKey, privateKey);
+            return writeableProvider.SavePrivateKey(publicKey, privateKey);
         }
 
         public bool TryGetPrivateKey(string publicKey, out string privateKey)

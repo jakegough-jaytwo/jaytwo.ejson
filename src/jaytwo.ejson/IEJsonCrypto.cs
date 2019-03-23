@@ -7,12 +7,11 @@ namespace jaytwo.ejson
 {
     public interface IEJsonCrypto
     {
-        void Decrypt(Stream stream, IPrivateKeyProvider keyProvider);
-        void Encrypt(Stream stream);
-        string GetDecryptedJson(Stream stream, IPrivateKeyProvider keyProvider);
-        string SaveDecryptedJson(Stream stream, string outputFile, IPrivateKeyProvider keyProvider);
-        string GetEncryptedJson(Stream stream);
+        string GetDecryptedJson(string json, IPrivateKeyProvider keyProvider = null);
+        string SaveDecryptedJson(string json, string outputFile, IPrivateKeyProvider keyProvider = null);
+        string GetEncryptedJson(string json);
+        string SaveEncryptedJson(string json, string outputFile);
         string GenerateKeyPair();
-        string SaveKeyPair(string keyDir);
+        string SaveKeyPair(IPrivateKeyProvider keyProvider = null);
     }
 }

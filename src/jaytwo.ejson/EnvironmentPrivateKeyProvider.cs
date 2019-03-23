@@ -31,6 +31,13 @@ namespace jaytwo.ejson
             }
         }
 
+        public bool CanSavePrivateKey => false;
+
+        public string SavePrivateKey(string publicKey, string privateKey)
+        {
+            throw new NotSupportedException();
+        }
+
         public bool TryGetPrivateKey(string publicKey, out string privateKey)
         {
             try

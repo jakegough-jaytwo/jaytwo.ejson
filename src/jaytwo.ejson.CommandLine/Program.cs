@@ -7,9 +7,6 @@ namespace jaytwo.ejson.CommandLine
 {
     public class Program
     {
-        public const string KeyDirEnvironmentVariable = "EJSON_KEYDIR";
-        public const string DefaultUnixKeyDir = "/opt/ejson/keys";
-
         public static int Main(string[] args) => new Program().Run(args);
 
         private readonly IEJsonCrypto _eJsonCrypto;
@@ -76,7 +73,7 @@ namespace jaytwo.ejson.CommandLine
                     string output;
                     if (writeOption.HasValue())
                     {
-                        var keyDir = GetKeyDirOrDefault(keyDirOption);
+                        var keyDir = keyDirOption.Value();
                         output = _eJsonCrypto.SaveKeyPair(keyDir);
                     }
                     else
@@ -111,7 +108,7 @@ namespace jaytwo.ejson.CommandLine
                 {
                     foreach (var value in fileNameArgument.Values)
                     {
-                        _eJsonCrypto.Encrypt(fileNameArgument.Value);
+                        _eJsonCrypto.EncryptFile(fileNameArgument.Value);
                     }
 
                     return 0;
@@ -140,61 +137,22 @@ namespace jaytwo.ejson.CommandLine
 
                 context.OnExecute(() =>
                 {
-                    var keyDir = GetKeyDirOrDefault(keyDirOption);
-                    
+                    var keyDir = keyDirOption.Value();
+
                     if (outputToFileOption.HasValue())
                     {
-                        var output = _eJsonCrypto.SaveDecryptedJson(fileNameArgument.Value, outputToFileOption.Value(), keyDir);
+                        var output = _eJsonCrypto.SaveDecryptedJsonFromFile(fileNameArgument.Value, outputToFileOption.Value(), keyDir);
                         context.Out.WriteLine(output);
                     }
                     else
                     {
-                        var json = _eJsonCrypto.GetDecryptedJson(fileNameArgument.Value, keyDir);
+                        var json = _eJsonCrypto.GetDecryptedJsonFromFile(fileNameArgument.Value, keyDir);
                         context.Out.WriteLine(json);
                     }
 
                     return 0;
                 });
             });
-        }
-
-        private string GetKeyDirOrDefault(CommandOption keyDirOption)
-        {
-            var keyDirOptionValue = keyDirOption.Value();
-            return GetKeyDirOrDefault(keyDirOptionValue);
-        }
-
-        internal string GetKeyDirOrDefault(string keyDirOptionValue)
-        {
-            var keyDir = keyDirOptionValue;
-
-            if (string.IsNullOrWhiteSpace(keyDir))
-            {
-                keyDir = Environment.GetEnvironmentVariable(KeyDirEnvironmentVariable);
-            }
-
-            if (string.IsNullOrWhiteSpace(keyDir))
-            {
-                keyDir = GetDefaultKeyDir();
-            }
-
-            return keyDir;
-        }
-
-        internal string GetDefaultKeyDir()
-        {
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
-                return Environment.GetEnvironmentVariable("USERPROFILE") + "/.ejson/keys";
-            }
-            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-            {
-                return Environment.GetEnvironmentVariable("HOME") + "/.ejson/keys";
-            }
-            else
-            {
-                return DefaultUnixKeyDir;
-            }
         }
     }
 }
