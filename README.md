@@ -98,7 +98,7 @@ Windows and OSX defaults are user scoped just because I assume you'll be develop
 
 The `EJSON_KEYDIR` environment variable tells the library where on the filesystem to look for a private key, but often that means the key is in plain text at rest on the disk.  What if you want to store the key itself in an environment variable?
 
-Everything from IIS configuration to budget shared hosting sites support custom runtime environment variables.  Of course you can also provision them for the app with Octopus Deploy, or for the host with Chef, Puppet, Ansible, etc.
+Everything from container orchestration platforms to bare-metal IIS configuration to budget shared hosting providers support custom runtime environment variables.
 
 The name of the variable is the public key prefixed by `EJK_`.  The value will be the private key.
 
