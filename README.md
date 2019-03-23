@@ -96,7 +96,9 @@ Windows and OSX defaults are user scoped just because I assume you'll be develop
 
 ### Sourcing Private Keys From the Environment Variables
 
-Somtiemes it's easier to throw the private key into an environment variable.  This makes it more friendly for targets where filesystems are ephemeral, or if you are using something like Octopus Deploy.  Of course you can also accomplish this with Chef, Puppet, Ansible, etc.
+The `EJSON_KEYDIR` environment variable tells the library where on the filesystem to look for a private key, but often that means the key is in plain text at rest on the disk.  What if you want to store the key itself in an environment variable?
+
+Everything from IIS configuration to budget shared hosting sites support custom runtime environment variables.  Of course you can also provision them for the app with Octopus Deploy, or for the host with Chef, Puppet, Ansible, etc.
 
 The name of the variable is the public key prefixed by `EJK_`.  The value will be the private key.
 
@@ -117,3 +119,7 @@ Encryption is hard to get right.  Like any good developer, I'm leveraging a libr
 * `libsodium-net` is a wrapper around [libsodium](https://github.com/jedisct1/libsodium) for .NET
 * `libsodium` is a portable, cross-compilable, installable, packageable fork of [NaCl](http://nacl.cr.yp.to/)
 * `NaCl` (Networking and Cryptography library) is a great library that does all hard things
+
+---
+
+Made with &hearts; by Jake
