@@ -1,10 +1,10 @@
 # jaytwo.ejson
 
-A .NET Core version of [Shoppify's ejson](https://github.com/Shopify/ejson).  I read their [blog post](https://engineering.shopify.com/blogs/engineering/secrets-at-shopify-introducing-ejson)  and thought it was a good idea.  But I'm a .NET developer and mainly work on Windows, so installing with `gem` or a `.deb` isn't as  practical in my world.  Using through their go source files as an example, I wrote this in C#.
+A .NET Core version of [Shoppify's ejson](https://github.com/Shopify/ejson).  I read their [blog post](https://engineering.shopify.com/blogs/engineering/secrets-at-shopify-introducing-ejson)  and thought it was a good idea.  But I'm a .NET developer and mainly work on Windows, so installing with `gem` or a `.deb` isn't as  practical in my world.  Using their go source files as an example, I wrote this in C#.
 
 I loved the ejson approach because:
 
-* **\[Simple\]** It's just json
+* **\[Simple\]** It's just JSON
 * **\[Secure\]** It uses as asymmetric encryption (public key to encrypt, private key to decrypt)
   * Safe for source control, developer friendly
 
@@ -79,11 +79,11 @@ ejson encrypt encrypted.ejson -o decrypted.json
 
 ## Implementation Notes
 
-`ejson` takes care of the immediate problem with storing secrets in plain text at rest or in source control, but you still need to securely provision the private key to be accessible by the application at runtime.  There are a few options for this, some more secure than others.  Shopify's outlines their solution to in their awesome [Secrets at Shopify - Introducing EJSON](https://engineering.shopify.com/blogs/engineering/secrets-at-shopify-introducing-ejson) blog post.  Their approach is pretty bespoke, involving re-encrypting the files with a shared _infrastructure_ upon deploy and a custom docker init process. 
+`ejson` takes care of the immediate problem with storing secrets in plain text at rest or in source control, but you still need to securely provision the private key to be accessible by the application at runtime.  There are a few options for this, some more secure than others.  Shopify's outlines their solution to in their awesome [Secrets at Shopify - Introducing EJSON](https://engineering.shopify.com/blogs/engineering/secrets-at-shopify-introducing-ejson) blog post.  Their approach is pretty bespoke, involving re-encrypting the files with a shared _infrastructure_ key upon deploy and a custom docker init process. 
 
 ### Sourcing Private Keys From the Filesystem
 
-You can throw the private key on the filesystem at a one of the default locations, or you can specify a custom location.  This applies to the both the ASP.NET configuration implementation as well as the CLI.
+You can throw the private key on the filesystem at a one of the default locations, or you can specify a custom location.  This applies to the both the ASP.NET configuration implementation as well as the CLI.  (In the aforementioned blog post, Shopify distributes their private key files with Chef).
 
 Default filesystem locations:
 
@@ -92,11 +92,13 @@ Default filesystem locations:
 * Other: `/opt/ejson/keys`
 * Custom: Set environment variable `EJSON_KEYDIR`
 
-Windows and OSX defaults are user scoped just because I assume you'll be working on developing on Windows or OSX and deploying to linux.  It will attempt to _find_ keys in any of those locations, but it will _save_ keys only to the default _(Note: the original `ejson` looked at `/opt/ejson/keys` on all platforms)_, unless overridden with the `--keyDir` CLI option or the `EJSON_KEYDIR` environment variable.
+Windows and OSX defaults are user scoped just because I assume you'll be developing on Windows or OSX and deploying to linux.  It will attempt to _find_ keys in any of those locations, but it will _save_ keys only to the default _(Note: the original `ejson` looked at `/opt/ejson/keys` on all platforms)_, unless overridden with the `--keyDir` CLI option or the `EJSON_KEYDIR` environment variable.
 
 ### Sourcing Private Keys From the Environment Variables
 
-Somtiemes it's easier to throw the private key into an environment variable.  The name of the variable is the public key prefixed by `EJK_`.  The value will be the privat ekey.
+Somtiemes it's easier to throw the private key into an environment variable.  This makes it more friendly for targets where filesystems are ephemeral, or if you are using something like Octopus Deploy.  Of course you can also accomplish this with Chef, Puppet, Ansible, etc.
+
+The name of the variable is the public key prefixed by `EJK_`.  The value will be the private key.
 
 ```bash
 # public key:  3d953564513b09af30c9c9724c52770a2ffd13862710de857f5ef75e69350e52
