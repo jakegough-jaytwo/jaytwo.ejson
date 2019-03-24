@@ -34,14 +34,12 @@ for use in ASP.NET Core.
 Add the NuGet package in your ASP.NET Core project:
 
 ```
-PM> Install-Package jaytwo.ejson.Configuration
+PM> Install-Package jaytwo.ejson.AspNetCore.Configuration
 ```
 
 ### Usage
 
 _By convention, ejson files have the `.ejson` extension.  However, Visual Studio doesn't know what `.ejson` is, and instead prefers `.json` files for  syntax highlighting and nesting in solution explorer._
-
-In For ASP.NET Core 2.x
 
 `Program.cs` should configure the stuff that _can't_ go wrong.  In this case, `WebHost.CreateDefaultBuilder()` will load the `appsettings.json` files and configure logging.
 
@@ -58,7 +56,7 @@ public class Program
 }
 ```
 
-`Startup.cs` we will configure stuff that _can_ go wrong (like load secrets).  Luckily, at this point we can inject a configured `ILoggerFactory` so we're not flying blind.  We can also inject the `IConfiguration` in the default state from `WebHost.CreateDefaultBuilder()` in `Program.cs`.
+`Startup.cs` will configure stuff that _can_ go wrong (like load secrets).  Luckily, at this point we can inject a configured `ILoggerFactory` (thanks to the `Program.cs`).  We can also inject the `IConfiguration` in the default state from `WebHost.CreateDefaultBuilder()` in `Program.cs`.
 
 ```cs
 public class Startup
@@ -67,10 +65,8 @@ public class Startup
 
     public Startup(IConfiguration configurationBeforeSecrets, IHostingEnvironment env, ILoggerFactory loggerFactory)
     {
-        // In Startup.cs instead of Program.cs so we can have an injected ILoggerFactory that's already configured
         _configuration = new ConfigurationBuilder()
             .AddConfiguration(configurationBeforeSecrets)
-            .SetBasePath(Directory.GetCurrentDirectory())
             .AddEjsonAppSecrets(env, loggerFactory)
             .Build();
     }
@@ -99,23 +95,41 @@ dotnet tool install -g jaytwo.ejson.CommandLine
 ### Normal Usage
 
 ```bash
-# To view help:
-ejson --help
+# generate a key
+$ ejson keygen -w
+169f68900c6a9a7ee7fe1854197a372c96b728496aff5017dfd36e96df8d1a39
 
-# Generate a keypair without persisting to disk:
-ejson keygen
+# use the public key
+$ cat friends.ejson
+{
+  "_public_key": "169f68900c6a9a7ee7fe1854197a372c96b728496aff5017dfd36e96df8d1a39",
+  "spoiler": "Rachel and Ross end up together"
+}
 
-# Generate a keypair and write to disk:
-ejson keygen -w
+# encrypt the file
+$ ejson encrypt friends.ejson
 
-# To encrypt a file:
-ejson encrypt foo.ejson
+$ cat friends.ejson
+{
+  "_public_key": "169f68900c6a9a7ee7fe1854197a372c96b728496aff5017dfd36e96df8d1a39",
+  "spoiler": "EJ[1:Dq4cyj3nPNOml02xwYLXYKlrzT/V++kfDgO1gcazBBg=:+8Kb0VvhV1r6QXjG/1msevgPbqayGrnj:cMw+NVAOFE10mxnCqV0JVgoOnwm4jxae3Y9HADjClFxT0RaId03Vfpn7zBaWEDg=]"
+}
 
-# To display the decrypted contents of a file:
-ejson encrypt foo.ejson
+# decrypt the file
+$ ejson decrypt friends.ejson
+{
+  "_public_key": "169f68900c6a9a7ee7fe1854197a372c96b728496aff5017dfd36e96df8d1a39",
+  "spoiler": "Rachel and Ross end up together"
+}
 
-# To save the decrypted contents of a file:
-ejson encrypt encrypted.ejson -o decrypted.json
+$ ejson decrypt friends.ejson -o friends-decrypted.ejson
+Saved to: friends-decrypted.ejson
+
+$ cat friends-decrypted.ejson
+{
+  "_public_key": "169f68900c6a9a7ee7fe1854197a372c96b728496aff5017dfd36e96df8d1a39",
+  "spoiler": "Rachel and Ross end up together"
+}
 ```
 
 ## Implementation Notes
@@ -133,7 +147,7 @@ Default filesystem locations:
 * Other: `/opt/ejson/keys`
 * Custom: Set environment variable `EJSON_KEYDIR`
 
-Windows and OSX defaults are user scoped just because I assume you'll be developing on Windows or OSX and deploying to linux.  It will attempt to _find_ keys in any of those locations, but it will _save_ keys only to the default _(Note: the original `ejson` looked at `/opt/ejson/keys` on all platforms)_, unless overridden with the `--keyDir` CLI option or the `EJSON_KEYDIR` environment variable.
+Windows and OSX defaults are user-scoped just because I assume you'll be developing on Windows or OSX and deploying to linux.  It will attempt to _find_ keys in any of those locations, but it will _save_ keys only to the default _(Note: the original `ejson` looked at `/opt/ejson/keys` on all platforms)_, unless overridden with the `--keyDir` CLI option or the `EJSON_KEYDIR` environment variable.
 
 ### Sourcing Private Keys From the Environment Variables
 
@@ -152,7 +166,30 @@ export EJK_3d953564513b09af30c9c9724c52770a2ffd13862710de857f5ef75e69350e52=edad
 
 The prefix can also be customized by setting the environment variable `EJSON_KEYPREFIX`.
 
-## Encryption Library
+## Encryption Notes
+
+`ejson` is built on top of [NaCl](http://nacl.cr.yp.to/)'s Public Box messages (I found 
+[PyNaCl's documentation](https://pynacl.readthedocs.io/en/stable/public/#nacl-public-box) the easiest to follow,
+but feel free to go straight to the [source](https://nacl.cr.yp.to/box.html)).  
+
+To encrypt (aka send message, create the box) you need:
+
+* the public key of the receiver
+* a random nonce
+* the private key of an ephemeral keypair generated at the time of encryption
+
+To decrypt (aka receive message, open the box) you need:
+
+* the private key of the receiver
+* the nonce generated by the sender
+* the public key of the ephemeral keypair generated by the sender
+
+In the `ejson` world, the sender is a developer, the receiver is the application at runtime.  The developer only needs the public key 
+of the app, and the rest is generated at encryption time.  The nonce and the ephemeral public key are then encoded in the json with the 
+encrypted value (see [ejson schema defnition](https://shopify.github.io/ejson/ejson.5.html)).  This way, the app's private key is all 
+that's missing to make decryption possible.
+
+### Encryption Library
 
 Encryption is hard to get right.  Like any good developer, I'm leveraging a library that does it for me.  Encryption is done by [libsodium-core](https://github.com/tabrath/libsodium-core/).
 
