@@ -196,7 +196,7 @@ Encryption is hard to get right.  Like any good developer, I'm leveraging a libr
 * `libsodium-core` is a .NET Core version of [libsodium-net](https://github.com/adamcaudill/libsodium-net)
 * `libsodium-net` is a wrapper around [libsodium](https://github.com/jedisct1/libsodium) for .NET
 * `libsodium` is a portable, cross-compilable, installable, packageable fork of [NaCl](http://nacl.cr.yp.to/)
-* `NaCl` (Networking and Cryptography library) is a great library that does all hard things
+* `NaCl` (Networking and Cryptography library) is a great library that does all the hard things
 
 ---
 
