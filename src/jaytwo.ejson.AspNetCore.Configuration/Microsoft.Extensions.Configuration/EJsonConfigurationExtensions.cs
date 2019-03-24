@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using jaytwo.ejson.Configuration;
+using jaytwo.ejson.AspNetCore.Configuration;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.AspNetCore.Hosting;
 

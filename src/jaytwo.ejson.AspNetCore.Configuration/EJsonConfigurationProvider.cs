@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace jaytwo.ejson.Configuration
+namespace jaytwo.ejson.AspNetCore.Configuration
 {
     // see: https://github.com/aspnet/Extensions/blob/master/src/Configuration/Config.Json/src/JsonConfigurationProvider.cs
     public class EJsonConfigurationProvider : JsonConfigurationProvider

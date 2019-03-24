@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.Extensions.Configuration;
 
-namespace jaytwo.ejson.Configuration
+namespace jaytwo.ejson.AspNetCore.Configuration
 {
     public class ConfigurationPrivateKeyProvider : IPrivateKeyProvider
     {

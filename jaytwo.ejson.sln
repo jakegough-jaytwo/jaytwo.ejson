@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "jaytwo.ejson", "src\jaytwo.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "jaytwo.ejson.Tests", "test\jaytwo.ejson.Tests\jaytwo.ejson.Tests.csproj", "{057ED855-D876-4AFE-8F71-554F45DCC837}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "jaytwo.ejson.Configuration", "src\jaytwo.ejson.Configuration\jaytwo.ejson.Configuration.csproj", "{CEE9A471-0899-4524-B930-A6C4B0F145D2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "jaytwo.ejson.AspNetCore.Configuration", "src\jaytwo.ejson.AspNetCore.Configuration\jaytwo.ejson.AspNetCore.Configuration.csproj", "{CEE9A471-0899-4524-B930-A6C4B0F145D2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "jaytwo.ejson.CommandLine", "src\jaytwo.ejson.CommandLine\jaytwo.ejson.CommandLine.csproj", "{D2E8AF10-45E1-455A-B40B-5CE3B20A3674}"
 EndProject
