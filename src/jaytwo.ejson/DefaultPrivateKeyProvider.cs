@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using jaytwo.ejson.Internal;
 
@@ -6,7 +7,7 @@ namespace jaytwo.ejson
 {
     public class DefaultPrivateKeyProvider : IPrivateKeyProvider
     {
-        private readonly IPrivateKeyProvider[] _providers;
+        private readonly IList<IPrivateKeyProvider> _providers;
 
         public DefaultPrivateKeyProvider()
             : this((string)null, (string)null)
@@ -22,10 +23,16 @@ namespace jaytwo.ejson
 
         internal DefaultPrivateKeyProvider(params IPrivateKeyProvider[] providers)
         {
-            _providers = providers;
+            _providers = new List<IPrivateKeyProvider>(providers);
         }
 
         public bool CanSavePrivateKey => _providers.Any(x => x.CanSavePrivateKey);
+
+        public DefaultPrivateKeyProvider Add(IPrivateKeyProvider privateKeyProvider)
+        {
+            _providers.Add(privateKeyProvider);
+            return this;
+        }
 
         public string SavePrivateKey(string publicKey, string privateKey)
         {
@@ -43,7 +50,7 @@ namespace jaytwo.ejson
         {
             foreach (var provider in _providers)
             {
-                if (provider.TryGetPrivateKey(publicKey, out privateKey))
+                if (provider != null && provider.TryGetPrivateKey(publicKey, out privateKey))
                 {
                     return true;
                 }

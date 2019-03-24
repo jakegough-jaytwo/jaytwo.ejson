@@ -7,6 +7,8 @@ namespace jaytwo.ejson.Configuration
 {
     public class EJsonConfigurationSource : JsonConfigurationSource
     {
+        public IConfigurationSection PrivateKeyConfigSection { get; set; }
+
         public EJsonConfigurationSource()
         {
         }

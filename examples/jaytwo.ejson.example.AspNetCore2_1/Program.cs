@@ -12,9 +12,6 @@ namespace jaytwo.ejson.example.AspNetCore2_1
 {
     public class Program
     {
-        public static IHostingEnvironment HostingEnvironment { get; set; }
-        public static IConfiguration Configuration { get; set; }
-
         public static void Main(string[] args)
         {
             CreateWebHostBuilder(args).Build().Run();
@@ -24,10 +21,7 @@ namespace jaytwo.ejson.example.AspNetCore2_1
             WebHost.CreateDefaultBuilder(args)
                 .ConfigureAppConfiguration((hostingContext, config) =>
                 {
-                    HostingEnvironment = hostingContext.HostingEnvironment;
-                    Configuration = config
-                        .AddEJsonFile("appsettings.ejson") // gets private key from env var prefixed with `ejson__`; see launchSettings.json
-                        .Build();
+                    config.AddAppSecretsEJson(hostingContext.HostingEnvironment);
                 })
                 .UseStartup<Startup>();
     }
