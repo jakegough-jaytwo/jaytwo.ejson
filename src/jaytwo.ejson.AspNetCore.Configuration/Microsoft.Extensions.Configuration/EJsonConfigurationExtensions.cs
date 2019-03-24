@@ -4,27 +4,40 @@ using System.Text;
 using jaytwo.ejson.AspNetCore.Configuration;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Logging;
+using System.IO;
 
 namespace Microsoft.Extensions.Configuration
 {
+    // inspired from:
     // https://github.com/aspnet/Configuration/blob/release/1.1/src/Microsoft.Extensions.Configuration.Json/JsonConfigurationExtensions.cs
     // https://github.com/aspnet/Extensions/blob/release/2.2/src/Configuration/Config.Json/src/JsonConfigurationExtensions.cs
 
     public static class EJsonConfigurationExtensions
     {
         /// <summary>
-        /// Adds the EJSON configuration provider from appsecrets.ejson and appsecrets.{EnvironmentName}.ejson to <paramref name="builder"/>.
+        /// Adds the EJSON configuration provider from appsecrets.ejson and appsecrets.{env.EnvironmentName}.ejson to <paramref name="builder"/>.
         /// </summary>
-        public static IConfigurationBuilder AddAppSecretsEJson(this IConfigurationBuilder builder, IHostingEnvironment hostingEnvironment)
+        public static IConfigurationBuilder AddEjsonAppSecrets(this IConfigurationBuilder builder, IHostingEnvironment env = null, ILoggerFactory loggerFactory = null)
         {
             var privateKeyConfigSectionOrDefault = builder.Build().GetSection("ejson");
 
-            builder.AddEJsonFile("appsecrets.json",
-                privateKeyConfigSection: privateKeyConfigSectionOrDefault);
+            if (!builder.Properties.TryGetValue("FileProvider", out object handler))
+            {
+                builder.SetBasePath(Directory.GetCurrentDirectory());
+            }
 
-            builder.AddEJsonFile($"appsecrets.{hostingEnvironment.EnvironmentName}.json",
-                optional: true,
-                privateKeyConfigSection: privateKeyConfigSectionOrDefault);
+            builder.AddEJsonFile("appsecrets.json",
+                privateKeyConfigSection: privateKeyConfigSectionOrDefault,
+                loggerFactory: loggerFactory);
+
+            if (env != null)
+            {
+                builder.AddEJsonFile($"appsecrets.{env.EnvironmentName}.json",
+                    optional: true,
+                    privateKeyConfigSection: privateKeyConfigSectionOrDefault,
+                    loggerFactory: loggerFactory);
+            }
 
             return builder;
         }
@@ -37,10 +50,11 @@ namespace Microsoft.Extensions.Configuration
         /// <see cref="IConfigurationBuilder.Properties"/> of <paramref name="builder"/>.</param>
         /// <param name="optional">Whether the file is optional.</param>
         /// <param name="privateKeyConfigSection">Configuration section containing private keys.</param>
+        /// <param name="loggerFactory">(Optional) Log target.</param>
         /// <returns>The <see cref="IConfigurationBuilder"/>.</returns>
-        public static IConfigurationBuilder AddEJsonFile(this IConfigurationBuilder builder, string path, bool optional = false, IConfigurationSection privateKeyConfigSection = null)
+        public static IConfigurationBuilder AddEJsonFile(this IConfigurationBuilder builder, string path, bool optional = false, IConfigurationSection privateKeyConfigSection = null, ILoggerFactory loggerFactory = null)
         {
-            return AddEJsonFile(builder, provider: null, path: path, optional: optional, privateKeyConfigSection: privateKeyConfigSection);
+            return AddEJsonFile(builder, provider: null, path: path, optional: optional, privateKeyConfigSection: privateKeyConfigSection, loggerFactory: loggerFactory);
         }
 
 #if NETSTANDARD2_0
@@ -52,9 +66,10 @@ namespace Microsoft.Extensions.Configuration
         /// <param name="path">Path relative to the base path stored in 
         /// <see cref="IConfigurationBuilder.Properties"/> of <paramref name="builder"/>.</param>
         /// <param name="optional">Whether the file is optional.</param>
-        /// <param name="privateKeyConfigSection">Configuration section containing private keys.</param>
+        /// <param name="privateKeyConfigSection">(Optional) Configuration section containing private keys.</param>
+        /// <param name="loggerFactory">(Optional) Log target.</param>
         /// <returns>The <see cref="IConfigurationBuilder"/>.</returns>
-        public static IConfigurationBuilder AddEJsonFile(this IConfigurationBuilder builder, IFileProvider provider, string path, bool optional, IConfigurationSection privateKeyConfigSection)
+        public static IConfigurationBuilder AddEJsonFile(this IConfigurationBuilder builder, IFileProvider provider, string path, bool optional, IConfigurationSection privateKeyConfigSection, ILoggerFactory loggerFactory)
         {
             if (builder == null)
             {
@@ -68,6 +83,7 @@ namespace Microsoft.Extensions.Configuration
             return builder.AddEJsonFile(s =>
             {
                 s.PrivateKeyConfigSection = privateKeyConfigSection;
+                s.LoggerFactory = loggerFactory;
                 s.FileProvider = provider;
                 s.Path = path;
                 s.Optional = optional;
@@ -94,8 +110,9 @@ namespace Microsoft.Extensions.Configuration
         /// <see cref="IConfigurationBuilder.Properties"/> of <paramref name="builder"/>.</param>
         /// <param name="optional">Whether the file is optional.</param>
         /// <param name="privateKeyConfigSection">Configuration section containing private keys.</param>
+        /// <param name="loggerFactory">(Optional) Log target.</param>
         /// <returns>The <see cref="IConfigurationBuilder"/>.</returns>
-        public static IConfigurationBuilder AddEJsonFile(this IConfigurationBuilder builder, IFileProvider provider, string path, bool optional, IConfigurationSection privateKeyConfigSection = null)
+        public static IConfigurationBuilder AddEJsonFile(this IConfigurationBuilder builder, IFileProvider provider, string path, bool optional, IConfigurationSection privateKeyConfigSection, ILoggerFactory loggerFactory)
         {
             if (builder == null)
             {
@@ -109,6 +126,7 @@ namespace Microsoft.Extensions.Configuration
             var source = new EJsonConfigurationSource
             {
                 PrivateKeyConfigSection = privateKeyConfigSection,
+                LoggerFactory = loggerFactory,
                 FileProvider = provider,
                 Path = path,
                 Optional = optional,

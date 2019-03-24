@@ -39,10 +39,51 @@ PM> Install-Package jaytwo.ejson.Configuration
 
 ### Usage
 
+_By convention, ejson files have the `.ejson` extension.  However, Visual Studio doesn't know what `.ejson` is, and instead prefers `.json` files for  syntax highlighting and nesting in solution explorer._
+
+In For ASP.NET Core 2.x
+
+`Program.cs` should configure the stuff that _can't_ go wrong.  In this case, `WebHost.CreateDefaultBuilder()` will load the `appsettings.json` files and configure logging.
+
 ```cs
-Configuration = config
-    .AddEJsonFile("appsettings.ejson")
-    .Build();
+public class Program
+{
+    public static void Main(string[] args)
+    {
+        CreateWebHostBuilder(args).Build().Run();
+    }
+
+    public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
+        WebHost.CreateDefaultBuilder(args).UseStartup<Startup>();
+}
+```
+
+`Startup.cs` we will configure stuff that _can_ go wrong (like load secrets).  Luckily, at this point we can inject a configured `ILoggerFactory` so we're not flying blind.  We can also inject the `IConfiguration` in the default state from `WebHost.CreateDefaultBuilder()` in `Program.cs`.
+
+```cs
+public class Startup
+{
+    private readonly IConfiguration _configuration;
+
+    public Startup(IConfiguration configurationBeforeSecrets, IHostingEnvironment env, ILoggerFactory loggerFactory)
+    {
+        // In Startup.cs instead of Program.cs so we can have an injected ILoggerFactory that's already configured
+        _configuration = new ConfigurationBuilder()
+            .AddConfiguration(configurationBeforeSecrets)
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddEjsonAppSecrets(env, loggerFactory)
+            .Build();
+    }
+
+    public void ConfigureServices(IServiceCollection services)
+    {
+        services.AddSingleton(x => _configuration);
+        
+        // ... and other stuff ...
+    }
+    
+    // ... and other stuff ...
+}
 ```
 
 ## Command Line

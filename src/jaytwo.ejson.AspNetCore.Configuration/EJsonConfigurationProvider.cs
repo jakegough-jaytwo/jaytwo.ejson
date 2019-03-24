@@ -28,9 +28,13 @@ namespace jaytwo.ejson.AspNetCore.Configuration
 
         public override void Load(Stream stream)
         {
+            var source = Source as EJsonConfigurationSource;
+            var logger = source?.LoggerFactory?.CreateLogger(this.GetType());
+            var path = source?.Path;
+
             try
             {
-                var privateKeyProvider = GetKeyProvider();
+                var privateKeyProvider = GetKeyProvider(source);
                 var decryptedJson = _eJsonCrypto.GetDecryptedJson(stream, privateKeyProvider);
 
                 using (var memoryStream = new MemoryStream())
@@ -45,21 +49,17 @@ namespace jaytwo.ejson.AspNetCore.Configuration
             }
             catch (Exception exception)
             {
-                // TODO: figure out what order to initialize things to make this logging output something
-
-                var path = Source.Path;
-
-                new LoggerFactory()
-                    .CreateLogger<EJsonConfigurationProvider>()
-                    .LogError(new EventId(), exception, "Could not load EJSON from {path}", path);
+                logger?.LogError(default(EventId), exception, "Could not load EJSON from {path}", path);
             }
+
+            logger?.LogInformation(default(EventId), "EJSON loaded from {path}", path);
         }
 
-        private IPrivateKeyProvider GetKeyProvider()
+        private static IPrivateKeyProvider GetKeyProvider(EJsonConfigurationSource source)
         {
             var result = new DefaultPrivateKeyProvider();
 
-            var configSection = (Source as EJsonConfigurationSource)?.PrivateKeyConfigSection;
+            var configSection = (source)?.PrivateKeyConfigSection;
             if (configSection != null)
             {
                 result.Add(new ConfigurationPrivateKeyProvider(configSection));
