@@ -31,10 +31,9 @@ namespace jaytwo.ejson.CommandLine
             var app = new CommandLineApplication();
             app.Name = "ejson";
             app.HelpOption("--help");
-            app.VersionOption("--version", "v0.1");
+            app.VersionOption("--version", GetType().Assembly.GetName().Version.ToString());
             app.Out = _standardOut;
             app.Error = _standardError;
-
 
             var keyDirOption = app.Option("--keydir|-k", "Directory containing EJSON keys [$EJSON_KEYDIR]", CommandOptionType.SingleValue);
 

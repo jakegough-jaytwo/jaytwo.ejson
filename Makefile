@@ -1,6 +1,6 @@
 TIMESTAMP?=$(shell date +'%Y%m%d%H%M%S')
 
-default: build
+default: clean build
 
 clean: 
 	find . -name bin | xargs rm -vrf
@@ -15,22 +15,14 @@ restore:
 build: restore
 	dotnet build ./src/jaytwo.ejson
 	dotnet build ./src/jaytwo.ejson.CommandLine
-	dotnet build ./src/jaytwo.ejson.Configuration
+	dotnet build ./src/jaytwo.ejson.AspNetCore.Configuration
 	dotnet build ./test/jaytwo.ejson.Tests
+	dotnet build ./examples/jaytwo.ejson.example.AspNetCore2_1
 
-run: build
-	dotnet run --project ./src/jaytwo.ejson.CommandLine
-  
-try-keygen:
-	dotnet run --project ./src/jaytwo.ejson.CommandLine keygen
+run:
+	dotnet run --project ./src/jaytwo.ejson.CommandLine -- --help
 
-try-encrypt:
-	dotnet run --project ./src/jaytwo.ejson.CommandLine encrypt
-  
-try-decrypt:
-	dotnet run --project ./src/jaytwo.ejson.CommandLine decrypt
-  
-unit-test: build
+unit-test:
 	rm -rf out/testResults
 	dotnet test ./test/jaytwo.ejson.Tests \
 		--results-directory ../../out/testResults \
@@ -39,17 +31,23 @@ unit-test: build
 		--results-directory ../../out/testResults \
 		--logger "trx;LogFileName=jaytwo.ejson.CommandLine.Tests.trx"
 
-pack: build
+test: unit-test
+    
+pack:
 	rm -rf out/packed
 	cd ./src/jaytwo.ejson; \
+		dotnet pack -o ../../out/packed ${PACK_ARG}
+	cd ./src/jaytwo.ejson.CommandLine; \
+		dotnet pack -o ../../out/packed ${PACK_ARG}
+	cd ./src/jaytwo.ejson.AspNetCore.Configuration; \
 		dotnet pack -o ../../out/packed ${PACK_ARG}
 
 pack-beta: PACK_ARG=--version-suffix beta-${TIMESTAMP}
 pack-beta: pack
 
-publish: build
+publish:
 	rm -rf out/published
-	cd ./src/jaytwo.ejson; \
+	cd ./src/jaytwo.ejson.CommandLine; \
 		dotnet publish -o ../../out/published
 
-test: unit-test
+docker-test: clean
