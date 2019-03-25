@@ -14,8 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="libsodium" Version="1.0.17" PrivateAssets="None" />
-    <PackageReference Include="Sodium.Core" Version="1.2.0" PrivateAssets="None" />
+    <PackageReference Include="libsodium" Version="1.0.17" />
+    <PackageReference Include="Sodium.Core" Version="1.2.0" />
   </ItemGroup>
 
 </Project>

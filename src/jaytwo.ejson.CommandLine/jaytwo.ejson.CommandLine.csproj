@@ -11,26 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\jaytwo.ejson\jaytwo.ejson.csproj" PrivateAssets="None" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="runtimes\win7-x86\native\**\*">
-      <PackagePath>runtimes/win7-x86/native/</PackagePath>
-      <Pack>true</Pack>
-    </None>
-    <None Include="runtimes\win7-x64\native\**\*">
-      <PackagePath>runtimes/win7-x64/native/</PackagePath>
-      <Pack>true</Pack>
-    </None>
-    <None Include="runtimes\osx-x64\native\**\*">
-      <PackagePath>runtimes/osx-x64/native/</PackagePath>
-      <Pack>true</Pack>
-    </None>
-    <None Include="runtimes\linux-x64\native\**\*">
-      <PackagePath>runtimes/linux-x64/native/</PackagePath>
-      <Pack>true</Pack>
-    </None>
+    <ProjectReference Include="..\jaytwo.ejson\jaytwo.ejson.csproj" />
   </ItemGroup>
 
 </Project>
