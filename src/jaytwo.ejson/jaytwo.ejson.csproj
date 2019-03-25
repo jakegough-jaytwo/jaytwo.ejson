@@ -5,15 +5,16 @@
     <VersionPrefix>0.1.0</VersionPrefix>
   </PropertyGroup>
 
-  <ItemGroup Condition = "'$(TargetFramework)' == 'netstandard2.0'">
-    <PackageReference Include="Newtonsoft.Json" Version="10.0.3"/>
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
   </ItemGroup>
 
-  <ItemGroup Condition = "'$(TargetFramework)' == 'netstandard1.6'">
-    <PackageReference Include="Newtonsoft.Json" Version="9.0.1"/>
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.6'">
+    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="libsodium" Version="1.0.17" PrivateAssets="None" />
     <PackageReference Include="Sodium.Core" Version="1.2.0" PrivateAssets="None" />
   </ItemGroup>
 
