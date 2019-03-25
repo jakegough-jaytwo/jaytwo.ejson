@@ -5,7 +5,6 @@ FROM dotnet-sdk AS base
 RUN apt-get update \
   && apt-get install -y --no-install-recommends \
     make \
-    libsodium-dev \
   && rm -rf /var/lib/apt/lists/*
 
 
@@ -32,7 +31,7 @@ WORKDIR /src
 RUN make publish
 
 
-FROM base AS app
+FROM dotnet-sdk AS app
 WORKDIR /app
 COPY --from=publisher /src/out/published /app
 ENTRYPOINT ["dotnet", "jaytwo.ejson.CommandLine.dll"]
