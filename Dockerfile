@@ -1,5 +1,5 @@
-FROM microsoft/dotnet:2.2.104-sdk-stretch AS dotnet-sdk
-FROM microsoft/dotnet:2.2.2-runtime-alpine AS dotnet-runtime
+FROM mcr.microsoft.com/dotnet/core/sdk:2.1 AS dotnet-sdk
+FROM mcr.microsoft.com/dotnet/core/runtime:2.1 AS dotnet-runtime
 
 FROM dotnet-sdk AS base
 RUN apt-get update \
@@ -31,7 +31,7 @@ WORKDIR /src
 RUN make publish
 
 
-FROM dotnet-sdk AS app
+FROM dotnet-runtime AS app
 WORKDIR /app
 COPY --from=publisher /src/out/published /app
 ENTRYPOINT ["dotnet", "jaytwo.ejson.CommandLine.dll"]
