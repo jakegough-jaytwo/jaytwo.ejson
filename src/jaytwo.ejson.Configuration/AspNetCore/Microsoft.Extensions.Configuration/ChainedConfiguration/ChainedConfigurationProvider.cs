@@ -1,7 +1,7 @@
 ﻿// https://github.com/aspnet/Configuration/blob/master/src/Config/ChainedConfigurationProvider.cs
 // TODO: figure out if this is kosher to include
 
-#if NETSTANDARD1_6
+#if NETSTANDARD1
 
 // Copyright (c) .NET Foundation. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.

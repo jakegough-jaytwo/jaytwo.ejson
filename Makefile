@@ -19,7 +19,7 @@ build: restore
 	dotnet build ./test/jaytwo.ejson.Tests
 	dotnet build ./examples/jaytwo.ejson.example.AspNetCore2_1
 	dotnet build ./examples/jaytwo.ejson.example.AspNetCore1_1
-	dotnet build ./examples/jaytwo.ejson.example.AspNet4_6
+	dotnet build ./examples/jaytwo.ejson.example.AspNet4_6_1
 
 run:
 	dotnet run --project ./src/jaytwo.ejson.CommandLine -- --help

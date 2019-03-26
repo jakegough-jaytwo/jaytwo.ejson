@@ -1,5 +1,4 @@
 ﻿using System;
-using Sodium;
 
 namespace jaytwo.ejson.Internal
 {
@@ -7,7 +6,7 @@ namespace jaytwo.ejson.Internal
     {
         public static string Decrypt(this IBoxedMessageCrypto boxedMessageCrypto, string boxedMessageAsString, string privateKey)
         {
-            var privateKeyBytes = Utilities.HexToBinary(privateKey);
+            var privateKeyBytes = HexConverter.HexToBinary(privateKey);
             return boxedMessageCrypto.Decrypt(boxedMessageAsString, privateKeyBytes);
         }
 
@@ -19,13 +18,13 @@ namespace jaytwo.ejson.Internal
 
         public static string Decrypt(this IBoxedMessageCrypto boxedMessageCrypto, BoxedMessage boxedMessage, string privateKey)
         {
-            var privateKeyBytes = Utilities.HexToBinary(privateKey);
+            var privateKeyBytes = HexConverter.HexToBinary(privateKey);
             return boxedMessageCrypto.Decrypt(boxedMessage, privateKeyBytes);
         }
 
         public static BoxedMessage Encrypt(this IBoxedMessageCrypto boxedMessageCrypto, string nessage, string publicKey)
         {
-            var publicKeyBytes = Utilities.HexToBinary(publicKey);
+            var publicKeyBytes = HexConverter.HexToBinary(publicKey);
             return boxedMessageCrypto.Encrypt(nessage, publicKeyBytes);
         }
     }

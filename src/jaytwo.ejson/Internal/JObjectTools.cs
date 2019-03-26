@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Sodium;
 using System;
 using System.Collections.Generic;
 using System.IO;

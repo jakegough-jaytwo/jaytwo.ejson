@@ -4,7 +4,6 @@ using jaytwo.ejson.Exceptions;
 using jaytwo.ejson.Internal;
 using jaytwo.ejson.Internal.Sodium;
 using Newtonsoft.Json.Linq;
-using Sodium;
 
 namespace jaytwo.ejson
 {
@@ -57,37 +56,35 @@ namespace jaytwo.ejson
 
         public string GenerateKeyPair()
         {
-            using (var keyPair = _publicKeyBox.GenerateKeyPair())
-            {
-                var output = new StringBuilder();
-                var publicKeyHex = Utilities.BinaryToHex(keyPair.PublicKey);
-                var privateKeyHex = Utilities.BinaryToHex(keyPair.PrivateKey);
 
-                output.AppendLine("Public Key:");
-                output.AppendLine(publicKeyHex);
+            var keyPair = _publicKeyBox.GenerateKeyPair();
+            var publicKeyHex = HexConverter.BinaryToHex(keyPair.PublicKey);
+            var privateKeyHex = HexConverter.BinaryToHex(keyPair.SecretKey);
 
-                output.AppendLine("Private Key:");
-                output.AppendLine(privateKeyHex);
+            var output = new StringBuilder();
 
-                return output.ToString().Trim();
-            }
+            output.AppendLine("Public Key:");
+            output.AppendLine(publicKeyHex);
+
+            output.AppendLine("Private Key:");
+            output.AppendLine(privateKeyHex);
+
+            return output.ToString().Trim();
         }
 
         public string SaveKeyPair(IPrivateKeyProvider keyProvider = null)
         {
-            var output = new StringBuilder();
-
             keyProvider = keyProvider ?? new DefaultPrivateKeyProvider();
 
-            using (var keyPair = _publicKeyBox.GenerateKeyPair())
-            {                
-                var publicKeyHex = Utilities.BinaryToHex(keyPair.PublicKey);
-                var privateKeyHex = Utilities.BinaryToHex(keyPair.PrivateKey);
+            var keyPair = _publicKeyBox.GenerateKeyPair();
+            var publicKeyHex = HexConverter.BinaryToHex(keyPair.PublicKey);
+            var privateKeyHex = HexConverter.BinaryToHex(keyPair.SecretKey);
 
-                keyProvider.SavePrivateKey(publicKeyHex, privateKeyHex);
-                
-                output.AppendLine(publicKeyHex);
-            }
+            keyProvider.SavePrivateKey(publicKeyHex, privateKeyHex);
+
+            var output = new StringBuilder();
+
+            output.AppendLine(publicKeyHex);
 
             return output.ToString().Trim();
         }

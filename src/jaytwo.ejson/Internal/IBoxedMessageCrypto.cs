@@ -1,6 +1,4 @@
-﻿using Sodium;
-
-namespace jaytwo.ejson.Internal
+﻿namespace jaytwo.ejson.Internal
 {
     internal interface IBoxedMessageCrypto
     {

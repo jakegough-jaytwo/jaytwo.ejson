@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using Newtonsoft.Json.Linq;
-using Sodium;
 
 namespace jaytwo.ejson.Internal
 {
@@ -23,17 +22,17 @@ namespace jaytwo.ejson.Internal
 
         public static string EncryptJson(this IJObjectCrypto jObjectCrypto, string json, string publicKey)
         {
-            var publicKeyBytes = Utilities.HexToBinary(publicKey);
+            var publicKeyBytes = HexConverter.HexToBinary(publicKey);
             return jObjectCrypto.EncryptJson(json, publicKeyBytes);
         }
         public static string Encrypt(this IJObjectCrypto jObjectCrypto, Stream stream, string publicKey)
         {
-            var publicKeyBytes = Utilities.HexToBinary(publicKey);
+            var publicKeyBytes = HexConverter.HexToBinary(publicKey);
             return jObjectCrypto.Encrypt(stream, publicKeyBytes);
         }
         public static void Encrypt(this IJObjectCrypto jObjectCrypto, JObject jObject, string publicKey)
         {
-            var publicKeyBytes = Utilities.HexToBinary(publicKey);
+            var publicKeyBytes = HexConverter.HexToBinary(publicKey);
             jObjectCrypto.Encrypt(jObject, publicKeyBytes);
         }
 
@@ -53,17 +52,17 @@ namespace jaytwo.ejson.Internal
 
         public static string DecryptJson(this IJObjectCrypto jObjectCrypto, string json, string privateKey)
         {
-            var privateKeyBytes = Utilities.HexToBinary(privateKey);
+            var privateKeyBytes = HexConverter.HexToBinary(privateKey);
             return jObjectCrypto.DecryptJson(json, privateKeyBytes);
         }
         public static string Decrypt(this IJObjectCrypto jObjectCrypto, Stream stream, string privateKey)
         {
-            var privateKeyBytes = Utilities.HexToBinary(privateKey);
+            var privateKeyBytes = HexConverter.HexToBinary(privateKey);
             return jObjectCrypto.Decrypt(stream, privateKeyBytes);
         }
         public static void Decrypt(this IJObjectCrypto jObjectCrypto, JObject jObject, string privateKey)
         {
-            var privateKeyBytes = Utilities.HexToBinary(privateKey);
+            var privateKeyBytes = HexConverter.HexToBinary(privateKey);
             jObjectCrypto.Decrypt(jObject, privateKeyBytes);
         }
     }

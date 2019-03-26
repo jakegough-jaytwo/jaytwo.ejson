@@ -105,11 +105,16 @@ namespace jaytwo.ejson.Configuration.AspNet
             }
             else
             {
-                _connectionStrings.Add(new ConnectionStringSettings()
+                lock(_connectionStrings)
                 {
-                    Name = name,
-                    ConnectionString = connectionString,
-                });
+                    _connectionStrings.ToggleReadOnly(false);
+                    _connectionStrings.Add(new ConnectionStringSettings()
+                    {
+                        Name = name,
+                        ConnectionString = connectionString,
+                    });
+                    _connectionStrings.ToggleReadOnly(true);
+                }
             }
         }
     }

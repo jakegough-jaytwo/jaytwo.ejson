@@ -3,7 +3,6 @@ using System.Text;
 using jaytwo.ejson.Internal;
 using jaytwo.ejson.Internal.Sodium;
 using Moq;
-using Sodium;
 using Xunit;
 
 namespace jaytwo.ejson.Tests.Internal
@@ -33,16 +32,14 @@ namespace jaytwo.ejson.Tests.Internal
             // arrange
             var plain = "hello";
             var crypto = new BoxedMessageCrypto();
+            var keyPair = new PublicKeyBoxWrapper().GenerateKeyPair();
 
-            using (var keyPair = new PublicKeyBoxWrapper().GenerateKeyPair())
-            {
-                // act
-                var encrypted = crypto.Encrypt(plain, keyPair.PublicKey);
-                var decrypted = crypto.Decrypt(encrypted, keyPair.PrivateKey);
+            // act
+            var encrypted = crypto.Encrypt(plain, keyPair.PublicKey);
+            var decrypted = crypto.Decrypt(encrypted, keyPair.SecretKey);
 
-                // assert
-                Assert.Equal(decrypted, plain);
-            }
+            // assert
+            Assert.Equal(decrypted, plain);
         }
     }
 }

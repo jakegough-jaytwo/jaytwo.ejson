@@ -1,4 +1,4 @@
-﻿using Sodium;
+﻿using nacl;
 
 namespace jaytwo.ejson.Internal.Sodium
 {

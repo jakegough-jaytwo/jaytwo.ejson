@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Script.Serialization;
 
 namespace jaytwo.ejson.Configuration.AspNet
 {
@@ -32,7 +33,7 @@ namespace jaytwo.ejson.Configuration.AspNet
             {
                 var keyProvider = GetKeyProvider();
                 var json = _ejsonCrypto.GetDecryptedJsonFromFile(filename, keyProvider);
-                var dictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
+                var dictionary = new JavaScriptSerializer().DeserializeObject(json)  as Dictionary<string, object>;
                 _configurationLoader.Load(dictionary, true, true);
             }
             else

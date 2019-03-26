@@ -56,7 +56,7 @@ namespace Microsoft.Extensions.Configuration
             return AddEJsonFile(builder, provider: null, path: path, optional: optional, configSection: configSection, loggerFactory: loggerFactory);
         }
 
-#if NETSTANDARD2_0
+#if NETSTANDARD2
         /// <summary>
         /// Adds a EJSON configuration source to <paramref name="builder"/>.
         /// </summary>
@@ -99,7 +99,7 @@ namespace Microsoft.Extensions.Configuration
         public static IConfigurationBuilder AddEJsonFile(this IConfigurationBuilder builder, Action<EJsonConfigurationSource> configureSource) => builder.Add(configureSource);
 #endif
 
-#if NETSTANDARD1_6
+#if NETSTANDARD1
         /// <summary>
         /// Adds a EJSON configuration source to <paramref name="builder"/>.
         /// </summary>

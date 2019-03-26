@@ -1,5 +1,5 @@
 FROM mcr.microsoft.com/dotnet/core/sdk:2.1 AS dotnet-sdk
-FROM mcr.microsoft.com/dotnet/core/runtime:2.1 AS dotnet-runtime
+FROM mcr.microsoft.com/dotnet/core/runtime:2.1-alpine AS dotnet-runtime
 
 FROM dotnet-sdk AS base
 RUN apt-get update \
@@ -17,7 +17,9 @@ COPY src/jaytwo.ejson.Configuration/jaytwo.ejson.Configuration.csproj src/jaytwo
 COPY test/jaytwo.ejson.Tests/jaytwo.ejson.Tests.csproj test/jaytwo.ejson.Tests/jaytwo.ejson.Tests.csproj
 COPY test/jaytwo.ejson.CommandLine.Tests/jaytwo.ejson.CommandLine.Tests.csproj test/jaytwo.ejson.CommandLine.Tests/jaytwo.ejson.CommandLine.Tests.csproj
 COPY examples/jaytwo.ejson.example.AspNetCore2_1/jaytwo.ejson.example.AspNetCore2_1.csproj examples/jaytwo.ejson.example.AspNetCore2_1/jaytwo.ejson.example.AspNetCore2_1.csproj
-RUN dotnet restore . --verbosity minimal
+COPY examples/jaytwo.ejson.example.AspNetCore1_1/jaytwo.ejson.example.AspNetCore1_1.csproj examples/jaytwo.ejson.example.AspNetCore1_1/jaytwo.ejson.example.AspNetCore1_1.csproj
+COPY examples/jaytwo.ejson.example.AspNet4_6_1/jaytwo.ejson.example.AspNet4_6_1.csproj examples/jaytwo.ejson.example.AspNet4_6_1/jaytwo.ejson.example.AspNet4_6_1.csproj
+#RUN dotnet restore . --verbosity minimal
 
 
 FROM restored AS builder
