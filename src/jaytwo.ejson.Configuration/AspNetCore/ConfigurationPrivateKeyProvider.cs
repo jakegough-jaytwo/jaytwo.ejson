@@ -1,7 +1,8 @@
-﻿using System;
+﻿#if NETSTANDARD
+using System;
 using Microsoft.Extensions.Configuration;
 
-namespace jaytwo.ejson.AspNetCore.Configuration
+namespace jaytwo.ejson.Configuration.AspNetCore
 {
     public class ConfigurationPrivateKeyProvider : IPrivateKeyProvider
     {
@@ -35,3 +36,4 @@ namespace jaytwo.ejson.AspNetCore.Configuration
         }
     }
 }
+#endif

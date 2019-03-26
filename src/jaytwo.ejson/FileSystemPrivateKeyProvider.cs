@@ -100,6 +100,7 @@ namespace jaytwo.ejson
                     new { keyDir = DefaultUnixKeyDir, platform = "unix" },
                 };
 
+#if NETSTANDARD
                 return keyDirs
                     .Where(x => !string.IsNullOrWhiteSpace(x.keyDir))
                     .OrderByDescending(x => x.platform == "windows" && RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
@@ -107,6 +108,16 @@ namespace jaytwo.ejson
                     .ThenByDescending(x => x.platform == "unix")
                     .Select(x => x.keyDir)
                     .ToList();
+#endif
+
+#if NETFRAMEWORK
+                return keyDirs
+                    .Where(x => !string.IsNullOrWhiteSpace(x.keyDir))
+                    .OrderByDescending(x => x.platform == "windows")
+                    .ThenByDescending(x => x.platform == "unix")
+                    .Select(x => x.keyDir)
+                    .ToList();
+#endif
             }
         }
 

@@ -1,16 +1,11 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿#if NETSTANDARD
+using System;
+using System.IO;
 using Microsoft.Extensions.Configuration.Json;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
 
-namespace jaytwo.ejson.AspNetCore.Configuration
+namespace jaytwo.ejson.Configuration.AspNetCore
 {
-    // see: https://github.com/aspnet/Extensions/blob/master/src/Configuration/Config.Json/src/JsonConfigurationProvider.cs
     public class EJsonConfigurationProvider : JsonConfigurationProvider
     {
         private readonly IEJsonCrypto _eJsonCrypto;
@@ -46,20 +41,20 @@ namespace jaytwo.ejson.AspNetCore.Configuration
 
                     base.Load(memoryStream);
                 }
+
+                logger?.LogInformation(default(EventId), "EJSON loaded from {path}", path);
             }
             catch (Exception exception)
             {
                 logger?.LogError(default(EventId), exception, "Could not load EJSON from {path}", path);
             }
-
-            logger?.LogInformation(default(EventId), "EJSON loaded from {path}", path);
         }
 
         private static IPrivateKeyProvider GetKeyProvider(EJsonConfigurationSource source)
         {
             var result = new DefaultPrivateKeyProvider();
 
-            var configSection = (source)?.PrivateKeyConfigSection;
+            var configSection = (source)?.ConfigSection;
             if (configSection != null)
             {
                 result.Add(new ConfigurationPrivateKeyProvider(configSection));
@@ -68,5 +63,5 @@ namespace jaytwo.ejson.AspNetCore.Configuration
             return result;
         }
     }
-
 }
+#endif

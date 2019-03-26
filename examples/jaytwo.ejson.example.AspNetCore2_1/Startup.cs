@@ -30,10 +30,18 @@ namespace jaytwo.ejson.example.AspNetCore2_1
              *   d) log success and failure with the optional `ILoggerFactory`
              */
 
-            _configuration = new ConfigurationBuilder()
-                .AddConfiguration(configurationBeforeSecrets)
-                .AddEjsonAppSecrets(env, loggerFactory)
-                .Build();
+            try
+            {
+                _configuration = new ConfigurationBuilder()
+                    .AddConfiguration(configurationBeforeSecrets)
+                    .AddEjsonAppSecrets(env, loggerFactory, configurationBeforeSecrets.GetSection("ejson"))
+                    .Build();
+            }
+            catch (Exception exception)
+            {
+                loggerFactory.CreateLogger(GetType())?.LogError(default(EventId), exception, "Could not load secrets!");
+                _configuration = configurationBeforeSecrets;
+            }
         }
 
         public void ConfigureServices(IServiceCollection services)

@@ -13,7 +13,7 @@ WORKDIR /src
 COPY jaytwo.ejson.sln .
 COPY src/jaytwo.ejson/jaytwo.ejson.csproj src/jaytwo.ejson/jaytwo.ejson.csproj
 COPY src/jaytwo.ejson.CommandLine/jaytwo.ejson.CommandLine.csproj src/jaytwo.ejson.CommandLine/jaytwo.ejson.CommandLine.csproj
-COPY src/jaytwo.ejson.AspNetCore.Configuration/jaytwo.ejson.AspNetCore.Configuration.csproj src/jaytwo.ejson.AspNetCore.Configuration/jaytwo.ejson.AspNetCore.Configuration.csproj
+COPY src/jaytwo.ejson.Configuration/jaytwo.ejson.Configuration.csproj src/jaytwo.ejson.Configuration/jaytwo.ejson.Configuration.csproj
 COPY test/jaytwo.ejson.Tests/jaytwo.ejson.Tests.csproj test/jaytwo.ejson.Tests/jaytwo.ejson.Tests.csproj
 COPY test/jaytwo.ejson.CommandLine.Tests/jaytwo.ejson.CommandLine.Tests.csproj test/jaytwo.ejson.CommandLine.Tests/jaytwo.ejson.CommandLine.Tests.csproj
 COPY examples/jaytwo.ejson.example.AspNetCore2_1/jaytwo.ejson.example.AspNetCore2_1.csproj examples/jaytwo.ejson.example.AspNetCore2_1/jaytwo.ejson.example.AspNetCore2_1.csproj

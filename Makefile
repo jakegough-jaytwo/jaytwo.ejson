@@ -15,9 +15,11 @@ restore:
 build: restore
 	dotnet build ./src/jaytwo.ejson
 	dotnet build ./src/jaytwo.ejson.CommandLine
-	dotnet build ./src/jaytwo.ejson.AspNetCore.Configuration
+	dotnet build ./src/jaytwo.ejson.Configuration
 	dotnet build ./test/jaytwo.ejson.Tests
 	dotnet build ./examples/jaytwo.ejson.example.AspNetCore2_1
+	dotnet build ./examples/jaytwo.ejson.example.AspNetCore1_1
+	dotnet build ./examples/jaytwo.ejson.example.AspNet4_6
 
 run:
 	dotnet run --project ./src/jaytwo.ejson.CommandLine -- --help
@@ -39,7 +41,7 @@ pack:
 		dotnet pack -o ../../out/packed ${PACK_ARG}
 	cd ./src/jaytwo.ejson.CommandLine; \
 		dotnet pack -o ../../out/packed ${PACK_ARG}
-	cd ./src/jaytwo.ejson.AspNetCore.Configuration; \
+	cd ./src/jaytwo.ejson.Configuration; \
 		dotnet pack -o ../../out/packed ${PACK_ARG}
 
 pack-beta: PACK_ARG=--version-suffix beta-${TIMESTAMP}
