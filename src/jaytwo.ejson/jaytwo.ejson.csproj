@@ -39,9 +39,5 @@
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
     <PackageReference Include="Newtonsoft.Json" Version="9.*" />
   </ItemGroup>
-  
-  <ItemGroup>
-    <PackageReference Include="nacl.net" Version="0.1.2" />
-  </ItemGroup>
 
 </Project>

@@ -223,13 +223,24 @@ that's missing for decryption.
 
 ### Encryption Library
 
-Encryption is hard.  Like any good developer, I'm leveraging a library that does it for me.  Encryption is done by 
-[libsodium-core](https://github.com/tabrath/libsodium-core/).
+Encryption is hard.  Like any good developer, I tried to use a library that does it for me.  But as they say... 
+the juice wasn't worth the squeeze.  I tried using [libsodium-core](https://github.com/tabrath/libsodium-core/),
+which is a .NET Core version of [libsodium-net](https://github.com/adamcaudill/libsodium-net), which  is a 
+wrapper around [libsodium](https://github.com/jedisct1/libsodium) for .NET, which is a portable, cross-compilable, 
+installable, packageable fork of [NaCl](http://nacl.cr.yp.to/) (Networking and Cryptography library), which is a 
+an established library that does all the hard things.
 
-* `libsodium-core` is a .NET Core version of [libsodium-net](https://github.com/adamcaudill/libsodium-net)
-* `libsodium-net` is a wrapper around [libsodium](https://github.com/jedisct1/libsodium) for .NET
-* `libsodium` is a portable, cross-compilable, installable, packageable fork of [NaCl](http://nacl.cr.yp.to/)
-* `NaCl` (Networking and Cryptography library) is a great library that does all the hard things
+__HOWEVER__, this all boiled down to needing the C `libsodium` dll (or equivalent) for your platform available to the 
+runtime, and doesn't really fit the .NET Core lifestyle.  I experimented with [BouncyCastle](http://www.bouncycastle.org/csharp/) ([github](https://github.com/bcgit/bc-csharp)) 
+but my brain started to hurt trying to connect the dots of how they abstracted the NaCl functionality into their
+library.  I pulled down [nacl.net](https://github.com/somdoron/NaCl.net) and built it for .NET Core, but it wasn't my 
+project and I was hoping to find something a little less bespoke.  I even tried to rewrite 
+[the go implementations](https://go.googlesource.com/crypto/+/master/salsa20/salsa20.go) into C#, but that got tedious. 
+I eventually found some widely-used C# `TweetNaCl`(https://tweetnacl.cr.yp.to/) 
+code that was pasted [all over github](https://github.com/search?q=tweetnacl+extension%3Acs&type=Code), and I brought 
+it into the repo ([I wish I knew who to give credit to](src/jaytwo.ejson/Internal/Crypto/readme.md)).
+
+Bingo-bango, now I'm handling PubLic Box encryption 100% managed with zero package dependencies.
 
 ---
 
