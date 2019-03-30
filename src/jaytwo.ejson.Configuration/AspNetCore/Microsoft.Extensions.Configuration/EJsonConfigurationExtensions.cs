@@ -23,7 +23,7 @@ namespace Microsoft.Extensions.Configuration
         {
             if (!builder.Properties.TryGetValue("FileProvider", out object handler))
             {
-                builder.SetBasePath(Directory.GetCurrentDirectory());
+                builder.SetBasePath(env.ContentRootPath);
             }
 
             builder.AddEJsonFile("appsecrets.json",

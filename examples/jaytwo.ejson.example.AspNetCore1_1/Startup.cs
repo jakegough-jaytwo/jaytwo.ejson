@@ -18,7 +18,7 @@ namespace jaytwo.ejson.example.AspNetCore1_1
         public Startup(IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             var configurationBeforeSecrets = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
+                .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json")
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .Build();

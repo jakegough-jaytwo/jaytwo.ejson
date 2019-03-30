@@ -239,7 +239,7 @@ I eventually found some widely-used C# [`TweetNaCl`](https://tweetnacl.cr.yp.to/
 code that was pasted [all over github](https://github.com/search?q=tweetnacl+extension%3Acs&type=Code), and I brought 
 it into the repo ([I wish I knew who to give credit to](src/jaytwo.ejson/Internal/Crypto/readme.md)).
 
-Bingo-bango, now I'm handling PubLic Box encryption 100% managed with zero package dependencies.
+Bingo-bango, now I'm handling PublicBox encryption 100% managed with zero package dependencies.
 
 ---
 

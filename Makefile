@@ -16,10 +16,12 @@ build: restore
 	dotnet build ./src/jaytwo.ejson
 	dotnet build ./src/jaytwo.ejson.CommandLine
 	dotnet build ./src/jaytwo.ejson.Configuration
-	dotnet build ./test/jaytwo.ejson.Tests
 	dotnet build ./examples/jaytwo.ejson.example.AspNetCore2_1
 	dotnet build ./examples/jaytwo.ejson.example.AspNetCore1_1
 	dotnet build ./examples/jaytwo.ejson.example.AspNet4_6_1
+	dotnet build ./test/jaytwo.ejson.Tests
+	dotnet build ./test/jaytwo.ejson.example.AspNetCore1_1.IngegrationTests
+	dotnet build ./test/jaytwo.ejson.example.AspNetCore2_1.IngegrationTests
 
 run:
 	dotnet run --project ./src/jaytwo.ejson.CommandLine -- --help
@@ -32,7 +34,13 @@ unit-test:
 	dotnet test ./test/jaytwo.ejson.CommandLine.Tests \
 		--results-directory ../../out/testResults \
 		--logger "trx;LogFileName=jaytwo.ejson.CommandLine.Tests.trx"
-
+	dotnet test ./test/jaytwo.ejson.example.AspNetCore1_1.IngegrationTests \
+		--results-directory ../../out/testResults \
+		--logger "trx;LogFileName=jaytwo.ejson.example.AspNetCore2_1.IngegrationTests.trx"
+	dotnet test ./test/jaytwo.ejson.example.AspNetCore2_1.IngegrationTests \
+		--results-directory ../../out/testResults \
+		--logger "trx;LogFileName=jaytwo.ejson.example.AspNetCore1_1.IngegrationTests.trx"
+    
 test: unit-test
     
 pack:
