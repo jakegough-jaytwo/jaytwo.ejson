@@ -68,8 +68,8 @@ docker-run: docker-build
 	docker cp ${DOCKER_BUILDER_CONTAINER}:build/out ./; \
 	docker rm ${DOCKER_BUILDER_CONTAINER}
 
-docker-test: DOCKER_RUN_MAKE_TARGETS=test
-docker-test: docker-run
+docker-unit-test: DOCKER_RUN_MAKE_TARGETS=unit-test
+docker-unit-test: docker-run
 
 docker-pack: DOCKER_RUN_MAKE_TARGETS=pack
 docker-pack: docker-run
