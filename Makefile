@@ -59,7 +59,7 @@ docker-build:
 	docker build -t ${DOCKER_BUILDER_TAG} . --target builder
 
 DOCKER_RUN_MAKE_TARGETS?=pack
-docker-run: docker-build
+docker-run:
 	# A; B    # Run A and then B, regardless of success of A
 	# A && B  # Run B if and only if A succeeded
 	# A || B  # Run B if and only if A failed
@@ -68,14 +68,20 @@ docker-run: docker-build
 	docker cp ${DOCKER_BUILDER_CONTAINER}:build/out ./; \
 	docker rm ${DOCKER_BUILDER_CONTAINER}
 
-docker-unit-test: DOCKER_RUN_MAKE_TARGETS=unit-test
-docker-unit-test: docker-run
+docker-unit-test-only: DOCKER_RUN_MAKE_TARGETS=unit-test
+docker-unit-test-only: docker-run
 
-docker-pack: DOCKER_RUN_MAKE_TARGETS=pack
-docker-pack: docker-run
+docker-unit-test: docker-build docker-unit-test-only
 
-docker-pack-beta: DOCKER_RUN_MAKE_TARGETS=pack-beta
-docker-pack-beta: docker-run
+docker-pack-only: DOCKER_RUN_MAKE_TARGETS=pack
+docker-pack-only: docker-run
+
+docker-pack: docker-build docker-pack-only
+
+docker-pack-beta-only: DOCKER_RUN_MAKE_TARGETS=pack-beta
+docker-pack-beta-only: docker-run
+
+docker-pack-beta: docker-build docker-pack-beta-only
 
 docker-clean:
 	docker rm ${DOCKER_BUILDER_CONTAINER} || echo "Container not found: ${DOCKER_BUILDER_CONTAINER}"

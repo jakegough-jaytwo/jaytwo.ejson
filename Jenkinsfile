@@ -14,13 +14,13 @@ helper.run('linux && make && docker', {
             sh "make docker-build"
         }
         stage ('Unit Test') {
-            sh "make docker-unit-test"
+            sh "make docker-unit-test-only"
         }
         stage ('Pack') {
             if(env.BRANCH_NAME == 'master'){
-                sh "make docker-pack"
+                sh "make docker-pack-only"
             } else {
-                sh "make docker-pack-beta"
+                sh "make docker-pack-beta-only"
             }
         }
         if(env.BRANCH_NAME == 'master' || env.BRANCH_NAME == 'develop'){
