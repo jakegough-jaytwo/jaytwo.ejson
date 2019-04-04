@@ -12,17 +12,16 @@ ENV FrameworkPathOverride /usr/lib/mono/4.5/
 
 
 FROM base AS builder
-WORKDIR /src
-COPY . /src
+WORKDIR /build
+COPY . /build
 RUN make restore
 
 
 FROM builder AS publisher
-WORKDIR /src
 RUN make publish
 
 
 FROM dotnet-runtime AS app
 WORKDIR /app
-COPY --from=publisher /src/out/published /app
+COPY --from=publisher /build/out/published /app
 ENTRYPOINT ["dotnet", "jaytwo.ejson.CommandLine.dll"]

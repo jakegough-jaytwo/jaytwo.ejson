@@ -60,15 +60,18 @@ docker-build:
 
 DOCKER_RUN_MAKE_TARGETS?=pack
 docker-run: docker-build
-	docker run --name ${DOCKER_BUILDER_CONTAINER} ${DOCKER_BUILDER_TAG} make ${DOCKER_RUN_MAKE_TARGETS} \
-	|| docker cp ${DOCKER_BUILDER_CONTAINER}:src/out ./ \
-	|| docker rm ${DOCKER_BUILDER_CONTAINER}
+	# A; B    # Run A and then B, regardless of success of A
+	# A && B  # Run B if and only if A succeeded
+	# A || B  # Run B if and only if A failed
+	# A &     # Run A in background.
+	docker run --name ${DOCKER_BUILDER_CONTAINER} ${DOCKER_BUILDER_TAG} make ${DOCKER_RUN_MAKE_TARGETS}; \
+	docker cp ${DOCKER_BUILDER_CONTAINER}:build/out ./; \
 	docker rm ${DOCKER_BUILDER_CONTAINER}
 
 docker-test: DOCKER_RUN_MAKE_TARGETS=test
 docker-test: docker-run
 
-docker-pack: DOCKER_RUN_MAKE_TARGETS=pack-beta
+docker-pack: DOCKER_RUN_MAKE_TARGETS=pack
 docker-pack: docker-run
 
 docker-pack-beta: DOCKER_RUN_MAKE_TARGETS=pack-beta
