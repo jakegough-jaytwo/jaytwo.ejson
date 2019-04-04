@@ -2,6 +2,7 @@
 using System;
 using System.IO;
 using System.Text;
+using System.Text.RegularExpressions;
 using Xunit;
 
 namespace jaytwo.ejson.CommandLine.Tests
@@ -75,7 +76,7 @@ namespace jaytwo.ejson.CommandLine.Tests
             var decryptedJson = RunProgram($"--keydir={tempFolder}", "decrypt", encryptedFilePath);
 
             // assert
-            Assert.Equal(expectedDecryptedJson, decryptedJson);
+            Assert.Equal(Regex.Replace(expectedDecryptedJson, "\\s", ""), Regex.Replace(decryptedJson, "\\s", ""));
 
             // cleanup
             File.Delete(encryptedFilePath);
@@ -131,7 +132,7 @@ namespace jaytwo.ejson.CommandLine.Tests
             Assert.Contains("_public_key", decryptedJson);
             Assert.Contains("hello", decryptedJson);
             Assert.Contains("world", decryptedJson);
-            Assert.Equal(expectedDecryptedJson, decryptedJson);
+            Assert.Equal(Regex.Replace(expectedDecryptedJson, "\\s", ""), Regex.Replace(decryptedJson, "\\s", ""));
 
             // cleanup
             File.Delete(encryptedFilePath);

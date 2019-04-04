@@ -5,27 +5,16 @@ FROM dotnet-sdk AS base
 RUN apt-get update \
   && apt-get install -y --no-install-recommends \
     make \
+    mono-devel \
+  && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
+ENV FrameworkPathOverride /usr/lib/mono/4.5/
 
 
-FROM base AS restored
-WORKDIR /src
-COPY jaytwo.ejson.sln .
-COPY src/jaytwo.ejson/jaytwo.ejson.csproj src/jaytwo.ejson/jaytwo.ejson.csproj
-COPY src/jaytwo.ejson.CommandLine/jaytwo.ejson.CommandLine.csproj src/jaytwo.ejson.CommandLine/jaytwo.ejson.CommandLine.csproj
-COPY src/jaytwo.ejson.Configuration/jaytwo.ejson.Configuration.csproj src/jaytwo.ejson.Configuration/jaytwo.ejson.Configuration.csproj
-COPY test/jaytwo.ejson.Tests/jaytwo.ejson.Tests.csproj test/jaytwo.ejson.Tests/jaytwo.ejson.Tests.csproj
-COPY test/jaytwo.ejson.CommandLine.Tests/jaytwo.ejson.CommandLine.Tests.csproj test/jaytwo.ejson.CommandLine.Tests/jaytwo.ejson.CommandLine.Tests.csproj
-COPY examples/jaytwo.ejson.example.AspNetCore2_1/jaytwo.ejson.example.AspNetCore2_1.csproj examples/jaytwo.ejson.example.AspNetCore2_1/jaytwo.ejson.example.AspNetCore2_1.csproj
-COPY examples/jaytwo.ejson.example.AspNetCore1_1/jaytwo.ejson.example.AspNetCore1_1.csproj examples/jaytwo.ejson.example.AspNetCore1_1/jaytwo.ejson.example.AspNetCore1_1.csproj
-COPY examples/jaytwo.ejson.example.AspNet4_6_1/jaytwo.ejson.example.AspNet4_6_1.csproj examples/jaytwo.ejson.example.AspNet4_6_1/jaytwo.ejson.example.AspNet4_6_1.csproj
-#RUN dotnet restore . --verbosity minimal
-
-
-FROM restored AS builder
+FROM base AS builder
 WORKDIR /src
 COPY . /src
-RUN make clean build
+RUN make restore
 
 
 FROM builder AS publisher

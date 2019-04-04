@@ -1,4 +1,5 @@
 TIMESTAMP?=$(shell date +'%Y%m%d%H%M%S')
+DOCKER_TAG?=jaytwo_ejson
 
 default: clean build
 
@@ -13,15 +14,7 @@ restore:
 	dotnet restore . --verbosity minimal
 
 build: restore
-	dotnet build ./src/jaytwo.ejson
-	dotnet build ./src/jaytwo.ejson.CommandLine
-	dotnet build ./src/jaytwo.ejson.Configuration
-	dotnet build ./examples/jaytwo.ejson.example.AspNetCore2_1
-	dotnet build ./examples/jaytwo.ejson.example.AspNetCore1_1
-	dotnet build ./examples/jaytwo.ejson.example.AspNet4_6_1
-	dotnet build ./test/jaytwo.ejson.Tests
-	dotnet build ./test/jaytwo.ejson.example.AspNetCore1_1.IngegrationTests
-	dotnet build ./test/jaytwo.ejson.example.AspNetCore2_1.IngegrationTests
+	dotnet build ./jaytwo.ejson.sln ${BUILD_ARG}
 
 run:
 	dotnet run --project ./src/jaytwo.ejson.CommandLine -- --help
@@ -34,9 +27,9 @@ unit-test:
 	dotnet test ./test/jaytwo.ejson.CommandLine.Tests \
 		--results-directory ../../out/testResults \
 		--logger "trx;LogFileName=jaytwo.ejson.CommandLine.Tests.trx"
-	dotnet test ./test/jaytwo.ejson.example.AspNetCore1_1.IngegrationTests \
-		--results-directory ../../out/testResults \
-		--logger "trx;LogFileName=jaytwo.ejson.example.AspNetCore2_1.IngegrationTests.trx"
+#	dotnet test ./test/jaytwo.ejson.example.AspNetCore1_1.IngegrationTests \
+#		--results-directory ../../out/testResults \
+#		--logger "trx;LogFileName=jaytwo.ejson.example.AspNetCore2_1.IngegrationTests.trx"
 	dotnet test ./test/jaytwo.ejson.example.AspNetCore2_1.IngegrationTests \
 		--results-directory ../../out/testResults \
 		--logger "trx;LogFileName=jaytwo.ejson.example.AspNetCore1_1.IngegrationTests.trx"
@@ -60,4 +53,27 @@ publish:
 	cd ./src/jaytwo.ejson.CommandLine; \
 		dotnet publish -o ../../out/published
 
-docker-test: clean
+DOCKER_BUILDER_TAG?=${DOCKER_TAG}__builder
+DOCKER_BUILDER_CONTAINER?=${DOCKER_BUILDER_TAG}
+docker-build:
+	docker build -t ${DOCKER_BUILDER_TAG} . --target builder
+
+DOCKER_RUN_MAKE_TARGETS?=pack
+docker-run: docker-build
+	docker run --name ${DOCKER_BUILDER_CONTAINER} ${DOCKER_BUILDER_TAG} make ${DOCKER_RUN_MAKE_TARGETS} \
+	|| docker cp ${DOCKER_BUILDER_CONTAINER}:src/out ./ \
+	|| docker rm ${DOCKER_BUILDER_CONTAINER}
+	docker rm ${DOCKER_BUILDER_CONTAINER}
+
+docker-test: DOCKER_RUN_MAKE_TARGETS=test
+docker-test: docker-run
+
+docker-pack: DOCKER_RUN_MAKE_TARGETS=pack-beta
+docker-pack: docker-run
+
+docker-pack-beta: DOCKER_RUN_MAKE_TARGETS=pack-beta
+docker-pack-beta: docker-run
+
+docker-clean:
+	docker rm ${DOCKER_BUILDER_CONTAINER} || echo "Container not found: ${DOCKER_BUILDER_CONTAINER}"
+	docker rmi ${DOCKER_BUILDER_TAG} || echo "Image not found: ${DOCKER_BUILDER_TAG}"
