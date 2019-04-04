@@ -16,9 +16,6 @@ helper.run('linux && make && docker', {
         stage ('Unit Test') {
             sh "make docker-unit-test"
         }
-        stage ('Integration Test') {
-            sh "make docker-integration-test"
-        }
         stage ('Pack') {
             if(env.BRANCH_NAME == 'master'){
                 sh "make docker-pack"
