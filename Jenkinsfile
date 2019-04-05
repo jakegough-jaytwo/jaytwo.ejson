@@ -8,9 +8,8 @@ helper.xunitTestResultsPattern = 'out/testResults/**/*.trx'
 
 helper.run('linux && make && docker', {
     def timestamp = helper.getTimestamp()
-    def safeBuildName = env.BUILD_DISPLAY_NAME.replaceAll('/[^A-Za-z0-9 ]/', '_')
-    def safeBranchName = env.BRANCH_NAME.replaceAll('/[^A-Za-z0-9 ]/', '_')
-    def dockerLocalTag = "jenkins__${safeBuildName}_${safeBranchName}__${timestamp}"
+    def safeJobName = env.JOB_NAME.replaceAll('/[^A-Za-z0-9 ]/', '_')
+    def dockerLocalTag = "jenkins__${safeJobName}__${timestamp}"
     
     withEnv(["DOCKER_TAG=${dockerLocalTag}", "TIMESTAMP=${timestamp}"]) {
         try {
