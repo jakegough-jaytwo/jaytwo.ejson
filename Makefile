@@ -14,7 +14,7 @@ restore:
 	dotnet restore . --verbosity minimal
 
 build: restore
-	dotnet build ./jaytwo.ejson.sln ${BUILD_ARG}
+	dotnet build ./jaytwo.ejson.sln
 
 run:
 	dotnet run --project ./src/jaytwo.ejson.CommandLine -- --help
@@ -58,15 +58,12 @@ DOCKER_BUILDER_CONTAINER?=${DOCKER_BUILDER_TAG}
 docker-build:
 	docker build -t ${DOCKER_BUILDER_TAG} . --target builder
 
-DOCKER_RUN_MAKE_TARGETS?=pack
+DOCKER_RUN_MAKE_TARGETS?=run
 docker-run:
-	# A; B    # Run A and then B, regardless of success of A
-	# A && B  # Run B if and only if A succeeded
-	# A || B  # Run B if and only if A failed
-	# A &     # Run A in background.
-	docker run --name ${DOCKER_BUILDER_CONTAINER} ${DOCKER_BUILDER_TAG} make ${DOCKER_RUN_MAKE_TARGETS}; \
-	docker cp ${DOCKER_BUILDER_CONTAINER}:build/out ./; \
-	docker rm ${DOCKER_BUILDER_CONTAINER}
+	docker run --name ${DOCKER_BUILDER_CONTAINER} ${DOCKER_BUILDER_TAG} make ${DOCKER_RUN_MAKE_TARGETS} || EXIT_CODE=$$? ; \
+	docker cp ${DOCKER_BUILDER_CONTAINER}:build/out ./ || echo "Container not found: ${DOCKER_BUILDER_CONTAINER}"; \
+	docker rm ${DOCKER_BUILDER_CONTAINER} || echo "Container not found: ${DOCKER_BUILDER_CONTAINER}"}; \
+	exit $$EXIT_CODE
 
 docker-unit-test-only: DOCKER_RUN_MAKE_TARGETS=unit-test
 docker-unit-test-only: docker-run
