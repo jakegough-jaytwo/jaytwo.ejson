@@ -33,7 +33,7 @@ _(*Note: I have implemented additional private key providers. The .NET CLI versi
 with the original, but it also includes the ability to read keys from environment variables.  The 
 ASP.NET Core configuration can load encryption keys from any `IConfiguration` ConfigSection.)_
 
-This has been implemented as a [.NET Core Tool](https://docs.microsoft.com/en-us/dotnet/core/tools/global-tools), 
+This has been implemented as a [.NET Core Global Tool](https://docs.microsoft.com/en-us/dotnet/core/tools/global-tools), 
 as well as a configuration library for use in ASP.NET Core.
 
 ## For ASP.NET Configuration
@@ -45,7 +45,7 @@ as well as a configuration library for use in ASP.NET Core.
 Add the NuGet package in your ASP.NET Core web project:
 
 ```
-PM> Install-Package jaytwo.ejson.AspNetCore.Configuration
+PM> Install-Package jaytwo.ejson.Configuration
 ```
 
 ### Usage
@@ -101,7 +101,7 @@ public class Startup
 
 ### Installation
 
-To install as a [.NET Core Tool](https://docs.microsoft.com/en-us/dotnet/core/tools/global-tools) (requires [NET Core 2.1 SDK](https://dotnet.microsoft.com/download/dotnet-core/2.1))
+To install as a [.NET Core Global Tool](https://docs.microsoft.com/en-us/dotnet/core/tools/global-tools) (requires [NET Core 2.1 SDK](https://dotnet.microsoft.com/download/dotnet-core/2.1))
 
 ```
 dotnet tool install -g jaytwo.ejson.CommandLine
