@@ -4,20 +4,20 @@ DOCKER_TAG?=jaytwo_ejson
 default: clean build
 
 clean: 
-	find . -name bin | xargs rm -vrf
-	find . -name obj | xargs rm -vrf
-	find . -name publish | xargs rm -vrf
-	find . -name project.lock.json | xargs rm -vrf
-	find . -name out | xargs rm -vrf
+	find . -name bin | xargs --no-run-if-empty rm -vrf
+	find . -name obj | xargs --no-run-if-empty rm -vrf
+	rm -rf out
 
 restore:
 	dotnet restore . --verbosity minimal
 
 build: restore
-	dotnet build ./jaytwo.ejson.sln ${BUILD_ARG}
+	dotnet build ./jaytwo.ejson.sln
 
 run:
 	dotnet run --project ./src/jaytwo.ejson.CommandLine -- --help
+
+test: unit-test
 
 unit-test:
 	rm -rf out/testResults
@@ -33,8 +33,6 @@ unit-test:
 	dotnet test ./test/jaytwo.ejson.example.AspNetCore2_1.IngegrationTests \
 		--results-directory ../../out/testResults \
 		--logger "trx;LogFileName=jaytwo.ejson.example.AspNetCore1_1.IngegrationTests.trx"
-    
-test: unit-test
     
 pack:
 	rm -rf out/packed
@@ -56,17 +54,14 @@ publish:
 DOCKER_BUILDER_TAG?=${DOCKER_TAG}__builder
 DOCKER_BUILDER_CONTAINER?=${DOCKER_BUILDER_TAG}
 docker-build:
-	docker build -t ${DOCKER_BUILDER_TAG} . --target builder
+	docker build -t ${DOCKER_BUILDER_TAG} . --target builder --pull
 
-DOCKER_RUN_MAKE_TARGETS?=pack
+DOCKER_RUN_MAKE_TARGETS?=run
 docker-run:
-	# A; B    # Run A and then B, regardless of success of A
-	# A && B  # Run B if and only if A succeeded
-	# A || B  # Run B if and only if A failed
-	# A &     # Run A in background.
-	docker run --name ${DOCKER_BUILDER_CONTAINER} ${DOCKER_BUILDER_TAG} make ${DOCKER_RUN_MAKE_TARGETS}; \
-	docker cp ${DOCKER_BUILDER_CONTAINER}:build/out ./; \
-	docker rm ${DOCKER_BUILDER_CONTAINER}
+	docker run --name ${DOCKER_BUILDER_CONTAINER} ${DOCKER_BUILDER_TAG} make ${DOCKER_RUN_MAKE_TARGETS} || EXIT_CODE=$$? ; \
+	docker cp ${DOCKER_BUILDER_CONTAINER}:build/out ./ || echo "Container not found: ${DOCKER_BUILDER_CONTAINER}"; \
+	docker rm ${DOCKER_BUILDER_CONTAINER} || echo "Container not found: ${DOCKER_BUILDER_CONTAINER}"}; \
+	exit $$EXIT_CODE
 
 docker-unit-test-only: DOCKER_RUN_MAKE_TARGETS=unit-test
 docker-unit-test-only: docker-run
