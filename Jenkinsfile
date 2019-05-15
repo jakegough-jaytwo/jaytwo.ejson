@@ -5,6 +5,9 @@ helper.gitHubRepository = 'jaytwo.ejson'
 helper.gitHubTokenCredentialsId = 'github-personal-access-token-jakegough'
 helper.nuGetCredentialsId = 'nuget-org-jaytwo'
 helper.xunitTestResultsPattern = 'out/testResults/**/*.trx'
+helper.coberturaCoverageReport = 'out/coverage/Cobertura.xml';
+helper.htmlCoverageReportDir = 'out/coverage/html';
+
 
 helper.run('linux && make && docker', {
     def timestamp = helper.getTimestamp()
@@ -18,15 +21,6 @@ helper.run('linux && make && docker', {
             }
             stage ('Unit Test') {
                 sh "make docker-unit-test-only"
-                cobertura coberturaReportFile: 'out/coverage/Cobertura.xml'
-                publishHTML target: [
-                  allowMissing: false,
-                  alwaysLinkToLastBuild: false,
-                  keepAll: true,
-                  reportDir: 'out/coverage/html',
-                  reportFiles: 'index.htm',
-                  reportName: "Test Coverage"
-                ]
             }
             stage ('Pack') {
                 if(env.BRANCH_NAME == 'master'){
