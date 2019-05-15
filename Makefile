@@ -3,6 +3,9 @@ DOCKER_TAG?=jaytwo_ejson
 
 default: clean build
 
+deps:
+	dotnet tool install -g dotnet-reportgenerator-globaltool
+
 clean: 
 	find . -name bin | xargs --no-run-if-empty rm -vrf
 	find . -name obj | xargs --no-run-if-empty rm -vrf
@@ -21,18 +24,24 @@ test: unit-test
 
 unit-test:
 	rm -rf out/testResults
-	dotnet test ./test/jaytwo.ejson.Tests \
+	rm -rf out/coverage
+	cd ./test/jaytwo.ejson.Tests; \
+		dotnet test \
 		--results-directory ../../out/testResults \
 		--logger "trx;LogFileName=jaytwo.ejson.Tests.trx"
-	dotnet test ./test/jaytwo.ejson.CommandLine.Tests \
+	cd ./test/jaytwo.ejson.CommandLine.Tests; \
+		dotnet test \
 		--results-directory ../../out/testResults \
 		--logger "trx;LogFileName=jaytwo.ejson.CommandLine.Tests.trx"
-#	dotnet test ./test/jaytwo.ejson.example.AspNetCore1_1.IngegrationTests \
-#		--results-directory ../../out/testResults \
-#		--logger "trx;LogFileName=jaytwo.ejson.example.AspNetCore2_1.IngegrationTests.trx"
-	dotnet test ./test/jaytwo.ejson.example.AspNetCore2_1.IngegrationTests \
+	cd ./test/jaytwo.ejson.example.AspNetCore2_1.IngegrationTests; \
+		dotnet test \
 		--results-directory ../../out/testResults \
-		--logger "trx;LogFileName=jaytwo.ejson.example.AspNetCore1_1.IngegrationTests.trx"
+		--logger "trx;LogFileName=jaytwo.ejson.example.AspNetCore1_1.IngegrationTests.trx";
+	reportgenerator \
+		-reports:./out/coverage/**/coverage.cobertura.xml \
+		-targetdir:./out/coverage/ \
+		-reportTypes:Cobertura
+#	TODO: ./test/jaytwo.ejson.example.AspNetCore1_1.IngegrationTests
     
 pack:
 	rm -rf out/packed

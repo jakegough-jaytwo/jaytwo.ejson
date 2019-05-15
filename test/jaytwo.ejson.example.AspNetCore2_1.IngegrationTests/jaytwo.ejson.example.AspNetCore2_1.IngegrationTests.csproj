@@ -5,17 +5,27 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.*" />
+    <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="2.1.*" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="2.1.*" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
     <PackageReference Include="Moq" Version="4.10.1" />
     <PackageReference Include="xunit" Version="2.4.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
+    <PackageReference Include="coverlet.msbuild" Version="2.6.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\examples\jaytwo.ejson.example.AspNetCore2_1\jaytwo.ejson.example.AspNetCore2_1.csproj" />
   </ItemGroup>
+  
+  <PropertyGroup>
+    <UseSourceLink>true</UseSourceLink>
+    <CollectCoverage>true</CollectCoverage>
+    <Exclude>[xunit.*]*</Exclude>
+    <ExcludeByAttribute>Obsolete,GeneratedCodeAttribute,CompilerGeneratedAttribute</ExcludeByAttribute>
+    <CoverletOutputFormat>cobertura</CoverletOutputFormat>
+    <CoverletOutput>$(MSBuildThisFileDirectory)../../out/coverage/$(AssemblyName)/$(TargetFramework)/</CoverletOutput>
+  </PropertyGroup>
 
 </Project>
