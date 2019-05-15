@@ -18,7 +18,7 @@ helper.run('linux && make && docker', {
             }
             stage ('Unit Test') {
                 sh "make docker-unit-test-only"
-                cobertura coberturaReportFile: 'out/Cobertura.xml'
+                cobertura coberturaReportFile: 'out/coverage/Cobertura.xml'
             }
             stage ('Pack') {
                 if(env.BRANCH_NAME == 'master'){
