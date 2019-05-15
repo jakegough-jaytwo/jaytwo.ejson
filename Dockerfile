@@ -9,12 +9,13 @@ RUN apt-get update \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 ENV FrameworkPathOverride /usr/lib/mono/4.5/
+ENV PATH="${PATH}:/root/.dotnet/tools"
 
 
 FROM base AS builder
 WORKDIR /build
 COPY . /build
-RUN make restore
+RUN make deps restore
 
 
 FROM builder AS publisher
