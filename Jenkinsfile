@@ -19,6 +19,14 @@ helper.run('linux && make && docker', {
             stage ('Unit Test') {
                 sh "make docker-unit-test-only"
                 cobertura coberturaReportFile: 'out/coverage/Cobertura.xml'
+                publishHTML target: [
+                  allowMissing: false,
+                  alwaysLinkToLastBuild: false,
+                  keepAll: true,
+                  reportDir: 'out/coverage/html',
+                  reportFiles: 'index.htm',
+                  reportName: "Test Coverage"
+                ]
             }
             stage ('Pack') {
                 if(env.BRANCH_NAME == 'master'){

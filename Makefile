@@ -41,6 +41,10 @@ unit-test:
 		-reports:./out/coverage/**/coverage.cobertura.xml \
 		-targetdir:./out/coverage/ \
 		-reportTypes:Cobertura
+	reportgenerator \
+		-reports:./out/coverage/**/coverage.cobertura.xml \
+		-targetdir:./out/coverage/html \
+		-reportTypes:Html
 #	TODO: ./test/jaytwo.ejson.example.AspNetCore1_1.IngegrationTests
     
 pack:
