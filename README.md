@@ -2,9 +2,9 @@
 
 <p align="center">
   <a href="https://jenkins.jaytwo.com/job/jaytwo.ejson/job/master/" alt="Build Status (master)">
-    <img src="https://jenkins.jaytwo.com/buildStatus/icon?job=jaytwo.ejson%2Fmaster?subject=build%20(master)" /></a>
+    <img src="https://jenkins.jaytwo.com/buildStatus/icon?job=jaytwo.ejson%2Fmaster&subject=build%20(master)" /></a>
   <a href="https://jenkins.jaytwo.com/job/jaytwo.ejson/job/develop/" alt="Build Status (develop)">
-    <img src="https://jenkins.jaytwo.com/buildStatus/icon?job=jaytwo.ejson%2Fdevelop?subject=build%20(develop)" /></a>
+    <img src="https://jenkins.jaytwo.com/buildStatus/icon?job=jaytwo.ejson%2Fdevelop&subject=build%20(develop)" /></a>
 </p>
 
 ## A .NET Core version of [Shoppify's ejson](https://github.com/Shopify/ejson)
