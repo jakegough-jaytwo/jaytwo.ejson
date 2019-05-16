@@ -3,12 +3,13 @@ DOCKER_TAG?=jaytwo_ejson
 
 default: clean build
 
+deps:
+	dotnet tool install -g dotnet-reportgenerator-globaltool
+
 clean: 
-	find . -name bin | xargs rm -vrf
-	find . -name obj | xargs rm -vrf
-	find . -name publish | xargs rm -vrf
-	find . -name project.lock.json | xargs rm -vrf
-	find . -name out | xargs rm -vrf
+	find . -name bin | xargs --no-run-if-empty rm -vrf
+	find . -name obj | xargs --no-run-if-empty rm -vrf
+	rm -rf out
 
 restore:
 	dotnet restore . --verbosity minimal
@@ -19,22 +20,32 @@ build: restore
 run:
 	dotnet run --project ./src/jaytwo.ejson.CommandLine -- --help
 
+test: unit-test
+
 unit-test:
 	rm -rf out/testResults
-	dotnet test ./test/jaytwo.ejson.Tests \
+	rm -rf out/coverage
+	cd ./test/jaytwo.ejson.Tests; \
+		dotnet test \
 		--results-directory ../../out/testResults \
 		--logger "trx;LogFileName=jaytwo.ejson.Tests.trx"
-	dotnet test ./test/jaytwo.ejson.CommandLine.Tests \
+	cd ./test/jaytwo.ejson.CommandLine.Tests; \
+		dotnet test \
 		--results-directory ../../out/testResults \
 		--logger "trx;LogFileName=jaytwo.ejson.CommandLine.Tests.trx"
-#	dotnet test ./test/jaytwo.ejson.example.AspNetCore1_1.IngegrationTests \
-#		--results-directory ../../out/testResults \
-#		--logger "trx;LogFileName=jaytwo.ejson.example.AspNetCore2_1.IngegrationTests.trx"
-	dotnet test ./test/jaytwo.ejson.example.AspNetCore2_1.IngegrationTests \
+	cd ./test/jaytwo.ejson.example.AspNetCore2_1.IngegrationTests; \
+		dotnet test \
 		--results-directory ../../out/testResults \
-		--logger "trx;LogFileName=jaytwo.ejson.example.AspNetCore1_1.IngegrationTests.trx"
-    
-test: unit-test
+		--logger "trx;LogFileName=jaytwo.ejson.example.AspNetCore1_1.IngegrationTests.trx";
+	reportgenerator \
+		-reports:./out/coverage/**/coverage.cobertura.xml \
+		-targetdir:./out/coverage/ \
+		-reportTypes:Cobertura
+	reportgenerator \
+		-reports:./out/coverage/**/coverage.cobertura.xml \
+		-targetdir:./out/coverage/html \
+		-reportTypes:Html
+#	TODO: ./test/jaytwo.ejson.example.AspNetCore1_1.IngegrationTests
     
 pack:
 	rm -rf out/packed
@@ -56,7 +67,7 @@ publish:
 DOCKER_BUILDER_TAG?=${DOCKER_TAG}__builder
 DOCKER_BUILDER_CONTAINER?=${DOCKER_BUILDER_TAG}
 docker-build:
-	docker build -t ${DOCKER_BUILDER_TAG} . --target builder
+	docker build -t ${DOCKER_BUILDER_TAG} . --target builder --pull
 
 DOCKER_RUN_MAKE_TARGETS?=run
 docker-run:
