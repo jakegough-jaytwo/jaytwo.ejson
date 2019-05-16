@@ -1,9 +1,14 @@
 # jaytwo.ejson
 
-[![NuGet version (jaytwo.ejson)](https://img.shields.io/nuget/v/jaytwo.ejson.svg?style=flat-square)](https://www.nuget.org/packages/jaytwo.ejson/)
-
-Master: ![Build Status (master)](https://jenkins.jaytwo.com/buildStatus/icon?job=jaytwo.ejson%2Fmaster)
-Develop: ![Build Status (master)](https://jenkins.jaytwo.com/buildStatus/icon?job=jaytwo.ejson%2Fdevelop)
+<p align="center">
+  Master: 
+  <a href="https://jenkins.jaytwo.com/job/jaytwo.ejson/job/master/" alt="Build Status (master)">
+    <img src="https://jenkins.jaytwo.com/buildStatus/icon?job=jaytwo.ejson%2Fmaster" /></a>
+  |
+  Develop:
+  <a href="https://jenkins.jaytwo.com/job/jaytwo.ejson/job/develop/" alt="Build Status (develop)">
+    <img src="https://jenkins.jaytwo.com/buildStatus/icon?job=jaytwo.ejson%2Fdevelop" /></a>
+</p>
 
 ## A .NET Core version of [Shoppify's ejson](https://github.com/Shopify/ejson)
 
