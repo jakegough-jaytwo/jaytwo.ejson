@@ -11,10 +11,20 @@
     <PackageReference Include="Moq" Version="4.10.1" />
     <PackageReference Include="xunit" Version="2.4.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
+    <PackageReference Include="coverlet.msbuild" Version="2.6.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\examples\jaytwo.ejson.example.AspNetCore1_1\jaytwo.ejson.example.AspNetCore1_1.csproj" />
   </ItemGroup>
 
+  <PropertyGroup>
+    <UseSourceLink>true</UseSourceLink>
+    <CollectCoverage>true</CollectCoverage>
+    <Exclude>[xunit.*]*</Exclude>
+    <ExcludeByAttribute>Obsolete,GeneratedCodeAttribute,CompilerGeneratedAttribute</ExcludeByAttribute>
+    <CoverletOutputFormat>cobertura</CoverletOutputFormat>
+    <CoverletOutput>$(MSBuildThisFileDirectory)../../out/coverage/$(AssemblyName)/$(TargetFramework)/</CoverletOutput>
+  </PropertyGroup>
+  
 </Project>
