@@ -1,5 +1,14 @@
 ﻿// https://github.com/search?q=tweetnacl+filename%3Acurve25519.cs&type=Code
 
+#pragma warning disable SA1310 // Field names must not contain underscore
+#pragma warning disable SA1401 // Fields must be private
+#pragma warning disable SA1407 // Arithmetic expressions must declare precedence
+#pragma warning disable SA1202 // Elements must be ordered by access
+#pragma warning disable IDE1006 // Naming Styles
+#pragma warning disable SA1204 // Static elements must appear before instance elements
+#pragma warning disable SA1307 // Accessible fields must begin with upper-case letter
+#pragma warning disable SA1119 // Statement must not use unnecessary parenthesis
+
 namespace jaytwo.ejson.Crypto.TweetNaCl
 {
     internal class curve25519
@@ -466,3 +475,12 @@ namespace jaytwo.ejson.Crypto.TweetNaCl
         }
     }
 }
+
+#pragma warning restore SA1401 // Fields must be private
+#pragma warning restore SA1310 // Field names must not contain underscore
+#pragma warning restore SA1407 // Arithmetic expressions must declare precedence
+#pragma warning restore IDE1006 // Naming Styles
+#pragma warning restore SA1202 // Elements must be ordered by access
+#pragma warning restore SA1307 // Accessible fields must begin with upper-case letter
+#pragma warning restore SA1204 // Static elements must appear before instance elements
+#pragma warning restore SA1119 // Statement must not use unnecessary parenthesis

@@ -1,4 +1,4 @@
-﻿#if NETSTANDARD
+#if NETSTANDARD
 using System;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Json;
@@ -8,12 +8,13 @@ namespace jaytwo.ejson.Configuration.AspNetCore
 {
     public class EJsonConfigurationSource : JsonConfigurationSource
     {
-        public ILoggerFactory LoggerFactory { get; set; }
-        public IConfigurationSection ConfigSection { get; set; }
-
         public EJsonConfigurationSource()
         {
         }
+
+        public ILoggerFactory LoggerFactory { get; set; }
+
+        public IConfigurationSection ConfigSection { get; set; }
 
         public override IConfigurationProvider Build(IConfigurationBuilder builder)
         {

@@ -1,5 +1,8 @@
 ﻿// https://github.com/search?q=tweetnacl+filename%3Acurve25519xsalsa20poly1305.cs&type=Code
 
+#pragma warning disable SA1303 // Const field names must begin with upper-case letter
+#pragma warning disable SA1310 // Field names must not contain underscore
+
 using System;
 
 namespace jaytwo.ejson.Crypto.TweetNaCl
@@ -85,5 +88,7 @@ namespace jaytwo.ejson.Crypto.TweetNaCl
             return crypto_box_open(mp, cp, (long)c.Length, np, pkp, skp);
         }
     }
-
 }
+
+#pragma warning restore SA1310 // Field names must not contain underscore
+#pragma warning restore SA1303 // Const field names must begin with upper-case letter

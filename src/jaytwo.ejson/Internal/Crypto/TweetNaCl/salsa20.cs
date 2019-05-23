@@ -1,5 +1,10 @@
 ﻿// https://github.com/search?q=tweetnacl+filename%3Asalsa20.cs&type=Code
 
+#pragma warning disable SA1310 // Field names must not contain underscore
+#pragma warning disable SA1307 // Accessible fields must begin with upper-case letter
+#pragma warning disable SA1304 // Non-private readonly fields must begin with upper-case letter
+#pragma warning disable SA1401 // Fields must be private
+
 namespace jaytwo.ejson.Crypto.TweetNaCl
 {
     internal class salsa20
@@ -240,5 +245,9 @@ namespace jaytwo.ejson.Crypto.TweetNaCl
             x[offset + 3] = (byte)u;
         }
     }
-
 }
+
+#pragma warning restore SA1401 // Fields must be private
+#pragma warning restore SA1304 // Non-private readonly fields must begin with upper-case letter
+#pragma warning restore SA1307 // Accessible fields must begin with upper-case letter
+#pragma warning restore SA1310 // Field names must not contain underscore

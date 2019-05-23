@@ -1,10 +1,10 @@
-﻿using jaytwo.ejson.Internal;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using jaytwo.ejson.Internal;
 
 namespace jaytwo.ejson
 {
@@ -60,25 +60,14 @@ namespace jaytwo.ejson
             return false;
         }
 
-        private bool TryGetPrivateKey(string keyDir, string publicKey, out string privateKey)
+        internal static string GetDefaultWindowsKeyDir()
         {
-            try
-            {
-                var publicKeyPath = Path.Combine(keyDir, publicKey);
+            return GetUserDefaultKeyDir("USERPROFILE");
+        }
 
-                // 64 hex characters, 32-bits... 100 is just a sanity check in case it has a byte order mark something else nuts
-                if (_fileSystem.FileExists(publicKeyPath) && _fileSystem.GetFileLength(publicKeyPath) < 100)
-                {
-                    privateKey = _fileSystem.ReadAllText(publicKeyPath);
-                    return !string.IsNullOrWhiteSpace(privateKey);
-                }
-            }
-            catch
-            {
-            }
-
-            privateKey = null;
-            return false;
+        internal static string GetDefaultOSXKeyDir()
+        {
+            return GetUserDefaultKeyDir("HOME");
         }
 
         internal string GetDefaultKeyDir()
@@ -94,7 +83,8 @@ namespace jaytwo.ejson
             }
             else
             {
-                var keyDirs = new[] {
+                var keyDirs = new[]
+                {
                     new { keyDir = GetDefaultWindowsKeyDir(), platform = "windows" },
                     new { keyDir = GetDefaultOSXKeyDir(), platform = "osx" },
                     new { keyDir = DefaultUnixKeyDir, platform = "unix" },
@@ -121,16 +111,6 @@ namespace jaytwo.ejson
             }
         }
 
-        internal static string GetDefaultWindowsKeyDir()
-        {
-            return GetUserDefaultKeyDir("USERPROFILE");
-        }
-
-        internal static string GetDefaultOSXKeyDir()
-        {
-            return GetUserDefaultKeyDir("HOME");
-        }
-
         private static string GetUserDefaultKeyDir(string envVarName)
         {
             var userProfile = Environment.GetEnvironmentVariable(envVarName);
@@ -140,6 +120,27 @@ namespace jaytwo.ejson
             }
 
             return null;
+        }
+
+        private bool TryGetPrivateKey(string keyDir, string publicKey, out string privateKey)
+        {
+            try
+            {
+                var publicKeyPath = Path.Combine(keyDir, publicKey);
+
+                // 64 hex characters, 32-bits... 100 is just a sanity check in case it has a byte order mark something else nuts
+                if (_fileSystem.FileExists(publicKeyPath) && _fileSystem.GetFileLength(publicKeyPath) < 100)
+                {
+                    privateKey = _fileSystem.ReadAllText(publicKeyPath);
+                    return !string.IsNullOrWhiteSpace(privateKey);
+                }
+            }
+            catch
+            {
+            }
+
+            privateKey = null;
+            return false;
         }
     }
 }

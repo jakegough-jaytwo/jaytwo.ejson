@@ -1,12 +1,14 @@
-﻿#if NETSTANDARD
+#if NETSTANDARD
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using jaytwo.ejson.Configuration.AspNetCore;
-using Microsoft.Extensions.FileProviders;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
-using System.IO;
+
+#pragma warning disable SA1615 // Element return value must be documented
 
 namespace Microsoft.Extensions.Configuration
 {
@@ -26,13 +28,15 @@ namespace Microsoft.Extensions.Configuration
                 builder.SetBasePath(env.ContentRootPath);
             }
 
-            builder.AddEJsonFile("appsecrets.json",
+            builder.AddEJsonFile(
+                "appsecrets.json",
                 configSection: configSection,
                 loggerFactory: loggerFactory);
 
             if (env != null)
             {
-                builder.AddEJsonFile($"appsecrets.{env.EnvironmentName}.json",
+                builder.AddEJsonFile(
+                    $"appsecrets.{env.EnvironmentName}.json",
                     optional: true,
                     configSection: configSection,
                     loggerFactory: loggerFactory);
@@ -45,7 +49,7 @@ namespace Microsoft.Extensions.Configuration
         /// Adds the EJSON configuration provider at <paramref name="path"/> to <paramref name="builder"/>.
         /// </summary>
         /// <param name="builder">The <see cref="IConfigurationBuilder"/> to add to.</param>
-        /// <param name="path">Path relative to the base path stored in 
+        /// <param name="path">Path relative to the base path stored in
         /// <see cref="IConfigurationBuilder.Properties"/> of <paramref name="builder"/>.</param>
         /// <param name="optional">Whether the file is optional.</param>
         /// <param name="configSection">Configuration section containing private keys.</param>
@@ -62,7 +66,7 @@ namespace Microsoft.Extensions.Configuration
         /// </summary>
         /// <param name="builder">The <see cref="IConfigurationBuilder"/> to add to.</param>
         /// <param name="provider">The <see cref="IFileProvider"/> to use to access the file.</param>
-        /// <param name="path">Path relative to the base path stored in 
+        /// <param name="path">Path relative to the base path stored in
         /// <see cref="IConfigurationBuilder.Properties"/> of <paramref name="builder"/>.</param>
         /// <param name="optional">Whether the file is optional.</param>
         /// <param name="configSection">(Optional) Configuration section containing private keys.</param>
@@ -74,6 +78,7 @@ namespace Microsoft.Extensions.Configuration
             {
                 throw new ArgumentNullException(nameof(builder));
             }
+
             if (string.IsNullOrEmpty(path))
             {
                 throw new ArgumentException("File path must be a non-empty string.", nameof(path));
@@ -105,7 +110,7 @@ namespace Microsoft.Extensions.Configuration
         /// </summary>
         /// <param name="builder">The <see cref="IConfigurationBuilder"/> to add to.</param>
         /// <param name="provider">The <see cref="IFileProvider"/> to use to access the file.</param>
-        /// <param name="path">Path relative to the base path stored in 
+        /// <param name="path">Path relative to the base path stored in
         /// <see cref="IConfigurationBuilder.Properties"/> of <paramref name="builder"/>.</param>
         /// <param name="optional">Whether the file is optional.</param>
         /// <param name="configSection">Configuration section containing private keys.</param>
@@ -117,6 +122,7 @@ namespace Microsoft.Extensions.Configuration
             {
                 throw new ArgumentNullException(nameof(builder));
             }
+
             if (string.IsNullOrEmpty(path))
             {
                 throw new ArgumentException("File path must be a non-empty string.", nameof(path));
@@ -140,3 +146,5 @@ namespace Microsoft.Extensions.Configuration
     }
 }
 #endif
+
+#pragma warning restore SA1615 // Element return value must be documented

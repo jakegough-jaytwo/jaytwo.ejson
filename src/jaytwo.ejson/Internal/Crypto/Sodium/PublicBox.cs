@@ -1,4 +1,6 @@
 ﻿// https://github.com/search?q=tweetnacl+filename%3APublicBox.cs&type=Code
+#pragma warning disable SA1313 // Parameter names must begin with lower-case letter
+#pragma warning disable SA1306 // Field names must begin with lower-case letter
 
 using System;
 using jaytwo.ejson.Crypto.TweetNaCl;
@@ -50,5 +52,7 @@ namespace jaytwo.ejson.Crypto.Sodium
             return output;
         }
     }
-
 }
+
+#pragma warning restore SA1313 // Parameter names must begin with lower-case letter
+#pragma warning restore SA1306 // Field names must begin with lower-case letter

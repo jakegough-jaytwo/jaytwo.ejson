@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -20,7 +20,7 @@ namespace jaytwo.ejson.example.AspNetCore2_1
         {
             // In Startup.cs instead of Program.cs so we can have an injected ILoggerFactory that's already configured
 
-            /* 
+            /*
              * AddEjsonAppSecrets() is an opinionated extension method to setup EJSON app secrets.  It will:
              *   a) call `builder.SetBasePath(Directory.GetCurrentDirectory())` if not previously set
              *   b) configure files `appsecrets.json` and `appsecrets.{env}.json` for EJSON secrets

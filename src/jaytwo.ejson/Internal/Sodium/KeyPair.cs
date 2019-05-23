@@ -1,10 +1,7 @@
-﻿namespace jaytwo.ejson.Crypto
+namespace jaytwo.ejson.Crypto
 {
     internal class KeyPair
     {
-        public byte[] PublicKey { get; set; }
-        public byte[] SecretKey { get; set; }
-
         public KeyPair()
         {
         }
@@ -14,5 +11,9 @@
             PublicKey = publicKey;
             SecretKey = secretKey;
         }
+
+        public byte[] PublicKey { get; set; }
+
+        public byte[] SecretKey { get; set; }
     }
 }

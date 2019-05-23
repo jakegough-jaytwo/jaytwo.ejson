@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text;
 using jaytwo.ejson.Exceptions;
 using jaytwo.ejson.Internal;
@@ -56,7 +56,6 @@ namespace jaytwo.ejson
 
         public string GenerateKeyPair()
         {
-
             var keyPair = _publicKeyBox.GenerateKeyPair();
             var publicKeyHex = HexConverter.BinaryToHex(keyPair.PublicKey);
             var privateKeyHex = HexConverter.BinaryToHex(keyPair.SecretKey);
@@ -89,6 +88,19 @@ namespace jaytwo.ejson
             return output.ToString().Trim();
         }
 
+        private static string GetPublicKey(JObject jObject)
+        {
+            if (jObject.TryGetValue("_public_key", out JToken value))
+            {
+                if (value.Type == JTokenType.String)
+                {
+                    return value.Value<string>();
+                }
+            }
+
+            throw new MissingPublicKeyException();
+        }
+
         private JObject GetDecryptJObject(string json, IPrivateKeyProvider keyProvider)
         {
             var jObject = JObjectTools.GetJObject(json);
@@ -111,19 +123,6 @@ namespace jaytwo.ejson
             _jObjectCrypto.Encrypt(jObject, publicKey);
 
             return jObject;
-        }
-
-        private static string GetPublicKey(JObject jObject)
-        {
-            if (jObject.TryGetValue("_public_key", out JToken value))
-            {
-                if (value.Type == JTokenType.String)
-                {
-                    return value.Value<string>();
-                }
-            }
-
-            throw new MissingPublicKeyException();
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿#if NETFRAMEWORK
+#if NETFRAMEWORK
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -46,11 +46,11 @@ namespace jaytwo.ejson.Configuration.AspNet
             }
         }
 
-        private static IDictionary<string, object> GetSection(IDictionary<string,object> values, string key)
+        private static IDictionary<string, object> GetSection(IDictionary<string, object> values, string key)
         {
             if (values.TryGetValue(key, out object appSettingsValues))
             {
-                return appSettingsValues as IDictionary<string, object>;                
+                return appSettingsValues as IDictionary<string, object>;
             }
 
             return null;
@@ -105,7 +105,7 @@ namespace jaytwo.ejson.Configuration.AspNet
             }
             else
             {
-                lock(_connectionStrings)
+                lock (_connectionStrings)
                 {
                     _connectionStrings.ToggleReadOnly(false);
                     _connectionStrings.Add(new ConnectionStringSettings()

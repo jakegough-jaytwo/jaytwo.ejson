@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -9,6 +9,18 @@ namespace jaytwo.ejson.Tests.Internal.Sodium
 {
     public class PublicBoxTests
     {
+        public static byte[] GetRandomBytes(int length)
+        {
+            var result = new byte[length];
+            var random = RandomNumberGenerator.Create();
+            random.GetBytes(result);
+            return result;
+        }
+
+        public static byte[] HexToBinary(string hex) => Enumerable.Range(0, hex.Length).Where(x => x % 2 == 0).Select(x => Convert.ToByte(hex.Substring(x, 2), 16)).ToArray();
+
+        public static string BinaryToHex(byte[] bytes) => BitConverter.ToString(bytes).Replace("-", string.Empty).ToLowerInvariant();
+
         [Fact]
         public void Decrypt()
         {
@@ -40,7 +52,7 @@ namespace jaytwo.ejson.Tests.Internal.Sodium
         {
             // arrange
             var publicBox = new PublicKeyBoxWrapper();
-            var keyPair = publicBox.GenerateKeyPair(); 
+            var keyPair = publicBox.GenerateKeyPair();
             var ephemeralKeypair = publicBox.GenerateKeyPair();
             var nonce = publicBox.GenerateNonce();
 
@@ -53,16 +65,5 @@ namespace jaytwo.ejson.Tests.Internal.Sodium
             // assert
             Assert.Equal(expectedDecryptedMessage, decryptedMessage);
         }
-
-        public static byte[] GetRandomBytes(int length)
-        {
-            var result = new byte[length];
-            var random = RandomNumberGenerator.Create();
-            random.GetBytes(result);
-            return result;
-        }
-
-        public static byte[] HexToBinary(string hex) => Enumerable.Range(0, hex.Length).Where(x => x % 2 == 0).Select(x => Convert.ToByte(hex.Substring(x, 2), 16)).ToArray();
-        public static string BinaryToHex(byte[] bytes) => BitConverter.ToString(bytes).Replace("-", "").ToLowerInvariant();
     }
 }

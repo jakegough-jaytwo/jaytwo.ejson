@@ -1,8 +1,8 @@
-﻿using Moq;
 using System;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
+using Moq;
 using Xunit;
 
 namespace jaytwo.ejson.CommandLine.Tests
@@ -52,7 +52,7 @@ namespace jaytwo.ejson.CommandLine.Tests
             var privateKeyPath = Path.Combine(tempFolder, publicKey);
             var encryptedFilePath = Path.Combine(tempFolder, $"{nameof(decrypt)}.ejson");
 
-            var encryptedJson = 
+            var encryptedJson =
 @"{
   ""_public_key"": ""749d901c694890ee91b7d2c366c2d59dc7b6b8a386d0a5be73431e622b91d117"",
   ""passwords"": {
@@ -60,7 +60,7 @@ namespace jaytwo.ejson.CommandLine.Tests
   }
 }";
 
-            var expectedDecryptedJson = 
+            var expectedDecryptedJson =
 @"{
   ""_public_key"": ""749d901c694890ee91b7d2c366c2d59dc7b6b8a386d0a5be73431e622b91d117"",
   ""passwords"": {
@@ -76,7 +76,7 @@ namespace jaytwo.ejson.CommandLine.Tests
             var decryptedJson = RunProgram($"--keydir={tempFolder}", "decrypt", encryptedFilePath);
 
             // assert
-            Assert.Equal(Regex.Replace(expectedDecryptedJson, "\\s", ""), Regex.Replace(decryptedJson, "\\s", ""));
+            Assert.Equal(Regex.Replace(expectedDecryptedJson, "\\s", string.Empty), Regex.Replace(decryptedJson, "\\s", string.Empty));
 
             // cleanup
             File.Delete(encryptedFilePath);
@@ -132,7 +132,7 @@ namespace jaytwo.ejson.CommandLine.Tests
             Assert.Contains("_public_key", decryptedJson);
             Assert.Contains("hello", decryptedJson);
             Assert.Contains("world", decryptedJson);
-            Assert.Equal(Regex.Replace(expectedDecryptedJson, "\\s", ""), Regex.Replace(decryptedJson, "\\s", ""));
+            Assert.Equal(Regex.Replace(expectedDecryptedJson, "\\s", string.Empty), Regex.Replace(decryptedJson, "\\s", string.Empty));
 
             // cleanup
             File.Delete(encryptedFilePath);

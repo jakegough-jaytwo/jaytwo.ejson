@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Runtime.InteropServices;
 using Microsoft.Extensions.CommandLineUtils;
@@ -7,12 +7,9 @@ namespace jaytwo.ejson.CommandLine
 {
     public class Program
     {
-        public static int Main(string[] args) => new Program().Run(args);
-
         private readonly IEJsonCrypto _eJsonCrypto;
         private readonly TextWriter _standardOut;
         private readonly TextWriter _standardError;
-
 
         public Program()
             : this(null, null, null)
@@ -25,6 +22,8 @@ namespace jaytwo.ejson.CommandLine
             _standardOut = standardOut ?? Console.Out;
             _standardError = standardError ?? Console.Error;
         }
+
+        public static int Main(string[] args) => new Program().Run(args);
 
         public int Run(params string[] args)
         {

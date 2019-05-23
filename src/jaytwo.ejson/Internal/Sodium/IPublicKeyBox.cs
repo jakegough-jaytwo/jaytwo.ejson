@@ -1,4 +1,4 @@
-﻿using jaytwo.ejson.Crypto;
+using jaytwo.ejson.Crypto;
 
 namespace jaytwo.ejson.Internal.Sodium
 {
@@ -6,8 +6,11 @@ namespace jaytwo.ejson.Internal.Sodium
     internal interface IPublicKeyBox
     {
         byte[] Create(byte[] message, byte[] nonce, byte[] secretKey, byte[] publicKey);
+
         KeyPair GenerateKeyPair();
+
         byte[] GenerateNonce();
+
         byte[] Open(byte[] cipherText, byte[] nonce, byte[] secretKey, byte[] publicKey);
     }
 }

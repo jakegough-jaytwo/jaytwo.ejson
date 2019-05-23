@@ -28,6 +28,7 @@ namespace Microsoft.Extensions.Configuration
             {
                 throw new ArgumentNullException(nameof(configurationBuilder));
             }
+
             if (config == null)
             {
                 throw new ArgumentNullException(nameof(config));
