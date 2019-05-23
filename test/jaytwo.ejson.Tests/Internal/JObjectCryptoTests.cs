@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using jaytwo.ejson.Internal;
 using Xunit;
@@ -35,7 +35,6 @@ namespace jaytwo.ejson.Tests.Internal
             // assert
             Assert.Equal(JObjectTools.NormalizeJson(expectedDecrypted), JObjectTools.NormalizeJson(actualDecrypted));
         }
-
 
         [Fact]
         public void Encrypt_and_Decrypt_works_as_expected()

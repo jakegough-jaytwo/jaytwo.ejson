@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,6 +13,6 @@ namespace jaytwo.ejson
             .Select(x => Convert.ToByte(hex.Substring(x, 2), 16))
             .ToArray();
 
-        public static string BinaryToHex(byte[] bytes) => BitConverter.ToString(bytes).Replace("-", "").ToLowerInvariant();
+        public static string BinaryToHex(byte[] bytes) => BitConverter.ToString(bytes).Replace("-", string.Empty).ToLowerInvariant();
     }
 }

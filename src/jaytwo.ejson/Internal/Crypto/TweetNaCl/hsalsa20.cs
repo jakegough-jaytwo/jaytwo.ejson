@@ -137,5 +137,4 @@ namespace jaytwo.ejson.Crypto.TweetNaCl
             x[offset + 3] = (byte)u;
         }
     }
-
 }

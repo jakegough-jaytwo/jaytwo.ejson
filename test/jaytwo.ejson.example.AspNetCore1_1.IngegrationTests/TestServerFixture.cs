@@ -6,14 +6,11 @@ using jaytwo.SolutionResolution;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 
-
 namespace jaytwo.ejson.example.AspNetCore1_1.IngegrationTests
 {
     public class TestServerFixture
     {
         private readonly TestServer _server;
-        
-        public HttpClient CreateClient() => _server.CreateClient();
 
         public TestServerFixture()
         {
@@ -28,6 +25,8 @@ namespace jaytwo.ejson.example.AspNetCore1_1.IngegrationTests
                 .UseContentRoot(contentRoot)
                 .UseStartup<Startup>());
         }
+
+        public HttpClient CreateClient() => _server.CreateClient();
 
         public void Dispose()
         {

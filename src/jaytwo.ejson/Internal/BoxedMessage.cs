@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -7,26 +7,34 @@ namespace jaytwo.ejson.Internal
 {
     internal class BoxedMessage
     {
+        /*
+       from: https://shopify.github.io/ejson/ejson.5.html
+
+       SECRET SCHEMA
+       When a value is encrypted, it will be replaced by a relatively long string of the form "EJ[V:P:N:M]". The fields are:
+
+       V (decimal-as-string int)
+       Schema Version, hard-coded to "1" for now
+
+       P (base64-encoded 32-byte array)
+       Public key of an ephemeral keypair used to encrypt this key
+
+       N (base64-encoded 24-byte array)
+       Nonce used to encrypt this key
+
+       M (base64-encoded variable-length array)
+       Raw ciphertext
+        */
+
         private static readonly Regex _regex = new Regex("EJ[[](?<V>[^:]+)[:](?<P>[^:]+)[:](?<N>[^:]+)[:](?<M>[^:]+)[]]", RegexOptions.Compiled);
 
-        /*        
-        from: https://shopify.github.io/ejson/ejson.5.html
+        public string SchemaVersion { get; set; }
 
-        SECRET SCHEMA
-        When a value is encrypted, it will be replaced by a relatively long string of the form "EJ[V:P:N:M]". The fields are:
+        public string PublicKeyBase64 { get; set; }
 
-        V (decimal-as-string int)
-        Schema Version, hard-coded to "1" for now
+        public string NonceBase64 { get; set; }
 
-        P (base64-encoded 32-byte array)
-        Public key of an ephemeral keypair used to encrypt this key
-
-        N (base64-encoded 24-byte array)
-        Nonce used to encrypt this key
-
-        M (base64-encoded variable-length array)
-        Raw ciphertext
-         */
+        public string EncryptedMessageBase64 { get; set; }
 
         public static bool TryCreate(string secret, out BoxedMessage result)
         {
@@ -49,7 +57,6 @@ namespace jaytwo.ejson.Internal
 
         public static BoxedMessage Create(string boxedMessageAsString)
         {
-
             var match = _regex.Match(boxedMessageAsString);
 
             if (!match.Success)
@@ -65,26 +72,6 @@ namespace jaytwo.ejson.Internal
 
             return result;
         }
-
-        /// <summary>
-        /// Schema Version
-        /// </summary>
-        public string SchemaVersion { get; set; }
-
-        /// <summary>
-        /// Public key of an ephemeral keypair used to encrypt this key
-        /// </summary>
-        public string PublicKeyBase64 { get; set; }
-
-        /// <summary>
-        /// Nonce used to encrypt this key
-        /// </summary>
-        public string NonceBase64 { get; set; }
-
-        /// <summary>
-        /// Raw ciphertext
-        /// </summary>
-        public string EncryptedMessageBase64 { get; set; }
 
         public override string ToString()
         {

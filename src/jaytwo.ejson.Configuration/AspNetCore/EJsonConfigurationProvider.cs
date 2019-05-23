@@ -1,4 +1,4 @@
-﻿#if NETSTANDARD
+#if NETSTANDARD
 using System;
 using System.IO;
 using Microsoft.Extensions.Configuration.Json;
@@ -54,7 +54,7 @@ namespace jaytwo.ejson.Configuration.AspNetCore
         {
             var result = new DefaultPrivateKeyProvider();
 
-            var configSection = (source)?.ConfigSection;
+            var configSection = source?.ConfigSection;
             if (configSection != null)
             {
                 result.Add(new ConfigurationPrivateKeyProvider(configSection));

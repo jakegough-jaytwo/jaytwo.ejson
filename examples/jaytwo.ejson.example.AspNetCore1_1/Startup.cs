@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -30,7 +30,7 @@ namespace jaytwo.ejson.example.AspNetCore1_1
                     .AddEjsonAppSecrets(env, loggerFactory, configurationBeforeSecrets.GetSection("ejson"))
                     .Build();
             }
-            catch(Exception exception)
+            catch (Exception exception)
             {
                 loggerFactory.CreateLogger(GetType())?.LogError(default(EventId), exception, "Could not load secrets!");
                 _configuration = configurationBeforeSecrets;

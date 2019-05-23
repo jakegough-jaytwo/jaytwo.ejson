@@ -18,7 +18,7 @@ build: restore
 	dotnet build ./jaytwo.ejson.sln
 
 run:
-	dotnet run --project ./src/jaytwo.ejson.CommandLine -- --help
+	dotnet run --project ./src/jaytwo.ejson.GlobalTool -- --help
 
 test: unit-test
 
@@ -29,10 +29,10 @@ unit-test:
 		dotnet test \
 		--results-directory ../../out/testResults \
 		--logger "trx;LogFileName=jaytwo.ejson.Tests.trx"
-	cd ./test/jaytwo.ejson.CommandLine.Tests; \
+	cd ./test/jaytwo.ejson.GlobalTool.Tests; \
 		dotnet test \
 		--results-directory ../../out/testResults \
-		--logger "trx;LogFileName=jaytwo.ejson.CommandLine.Tests.trx"
+		--logger "trx;LogFileName=jaytwo.ejson.GlobalTool.Tests.trx"
 	cd ./test/jaytwo.ejson.example.AspNetCore2_1.IngegrationTests; \
 		dotnet test \
 		--results-directory ../../out/testResults \
@@ -51,7 +51,7 @@ pack:
 	rm -rf out/packed
 	cd ./src/jaytwo.ejson; \
 		dotnet pack -o ../../out/packed ${PACK_ARG}
-	cd ./src/jaytwo.ejson.CommandLine; \
+	cd ./src/jaytwo.ejson.GlobalTool; \
 		dotnet pack -o ../../out/packed ${PACK_ARG}
 	cd ./src/jaytwo.ejson.Configuration; \
 		dotnet pack -o ../../out/packed ${PACK_ARG}
@@ -61,7 +61,7 @@ pack-beta: pack
 
 publish:
 	rm -rf out/published
-	cd ./src/jaytwo.ejson.CommandLine; \
+	cd ./src/jaytwo.ejson.GlobalTool; \
 		dotnet publish -o ../../out/published
 
 DOCKER_BUILDER_TAG?=${DOCKER_TAG}__builder

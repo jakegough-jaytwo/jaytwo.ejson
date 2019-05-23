@@ -1,6 +1,9 @@
 ﻿// https://github.com/aspnet/Configuration/blob/master/src/Config/ChainedConfigurationProvider.cs
 // TODO: figure out if this is kosher to include
 
+#pragma warning disable SA1642 // Constructor summary documentation must begin with standard text
+#pragma warning disable SA1616 // Element return value documentation must have text
+
 #if NETSTANDARD1
 
 // Copyright (c) .NET Foundation. All rights reserved.
@@ -30,6 +33,7 @@ namespace Microsoft.Extensions.Configuration
             {
                 throw new ArgumentNullException(nameof(source));
             }
+
             if (source.Configuration == null)
             {
                 throw new ArgumentNullException(nameof(source.Configuration));
@@ -66,7 +70,9 @@ namespace Microsoft.Extensions.Configuration
         /// <summary>
         /// Loads configuration values from the source represented by this <see cref="IConfigurationProvider"/>.
         /// </summary>
-        public void Load() { }
+        public void Load()
+        {
+        }
 
         /// <summary>
         /// Returns the immediate descendant configuration keys for a given parent path based on this
@@ -91,3 +97,6 @@ namespace Microsoft.Extensions.Configuration
 }
 
 #endif
+
+#pragma warning restore SA1616 // Element return value documentation must have text
+#pragma warning restore SA1642 // Constructor summary documentation must begin with standard text
