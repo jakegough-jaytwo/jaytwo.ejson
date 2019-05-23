@@ -32,7 +32,7 @@ unit-test:
 	cd ./test/jaytwo.ejson.CommandLine.Tests; \
 		dotnet test \
 		--results-directory ../../out/testResults \
-		--logger "trx;LogFileName=jaytwo.ejson.CommandLine.Tests.trx"
+		--logger "trx;LogFileName=jaytwo.ejson.GlobalTool.Tests.trx"
 	cd ./test/jaytwo.ejson.example.AspNetCore2_1.IngegrationTests; \
 		dotnet test \
 		--results-directory ../../out/testResults \

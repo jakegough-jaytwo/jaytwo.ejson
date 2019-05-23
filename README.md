@@ -102,14 +102,14 @@ public class Startup
 
 ## Command Line
 
-[![NuGet version (jaytwo.ejson.CommandLine)](https://img.shields.io/nuget/v/jaytwo.ejson.svg?style=flat-square)](https://www.nuget.org/packages/jaytwo.ejson.CommandLine/)
+[![NuGet version (jaytwo.ejson.GlobalTool)](https://img.shields.io/nuget/v/jaytwo.ejson.svg?style=flat-square)](https://www.nuget.org/packages/jaytwo.ejson.GlobalTool/)
 
 ### Installation
 
 To install as a [.NET Core Global Tool](https://docs.microsoft.com/en-us/dotnet/core/tools/global-tools) (requires [NET Core 2.1 SDK](https://dotnet.microsoft.com/download/dotnet-core/2.1))
 
 ```
-dotnet tool install -g jaytwo.ejson.CommandLine
+dotnet tool install -g jaytwo.ejson.GlobalTool
 ```
 
 ### Normal Usage

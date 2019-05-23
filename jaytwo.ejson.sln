@@ -13,11 +13,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "jaytwo.ejson.Tests", "test\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "jaytwo.ejson.Configuration", "src\jaytwo.ejson.Configuration\jaytwo.ejson.Configuration.csproj", "{CEE9A471-0899-4524-B930-A6C4B0F145D2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "jaytwo.ejson.CommandLine", "src\jaytwo.ejson.CommandLine\jaytwo.ejson.CommandLine.csproj", "{D2E8AF10-45E1-455A-B40B-5CE3B20A3674}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "jaytwo.ejson.GlobalTool", "src\jaytwo.ejson.GlobalTool\jaytwo.ejson.GlobalTool.csproj", "{D2E8AF10-45E1-455A-B40B-5CE3B20A3674}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "examples", "examples", "{948B569B-B4E5-4D47-A0EB-D562D7EDAE09}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "jaytwo.ejson.CommandLine.Tests", "test\jaytwo.ejson.CommandLine.Tests\jaytwo.ejson.CommandLine.Tests.csproj", "{C6C2668D-6CD3-4193-86BE-6DA6F0EBC47F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "jaytwo.ejson.GlobalTool.Tests", "test\jaytwo.ejson.GlobalTool.Tests\jaytwo.ejson.GlobalTool.Tests.csproj", "{C6C2668D-6CD3-4193-86BE-6DA6F0EBC47F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "jaytwo.ejson.example.AspNetCore2_1", "examples\jaytwo.ejson.example.AspNetCore2_1\jaytwo.ejson.example.AspNetCore2_1.csproj", "{728FDC4A-507C-4D42-809A-E94293910DF6}"
 EndProject

@@ -13,10 +13,6 @@
     <PackageReference Include="coverlet.msbuild" Version="2.6.1" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\jaytwo.ejson.CommandLine\jaytwo.ejson.CommandLine.csproj" />
-  </ItemGroup>
-
   <PropertyGroup>
     <UseSourceLink>true</UseSourceLink>
     <CollectCoverage>true</CollectCoverage>
@@ -41,6 +37,10 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
     <PackageReference Include="StyleCop.Analyzers.Error" Version="1.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\jaytwo.ejson.CommandLine\jaytwo.ejson.GlobalTool.csproj" />
   </ItemGroup>
 
 </Project>

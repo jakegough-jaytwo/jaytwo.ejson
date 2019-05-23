@@ -3,7 +3,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using Microsoft.Extensions.CommandLineUtils;
 
-namespace jaytwo.ejson.CommandLine
+namespace jaytwo.ejson.GlobalTool
 {
     public class Program
     {

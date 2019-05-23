@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 using Moq;
 using Xunit;
 
-namespace jaytwo.ejson.CommandLine.Tests
+namespace jaytwo.ejson.GlobalTool.Tests
 {
     public class ProgramTests
     {
