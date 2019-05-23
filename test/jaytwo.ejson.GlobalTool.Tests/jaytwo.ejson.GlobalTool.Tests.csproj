@@ -40,7 +40,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\jaytwo.ejson.CommandLine\jaytwo.ejson.GlobalTool.csproj" />
+    <ProjectReference Include="..\..\src\jaytwo.ejson.GlobalTool\jaytwo.ejson.GlobalTool.csproj" />
   </ItemGroup>
 
 </Project>
