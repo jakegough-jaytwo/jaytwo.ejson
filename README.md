@@ -7,6 +7,23 @@
     <img src="https://jenkins.jaytwo.com/buildStatus/icon?job=jaytwo.ejson%2Fdevelop&subject=build%20(develop)" /></a>
 </p>
 
+<p align="center">
+  <a href="https://www.nuget.org/packages/jaytwo.ejson/" alt="NuGet Package jaytwo.ejson">
+    <img src="https://img.shields.io/nuget/v/jaytwo.ejson.svg?logo=nuget&label=jaytwo.ejson" /></a>
+  <a href="https://www.nuget.org/packages/jaytwo.ejson/" alt="NuGet Package jaytwo.ejson (beta)">
+    <img src="https://img.shields.io/nuget/vpre/jaytwo.ejson.svg?logo=nuget&label=jaytwo.ejson" /></a>
+    
+  <a href="https://www.nuget.org/packages/jaytwo.ejson.Configuration/" alt="NuGet Package jaytwo.ejson.Configuration">
+    <img src="https://img.shields.io/nuget/v/jaytwo.ejson.Configuration.svg?logo=nuget&label=jaytwo.ejson.Configuration" /></a>
+  <a href="https://www.nuget.org/packages/jaytwo.ejson.Configuration/" alt="NuGet Package jaytwo.ejson.Configuration (beta)">
+    <img src="https://img.shields.io/nuget/vpre/jaytwo.ejson.Configuration.svg?logo=nuget&label=jaytwo.ejson.Configuration" /></a>
+    
+  <a href="https://www.nuget.org/packages/jaytwo.ejson.GlobalTool/" alt="NuGet Package jaytwo.ejson.GlobalTool">
+    <img src="https://img.shields.io/nuget/v/jaytwo.ejson.GlobalTool.svg?logo=nuget&label=jaytwo.ejson.GlobalTool" /></a>
+  <a href="https://www.nuget.org/packages/jaytwo.ejson.GlobalTool/" alt="NuGet Package jaytwo.ejson.GlobalTool (beta)">
+    <img src="https://img.shields.io/nuget/vpre/jaytwo.ejson.GlobalTool.svg?logo=nuget&label=jaytwo.ejson.GlobalTool" /></a>
+</p>
+
 ## A .NET Core version of [Shoppify's ejson](https://github.com/Shopify/ejson)
 
 I read their  [blog post](https://engineering.shopify.com/blogs/engineering/secrets-at-shopify-introducing-ejson) 
@@ -42,8 +59,6 @@ This has been implemented as a [.NET Core Global Tool](https://docs.microsoft.co
 as well as a configuration library for use in ASP.NET Core.
 
 ## For ASP.NET Configuration
-
-[![NuGet version (jaytwo.ejson.Configuration)](https://img.shields.io/nuget/v/jaytwo.ejson.Configuration.svg?style=flat-square)](https://www.nuget.org/packages/jaytwo.ejson.Configuration/)
 
 ### Installation
 
@@ -101,8 +116,6 @@ public class Startup
 ```
 
 ## Command Line
-
-[![NuGet version (jaytwo.ejson.GlobalTool)](https://img.shields.io/nuget/v/jaytwo.ejson.svg?style=flat-square)](https://www.nuget.org/packages/jaytwo.ejson.GlobalTool/)
 
 ### Installation
 
