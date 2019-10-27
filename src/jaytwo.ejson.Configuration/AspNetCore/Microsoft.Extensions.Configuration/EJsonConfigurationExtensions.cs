@@ -4,12 +4,18 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using jaytwo.ejson.Configuration.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 
-#pragma warning disable SA1615 // Element return value must be documented
+#if NETSTANDARD2_1
+using Microsoft.Extensions.Hosting;
+#endif
 
+#if NETSTANDARD1 || NETSTANDARD2_0
+using IHostEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
+#endif
+
+#pragma warning disable SA1615 // Element return value must be documented
 namespace Microsoft.Extensions.Configuration
 {
     // inspired from:
@@ -21,7 +27,7 @@ namespace Microsoft.Extensions.Configuration
         /// <summary>
         /// Adds the EJSON configuration provider from appsecrets.ejson and appsecrets.{env.EnvironmentName}.ejson to <paramref name="builder"/>.
         /// </summary>
-        public static IConfigurationBuilder AddEjsonAppSecrets(this IConfigurationBuilder builder, IHostingEnvironment env = null, ILoggerFactory loggerFactory = null, IConfigurationSection configSection = null)
+        public static IConfigurationBuilder AddEjsonAppSecrets(this IConfigurationBuilder builder, IHostEnvironment env = null, ILoggerFactory loggerFactory = null, IConfigurationSection configSection = null)
         {
             if (!builder.Properties.TryGetValue("FileProvider", out object handler))
             {
@@ -91,6 +97,7 @@ namespace Microsoft.Extensions.Configuration
                 s.FileProvider = provider;
                 s.Path = path;
                 s.Optional = optional;
+                s.ReloadOnChange = false;
                 s.ResolveFileProvider();
             });
         }

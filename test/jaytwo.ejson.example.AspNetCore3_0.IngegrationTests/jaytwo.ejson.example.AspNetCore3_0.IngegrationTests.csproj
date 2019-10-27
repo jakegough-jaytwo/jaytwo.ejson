@@ -1,0 +1,49 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="jaytwo.SolutionResolution" Version="0.1.0-beta-20190407052034" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="3.0.*" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="3.0.*" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
+    <PackageReference Include="Moq" Version="4.10.1" />
+    <PackageReference Include="xunit" Version="2.4.0" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
+    <PackageReference Include="coverlet.msbuild" Version="2.6.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\examples\jaytwo.ejson.example.AspNetCore3_0\jaytwo.ejson.example.AspNetCore3_0.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <UseSourceLink>true</UseSourceLink>
+    <CollectCoverage>true</CollectCoverage>
+    <Exclude>[xunit.*]*</Exclude>
+    <ExcludeByAttribute>Obsolete,GeneratedCodeAttribute,CompilerGeneratedAttribute</ExcludeByAttribute>
+    <CoverletOutputFormat>cobertura</CoverletOutputFormat>
+    <CoverletOutput>$(MSBuildThisFileDirectory)../../out/coverage/$(AssemblyName)/$(TargetFramework)/</CoverletOutput>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="$(ProjectDir)..\..\stylecop.json" Link="stylecop.json" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <StyleCopTreatErrorsAsWarnings>true</StyleCopTreatErrorsAsWarnings>
+    <CodeAnalysisRuleSet>$(ProjectDir)..\..\stylecop.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="StyleCop.Analyzers" Version="1.0.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="StyleCop.Analyzers.Error" Version="1.0.2" />
+  </ItemGroup>
+
+</Project>
