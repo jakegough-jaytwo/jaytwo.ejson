@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net45;netstandard1.3;netstandard1.6;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>net45;netstandard1.3;netstandard1.6;netstandard2.0;netstandard2.1</TargetFrameworks>
     <VersionPrefix>0.1.6</VersionPrefix>
     <RepositoryUrl>https://github.com/jakegough/jaytwo.ejson</RepositoryUrl>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -24,6 +24,13 @@
   <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
     <DefineConstants>$(DefineConstants);NETSTANDARD</DefineConstants>
     <DefineConstants>$(DefineConstants);NETSTANDARD2</DefineConstants>
+    <DefineConstants>$(DefineConstants);NETSTANDARD2_0</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
+    <DefineConstants>$(DefineConstants);NETSTANDARD</DefineConstants>
+    <DefineConstants>$(DefineConstants);NETSTANDARD2</DefineConstants>
+    <DefineConstants>$(DefineConstants);NETSTANDARD2_1</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net45'">
@@ -39,6 +46,10 @@
   </ItemGroup>
   
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="Newtonsoft.Json" Version="9.*" />
+  </ItemGroup>
+  
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
     <PackageReference Include="Newtonsoft.Json" Version="9.*" />
   </ItemGroup>
   

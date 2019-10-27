@@ -53,21 +53,20 @@ namespace jaytwo.ejson.GlobalTool.Tests
             var encryptedFilePath = Path.Combine(tempFolder, $"{nameof(decrypt)}.ejson");
 
             var encryptedJson =
-@"{
-  ""_public_key"": ""749d901c694890ee91b7d2c366c2d59dc7b6b8a386d0a5be73431e622b91d117"",
-  ""passwords"": {
+$@"{{
+  ""_public_key"": ""{publicKey}"",
+  ""passwords"": {{
     ""database_password"": ""EJ[1:EtX9E9y07M9ppTIeiLgdMysdWgmWNPvdNRBMtHKuDQo=:ZQqM6wGxUUiRy2kXYVinPKEFIyMRubvL:OR5Owty2fMOPTownI2/xngsWISvD]""
-  }
-}";
+  }}
+}}";
 
             var expectedDecryptedJson =
-@"{
-  ""_public_key"": ""749d901c694890ee91b7d2c366c2d59dc7b6b8a386d0a5be73431e622b91d117"",
-  ""passwords"": {
+$@"{{
+  ""_public_key"": ""{publicKey}"",
+  ""passwords"": {{
     ""database_password"": ""hello""
-  }
-}
-";
+  }}
+}}";
 
             File.WriteAllText(privateKeyPath, privateKey);
             File.WriteAllText(encryptedFilePath, encryptedJson);
@@ -94,23 +93,22 @@ namespace jaytwo.ejson.GlobalTool.Tests
             var encryptedFilePath = Path.Combine(tempFolder, $"{nameof(encrypt_without_private_key_can_be_decrypted)}.ejson");
 
             var partiallyEncryptedJson =
-@"{
-  ""_public_key"": ""749d901c694890ee91b7d2c366c2d59dc7b6b8a386d0a5be73431e622b91d117"",
-  ""passwords"": {
+$@"{{
+  ""_public_key"": ""{publicKey}"",
+  ""passwords"": {{
     ""database_password"": ""EJ[1:EtX9E9y07M9ppTIeiLgdMysdWgmWNPvdNRBMtHKuDQo=:ZQqM6wGxUUiRy2kXYVinPKEFIyMRubvL:OR5Owty2fMOPTownI2/xngsWISvD]""
-  },
+  }},
   ""secret_web_key"": ""world""
-}";
+}}";
 
             var expectedDecryptedJson =
-@"{
-  ""_public_key"": ""749d901c694890ee91b7d2c366c2d59dc7b6b8a386d0a5be73431e622b91d117"",
-  ""passwords"": {
+$@"{{
+  ""_public_key"": ""{publicKey}"",
+  ""passwords"": {{
     ""database_password"": ""hello""
-  },
+  }},
   ""secret_web_key"": ""world""
-}
-";
+}}";
 
             File.WriteAllText(privateKeyPath, privateKey);
             File.WriteAllText(encryptedFilePath, partiallyEncryptedJson);
