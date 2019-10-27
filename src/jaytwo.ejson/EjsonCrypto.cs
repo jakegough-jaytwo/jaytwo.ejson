@@ -37,14 +37,14 @@ namespace jaytwo.ejson
         public string SaveDecryptedJson(string json, string outputFile, IPrivateKeyProvider keyProvider = null)
         {
             var decryptedJson = GetDecryptedJson(json, keyProvider);
-            _fileSystem.WriteAllText(outputFile, decryptedJson);
+            _fileSystem.WriteAllTextWithFinalNewLine(outputFile, decryptedJson);
             return "Saved to: " + outputFile;
         }
 
         public string SaveEncryptedJson(string json, string outputFile)
         {
             var encryptedJson = GetEncryptedJson(json);
-            _fileSystem.WriteAllText(outputFile, encryptedJson);
+            _fileSystem.WriteAllTextWithFinalNewLine(outputFile, encryptedJson);
             return "Saved to: " + outputFile;
         }
 

@@ -41,7 +41,7 @@ namespace jaytwo.ejson
             var publicKeyPath = _fileSystem.CombinePath(keyDir, publicKey);
 
             _fileSystem.CreateDirectory(keyDir);
-            _fileSystem.WriteAllText(publicKeyPath, privateKey);
+            _fileSystem.WriteAllTextWithFinalNewLine(publicKeyPath, privateKey);
 
             return publicKeyPath;
         }

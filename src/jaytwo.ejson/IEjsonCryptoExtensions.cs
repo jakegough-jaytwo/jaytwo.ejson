@@ -59,7 +59,7 @@ namespace jaytwo.ejson
             fileSystem = fileSystem ?? new FileSystemWrapper();
             var json = fileSystem.ReadAllText(fileName);
             var encrypted = eJsonCrypto.GetEncryptedJson(json);
-            fileSystem.WriteAllText(fileName, encrypted);
+            fileSystem.WriteAllTextWithFinalNewLine(fileName, encrypted);
         }
 
         internal static string GetDecryptedJsonFromFile(this IEJsonCrypto eJsonCrypto, string fileName, string keyDir, IFileSystem fileSystem)
