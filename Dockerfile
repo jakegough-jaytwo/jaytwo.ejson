@@ -12,6 +12,13 @@ ENV FrameworkPathOverride /usr/lib/mono/4.5/
 ENV PATH="${PATH}:/root/.dotnet/tools"
 
 
+# Install .Net Core 1.1
+RUN wget -q https://download.visualstudio.microsoft.com/download/pr/3aaaa9ad-577b-4127-bee8-3a25d447ac17/9259d8dbfef4dc85d65d0d08261ffacd/dotnet-dev-ubuntu.16.04-x64.1.1.14.tar.gz -O dotnet-dev-ubuntu.16.04-x64.1.1.14.tar.gz \
+  && mkdir -p $HOME/dotnet \
+  && tar zxf dotnet-dev-ubuntu.16.04-x64.1.1.14.tar.gz -C $HOME/dotnet \
+  && export PATH=$PATH:$HOME/dotnet \
+  && rm -rf dotnet-dev-ubuntu.16.04-x64.1.1.14.tar.gz
+  
 FROM base AS builder
 WORKDIR /build
 COPY . /build
