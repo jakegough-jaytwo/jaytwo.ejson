@@ -33,10 +33,11 @@ unit-test:
 		dotnet test \
 		--results-directory ../../out/testResults \
 		--logger "trx;LogFileName=jaytwo.ejson.GlobalTool.Tests.trx"
-	cd ./test/jaytwo.ejson.example.AspNetCore1_1.IngegrationTests; \
-		dotnet test \
-		--results-directory ../../out/testResults \
-		--logger "trx;LogFileName=jaytwo.ejson.example.AspNetCore1_1.IngegrationTests.trx";
+#	TODO: figure out how to get .NET Core 1.1 in the dockerfile
+#	cd ./test/jaytwo.ejson.example.AspNetCore1_1.IngegrationTests; \
+#		dotnet test \
+#		--results-directory ../../out/testResults \
+#		--logger "trx;LogFileName=jaytwo.ejson.example.AspNetCore1_1.IngegrationTests.trx";
 	cd ./test/jaytwo.ejson.example.AspNetCore2_1.IngegrationTests; \
 		dotnet test \
 		--results-directory ../../out/testResults \
