@@ -117,7 +117,7 @@ $@"{{
             var stdOut = RunProgram("encrypt", encryptedFilePath);
 
             // assert
-            Assert.Empty(stdOut.Trim());
+            Assert.NotEmpty(stdOut.Trim());
 
             var encryptedJson = File.ReadAllText(encryptedFilePath);
             Assert.Contains("_public_key", encryptedJson);
@@ -134,6 +134,78 @@ $@"{{
 
             // cleanup
             File.Delete(encryptedFilePath);
+            File.Delete(privateKeyPath);
+        }
+
+        [Fact]
+        public void encrypt_multiple_files_with_glob()
+        {
+            // arrange
+            var tempFolder = GetTempDir();
+            var publicKey = "749d901c694890ee91b7d2c366c2d59dc7b6b8a386d0a5be73431e622b91d117";
+            var privateKey = "5f349a6bf95d692830a8930aa657b5d553073e589564925f153c018b5c27c8b6";
+            var privateKeyPath = Path.Combine(tempFolder, publicKey);
+            var encryptedFilePath1 = Path.Combine(tempFolder, $"{nameof(encrypt_multiple_files_with_glob)}1.ejson");
+            var encryptedFilePath2 = Path.Combine(tempFolder, $"{nameof(encrypt_multiple_files_with_glob)}2.ejson");
+            var glob = Path.Combine(tempFolder, $"{nameof(encrypt_multiple_files_with_glob)}*.ejson");
+
+            var partiallyEncryptedJson =
+$@"{{
+  ""_public_key"": ""{publicKey}"",
+  ""passwords"": {{
+    ""database_password"": ""EJ[1:EtX9E9y07M9ppTIeiLgdMysdWgmWNPvdNRBMtHKuDQo=:ZQqM6wGxUUiRy2kXYVinPKEFIyMRubvL:OR5Owty2fMOPTownI2/xngsWISvD]""
+  }},
+  ""secret_web_key"": ""world""
+}}";
+
+            var expectedDecryptedJson =
+$@"{{
+  ""_public_key"": ""{publicKey}"",
+  ""passwords"": {{
+    ""database_password"": ""hello""
+  }},
+  ""secret_web_key"": ""world""
+}}";
+
+            File.WriteAllText(privateKeyPath, privateKey);
+            File.WriteAllText(encryptedFilePath1, partiallyEncryptedJson);
+            File.WriteAllText(encryptedFilePath2, partiallyEncryptedJson);
+
+            // act
+            var stdOut = RunProgram("encrypt", glob);
+
+            // assert
+            Assert.NotEmpty(stdOut.Trim());
+
+            var encryptedJson1 = File.ReadAllText(encryptedFilePath1);
+            Assert.Contains("_public_key", encryptedJson1);
+            Assert.Contains("database_password", encryptedJson1);
+            Assert.Contains("secret_web_key", encryptedJson1);
+            Assert.DoesNotContain("hello", encryptedJson1);
+            Assert.DoesNotContain("world", encryptedJson1);
+
+            var encryptedJson2 = File.ReadAllText(encryptedFilePath2);
+            Assert.Contains("_public_key", encryptedJson2);
+            Assert.Contains("database_password", encryptedJson2);
+            Assert.Contains("secret_web_key", encryptedJson2);
+            Assert.DoesNotContain("hello", encryptedJson2);
+            Assert.DoesNotContain("world", encryptedJson2);
+
+            var decryptedJson1 = RunProgram($"--keydir={tempFolder}", "decrypt", encryptedFilePath1);
+            Assert.Contains("_public_key", decryptedJson1);
+            Assert.Contains("hello", decryptedJson1);
+            Assert.Contains("world", decryptedJson1);
+            Assert.Equal(Regex.Replace(expectedDecryptedJson, "\\s", string.Empty), Regex.Replace(decryptedJson1, "\\s", string.Empty));
+
+            var decryptedJson2 = RunProgram($"--keydir={tempFolder}", "decrypt", encryptedFilePath2);
+            Assert.Contains("_public_key", decryptedJson2);
+            Assert.Contains("hello", decryptedJson2);
+            Assert.Contains("world", decryptedJson2);
+            Assert.Equal(Regex.Replace(expectedDecryptedJson, "\\s", string.Empty), Regex.Replace(decryptedJson2, "\\s", string.Empty));
+
+            // cleanup
+            File.Delete(encryptedFilePath1);
+            File.Delete(encryptedFilePath2);
             File.Delete(privateKeyPath);
         }
 

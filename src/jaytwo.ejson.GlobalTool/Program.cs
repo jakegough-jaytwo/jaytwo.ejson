@@ -1,7 +1,13 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
+using jaytwo.ejson.Exceptions;
+using jaytwo.ejson.Internal;
 using Microsoft.Extensions.CommandLineUtils;
+using Microsoft.Extensions.FileSystemGlobbing;
 
 namespace jaytwo.ejson.GlobalTool
 {
@@ -104,9 +110,19 @@ namespace jaytwo.ejson.GlobalTool
 
                 context.OnExecute(() =>
                 {
-                    foreach (var value in fileNameArgument.Values)
+                    var files = GetFilesFromGlob(fileNameArgument.Values).ToList();
+
+                    foreach (var file in files)
                     {
-                        _eJsonCrypto.EncryptFile(fileNameArgument.Value);
+                        try
+                        {
+                            _eJsonCrypto.EncryptFile(file);
+                            context.Out.WriteLine($"Encrypted: {file}");
+                        }
+                        catch (MissingPublicKeyException)
+                        {
+                            context.Out.WriteLine($"Not an ejson file: {file}");
+                        }
                     }
 
                     return 0;
@@ -151,6 +167,43 @@ namespace jaytwo.ejson.GlobalTool
                     return 0;
                 });
             });
+        }
+
+        private IEnumerable<string> GetFilesFromGlob(IList<string> patterns)
+        {
+            // for some reason the Microsoft.Extensions.FileSystemGlobbing.Matcher doesn't know how to handle when absolute paths
+            //   are passed in as a pattern.  If a pattern starts with a '/', it still treats it as relative to the base directory
+
+            foreach (var incomingPattern in patterns)
+            {
+                if (File.Exists(incomingPattern))
+                {
+                    yield return incomingPattern;
+                }
+                else
+                {
+                    var globPattern = incomingPattern;
+                    var globBaseDirectory = Environment.CurrentDirectory;
+
+                    var directoryFromPattern = Path.GetDirectoryName(incomingPattern);
+                    if (Directory.Exists(directoryFromPattern))
+                    {
+                        globBaseDirectory = directoryFromPattern;
+                        globPattern = Path.GetFileName(incomingPattern);
+                    }
+
+                    var globbingMatcher = new Matcher(StringComparison.OrdinalIgnoreCase);
+                    globbingMatcher.AddInclude(globPattern);
+
+                    var results = globbingMatcher.GetResultsInFullPath(globBaseDirectory);
+
+                    foreach (var result in results)
+                    {
+                        var relativeResult = Path.GetRelativePath(Environment.CurrentDirectory, result);
+                        yield return relativeResult;
+                    }
+                }
+            }
         }
     }
 }
