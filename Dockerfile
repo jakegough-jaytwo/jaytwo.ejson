@@ -30,6 +30,7 @@ RUN apt-get update \
   && apt-get autoremove\
   && rm -rf /var/lib/apt/lists/*
 ENV FrameworkPathOverride /usr/lib/mono/4.5/
+ENV PATH="${PATH}:/root/.dotnet/tools"
 
 
 FROM base AS builder
