@@ -29,9 +29,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "jaytwo.ejson.example.AspNet
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "jaytwo.ejson.example.AspNetCore2_1.IngegrationTests", "test\jaytwo.ejson.example.AspNetCore2_1.IngegrationTests\jaytwo.ejson.example.AspNetCore2_1.IngegrationTests.csproj", "{0C1FF00B-D3C4-473F-A072-CB2ED7ACF818}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "jaytwo.ejson.example.AspNetCore3_0", "examples\jaytwo.ejson.example.AspNetCore3_0\jaytwo.ejson.example.AspNetCore3_0.csproj", "{411DB987-0E43-43CC-B4DE-251EC2E9EDB4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "jaytwo.ejson.example.AspNetCore3_1", "examples\jaytwo.ejson.example.AspNetCore3_1\jaytwo.ejson.example.AspNetCore3_1.csproj", "{411DB987-0E43-43CC-B4DE-251EC2E9EDB4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "jaytwo.ejson.example.AspNetCore3_0.IngegrationTests", "test\jaytwo.ejson.example.AspNetCore3_0.IngegrationTests\jaytwo.ejson.example.AspNetCore3_0.IngegrationTests.csproj", "{ADB45DD1-EAC6-4863-9CE4-E2FD755B6A6B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "jaytwo.ejson.example.AspNetCore3_1.IngegrationTests", "test\jaytwo.ejson.example.AspNetCore3_1.IngegrationTests\jaytwo.ejson.example.AspNetCore3_1.IngegrationTests.csproj", "{ADB45DD1-EAC6-4863-9CE4-E2FD755B6A6B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

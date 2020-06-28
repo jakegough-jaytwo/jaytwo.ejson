@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace jaytwo.ejson.example.AspNetCore3_0.IngegrationTests
+namespace jaytwo.ejson.example.AspNetCore3_1.IngegrationTests
 {
     public class BasicTests : IClassFixture<WebApplicationFactory>
     {
@@ -20,7 +20,7 @@ namespace jaytwo.ejson.example.AspNetCore3_0.IngegrationTests
             var client = _fixture.CreateClient();
             var expectedSecret = "rosebud was the sled";
             var expectedEnvironmentSpecificSecret = "Development";
-            var expectedNamespace = typeof(example.AspNetCore3_0.Startup).Assembly.GetName().Name;
+            var expectedNamespace = typeof(example.AspNetCore3_1.Startup).Assembly.GetName().Name;
 
             // Act
             using (var response = await client.GetAsync("/"))

@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\examples\jaytwo.ejson.example.AspNetCore3_0\jaytwo.ejson.example.AspNetCore3_0.csproj" />
+    <ProjectReference Include="..\..\examples\jaytwo.ejson.example.AspNetCore3_1\jaytwo.ejson.example.AspNetCore3_1.csproj" />
   </ItemGroup>
 
   <ItemGroup>
