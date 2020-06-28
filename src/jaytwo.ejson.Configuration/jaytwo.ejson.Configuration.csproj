@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>net45;netstandard1.3;netstandard1.6;netstandard2.0;netstandard2.1</TargetFrameworks>
@@ -8,31 +8,12 @@
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(TargetFramework)' == 'net45'">
-    <DefineConstants>$(DefineConstants);NETFRAMEWORK</DefineConstants>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard1.3'">
-    <DefineConstants>$(DefineConstants);NETSTANDARD</DefineConstants>
-    <DefineConstants>$(DefineConstants);NETSTANDARD1</DefineConstants>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard1.6'">
-    <DefineConstants>$(DefineConstants);NETSTANDARD</DefineConstants>
-    <DefineConstants>$(DefineConstants);NETSTANDARD1</DefineConstants>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <DefineConstants>$(DefineConstants);NETSTANDARD</DefineConstants>
-    <DefineConstants>$(DefineConstants);NETSTANDARD2</DefineConstants>
-    <DefineConstants>$(DefineConstants);NETSTANDARD2_0</DefineConstants>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
-    <DefineConstants>$(DefineConstants);NETSTANDARD</DefineConstants>
-    <DefineConstants>$(DefineConstants);NETSTANDARD2</DefineConstants>
-    <DefineConstants>$(DefineConstants);NETSTANDARD2_1</DefineConstants>
-  </PropertyGroup>
+  <!--
+    // https://docs.microsoft.com/en-us/dotnet/standard/frameworks
+    // preprocessor symbols for free:
+    //    NETFRAMEWORK, NET45,
+    //    NETSTANDARD, NETSTANDARD1_1, NETSTANDARD1_3, NETSTANDARD1_6, NETSTANDARD2_0, NETSTANDARD2_1
+  -->
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net45'">
     <PackageReference Include="Newtonsoft.Json" Version="8.*" />
