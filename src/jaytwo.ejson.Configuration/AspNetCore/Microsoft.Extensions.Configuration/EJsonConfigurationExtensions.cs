@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Hosting;
 #endif
 
-#if NETSTANDARD1 || NETSTANDARD2_0
+#if NETSTANDARD1_3 || NETSTANDARD1_6 || NETSTANDARD2_0
 using IHostEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 #endif
 
@@ -66,7 +66,7 @@ namespace Microsoft.Extensions.Configuration
             return AddEJsonFile(builder, provider: null, path: path, optional: optional, configSection: configSection, loggerFactory: loggerFactory);
         }
 
-#if NETSTANDARD2
+#if !(NETSTANDARD1_3 || NETSTANDARD1_6)
         /// <summary>
         /// Adds a EJSON configuration source to <paramref name="builder"/>.
         /// </summary>
@@ -111,7 +111,7 @@ namespace Microsoft.Extensions.Configuration
         public static IConfigurationBuilder AddEJsonFile(this IConfigurationBuilder builder, Action<EJsonConfigurationSource> configureSource) => builder.Add(configureSource);
 #endif
 
-#if NETSTANDARD1
+#if NETSTANDARD1_3 || NETSTANDARD1_6
         /// <summary>
         /// Adds a EJSON configuration source to <paramref name="builder"/>.
         /// </summary>

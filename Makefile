@@ -13,7 +13,7 @@ clean:
 
 restore:
 	dotnet restore . --verbosity minimal
-
+  
 build: restore
 	dotnet build ./jaytwo.ejson.sln
 
@@ -54,7 +54,7 @@ unit-test:
 		-reports:./out/coverage/**/coverage.cobertura.xml \
 		-targetdir:./out/coverage/html \
 		-reportTypes:Html
-    
+
 pack:
 	rm -rf out/packed
 	cd ./src/jaytwo.ejson; \
@@ -72,11 +72,17 @@ publish:
 	cd ./src/jaytwo.ejson.GlobalTool; \
 		dotnet publish -o ../../out/published
 
+DOCKER_BASE_TAG?=${DOCKER_TAG}__base
 DOCKER_BUILDER_TAG?=${DOCKER_TAG}__builder
 DOCKER_BUILDER_CONTAINER?=${DOCKER_BUILDER_TAG}
-docker-build:
+docker-builder:
+	# building the base image to force caching those layers in an otherwise discarded stage of the multistage dockerfile
+	docker build -t ${DOCKER_BASE_TAG} . --target base --pull
 	docker build -t ${DOCKER_BUILDER_TAG} . --target builder --pull
 
+docker: docker-builder
+	docker build -t ${DOCKER_TAG} . --pull
+ 
 DOCKER_RUN_MAKE_TARGETS?=run
 docker-run:
 	docker run --name ${DOCKER_BUILDER_CONTAINER} ${DOCKER_BUILDER_TAG} make ${DOCKER_RUN_MAKE_TARGETS} || EXIT_CODE=$$? ; \
@@ -87,18 +93,20 @@ docker-run:
 docker-unit-test-only: DOCKER_RUN_MAKE_TARGETS=unit-test
 docker-unit-test-only: docker-run
 
-docker-unit-test: docker-build docker-unit-test-only
+docker-unit-test: docker-builder docker-unit-test-only
 
 docker-pack-only: DOCKER_RUN_MAKE_TARGETS=pack
 docker-pack-only: docker-run
 
-docker-pack: docker-build docker-pack-only
+docker-pack: docker-builder docker-pack-only
 
 docker-pack-beta-only: DOCKER_RUN_MAKE_TARGETS=pack-beta
 docker-pack-beta-only: docker-run
 
-docker-pack-beta: docker-build docker-pack-beta-only
+docker-pack-beta: docker-builder docker-pack-beta-only
 
 docker-clean:
 	docker rm ${DOCKER_BUILDER_CONTAINER} || echo "Container not found: ${DOCKER_BUILDER_CONTAINER}"
+	# not removing image DOCKER_BASE_TAG since we want the layer cache to stick around (hopefully they will be cleaned up on the scheduled job)
 	docker rmi ${DOCKER_BUILDER_TAG} || echo "Image not found: ${DOCKER_BUILDER_TAG}"
+	docker rmi ${DOCKER_TAG} || echo "Image not found: ${DOCKER_TAG}"

@@ -1,10 +1,11 @@
-﻿// https://github.com/aspnet/Configuration/blob/master/src/Config/ChainedConfigurationProvider.cs
+// https://github.com/aspnet/Configuration/blob/master/src/Config/ChainedConfigurationProvider.cs
 // TODO: figure out if this is kosher to include
 
 #pragma warning disable SA1642 // Constructor summary documentation must begin with standard text
 #pragma warning disable SA1616 // Element return value documentation must have text
+#pragma warning disable SA1629 // Documentation text should end with a period
 
-#if NETSTANDARD1
+#if NETSTANDARD1_3 || NETSTANDARD1_6
 
 // Copyright (c) .NET Foundation. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
@@ -100,3 +101,4 @@ namespace Microsoft.Extensions.Configuration
 
 #pragma warning restore SA1616 // Element return value documentation must have text
 #pragma warning restore SA1642 // Constructor summary documentation must begin with standard text
+#pragma warning restore SA1629 // Documentation text should end with a period

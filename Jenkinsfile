@@ -8,16 +8,15 @@ helper.xunitTestResultsPattern = 'out/testResults/**/*.trx'
 helper.coberturaCoverageReport = 'out/coverage/Cobertura.xml';
 helper.htmlCoverageReportDir = 'out/coverage/html';
 
-
 helper.run('linux && make && docker', {
     def timestamp = helper.getTimestamp()
-    def safeJobName = env.JOB_NAME.replaceAll('[^A-Za-z0-9]', '_').toLowerCase()
+    def safeJobName = helper.getSafeJobName()
     def dockerLocalTag = "jenkins__${safeJobName}__${timestamp}"
     
     withEnv(["DOCKER_TAG=${dockerLocalTag}", "TIMESTAMP=${timestamp}"]) {
         try {
             stage ('Build') {
-                sh "make docker-build"
+                sh "make docker-builder"
             }
             stage ('Unit Test') {
                 sh "make docker-unit-test-only"

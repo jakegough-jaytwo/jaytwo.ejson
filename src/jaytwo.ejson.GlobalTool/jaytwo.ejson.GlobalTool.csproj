@@ -4,10 +4,11 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <VersionPrefix>0.1.6</VersionPrefix>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>ejson</ToolCommandName>
     <RepositoryUrl>https://github.com/jakegough/jaytwo.ejson</RepositoryUrl>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
   <ItemGroup>
@@ -23,6 +24,7 @@
   </ItemGroup>
 
   <PropertyGroup>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <StyleCopTreatErrorsAsWarnings>true</StyleCopTreatErrorsAsWarnings>
     <CodeAnalysisRuleSet>$(ProjectDir)..\..\stylecop.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
