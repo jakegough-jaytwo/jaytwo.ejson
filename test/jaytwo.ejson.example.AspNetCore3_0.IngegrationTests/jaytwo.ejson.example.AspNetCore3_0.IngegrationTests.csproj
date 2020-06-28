@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="jaytwo.SolutionResolution" Version="0.1.0-beta-20190407052034" />
+    <PackageReference Include="jaytwo.SolutionResolution" Version="0.1.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="3.0.*" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="3.0.*" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />

@@ -1,4 +1,4 @@
-﻿// https://github.com/search?q=tweetnacl+filename%3Axsalsa20.cs&type=Code
+// https://github.com/search?q=tweetnacl+filename%3Axsalsa20.cs&type=Code
 
 #pragma warning disable SA1311 // Static readonly fields must begin with upper-case letter
 #pragma warning disable SA1307 // Accessible fields must begin with upper-case letter
@@ -7,6 +7,7 @@
 #pragma warning disable SA1401 // Fields must be private
 #pragma warning disable SA1003 // Symbols must be spaced correctly
 #pragma warning disable SA1009 // Closing parenthesis must be spaced correctly
+#pragma warning disable SA1413 // Use trailing comma in multi-line initializers
 
 namespace jaytwo.ejson.Crypto.TweetNaCl
 {
@@ -45,3 +46,4 @@ namespace jaytwo.ejson.Crypto.TweetNaCl
 #pragma warning restore SA1310 // Field names must not contain underscore
 #pragma warning restore SA1009 // Closing parenthesis must be spaced correctly
 #pragma warning restore SA1003 // Symbols must be spaced correctly
+#pragma warning restore SA1413 // Use trailing comma in multi-line initializers

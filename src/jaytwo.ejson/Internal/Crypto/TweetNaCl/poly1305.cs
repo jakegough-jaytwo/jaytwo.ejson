@@ -1,10 +1,11 @@
-﻿// https://github.com/search?q=tweetnacl+filename%3Apoly1305.cs&type=Code
+// https://github.com/search?q=tweetnacl+filename%3Apoly1305.cs&type=Code
 
 #pragma warning disable SA1310 // Field names must not contain underscore
 #pragma warning disable SA1401 // Fields must be private
 #pragma warning disable SA1311 // Static readonly fields must begin with upper-case letter
 #pragma warning disable SA1307 // Accessible fields must begin with upper-case letter
 #pragma warning disable SA1304 // Non-private readonly fields must begin with upper-case letter
+#pragma warning disable SA1413 // Use trailing comma in multi-line initializers
 
 namespace jaytwo.ejson.Crypto.TweetNaCl
 {
@@ -187,3 +188,4 @@ namespace jaytwo.ejson.Crypto.TweetNaCl
 #pragma warning restore SA1304 // Non-private readonly fields must begin with upper-case letter
 #pragma warning restore SA1307 // Accessible fields must begin with upper-case letter
 #pragma warning restore SA1311 // Static readonly fields must begin with upper-case letter
+#pragma warning restore SA1413 // Use trailing comma in multi-line initializers
