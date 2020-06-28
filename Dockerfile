@@ -1,5 +1,5 @@
-FROM mcr.microsoft.com/dotnet/core/sdk:3.0 AS dotnet-sdk
-#FROM mcr.microsoft.com/dotnet/core/runtime:3.0-alpine AS dotnet-runtime
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS dotnet-sdk
+#FROM mcr.microsoft.com/dotnet/core/runtime:3.1-alpine AS dotnet-runtime
 
 FROM dotnet-sdk AS base
 
