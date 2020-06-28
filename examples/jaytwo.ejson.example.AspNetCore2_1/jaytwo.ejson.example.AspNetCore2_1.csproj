@@ -15,7 +15,10 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.*" />
   </ItemGroup>
 
+  <!-- stylecop -->
   <ItemGroup>
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" PrivateAssets="All" />
+    <PackageReference Include="StyleCop.Analyzers.Error" Version="1.0.2" PrivateAssets="All" />
     <AdditionalFiles Include="$(ProjectDir)..\..\stylecop.json" Link="stylecop.json" />
   </ItemGroup>
 
@@ -24,13 +27,6 @@
     <StyleCopTreatErrorsAsWarnings>true</StyleCopTreatErrorsAsWarnings>
     <CodeAnalysisRuleSet>$(ProjectDir)..\..\stylecop.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="StyleCop.Analyzers" Version="1.0.2">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="StyleCop.Analyzers.Error" Version="1.0.2" />
-  </ItemGroup>
+  <!-- /stylecop -->
 
 </Project>

@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -19,7 +19,10 @@
     <PackageReference Include="Microsoft.Extensions.CommandLineUtils" Version="1.1.1" />
   </ItemGroup>
 
+  <!-- stylecop -->
   <ItemGroup>
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" PrivateAssets="All" />
+    <PackageReference Include="StyleCop.Analyzers.Error" Version="1.0.2" PrivateAssets="All" />
     <AdditionalFiles Include="$(ProjectDir)..\..\stylecop.json" Link="stylecop.json" />
   </ItemGroup>
 
@@ -28,13 +31,20 @@
     <StyleCopTreatErrorsAsWarnings>true</StyleCopTreatErrorsAsWarnings>
     <CodeAnalysisRuleSet>$(ProjectDir)..\..\stylecop.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <!-- /stylecop -->
 
+  <!-- coverlet & cobertura -->
   <ItemGroup>
-    <PackageReference Include="StyleCop.Analyzers" Version="1.0.2">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="StyleCop.Analyzers.Error" Version="1.0.2" />
+    <PackageReference Include="coverlet.msbuild" Version="2.9.0" PrivateAssets="All" />
   </ItemGroup>
+
+  <PropertyGroup>
+    <CollectCoverage>true</CollectCoverage>
+    <Exclude>[xunit.*]*</Exclude>
+    <ExcludeByAttribute>Obsolete,GeneratedCodeAttribute,CompilerGeneratedAttribute</ExcludeByAttribute>
+    <CoverletOutputFormat>cobertura</CoverletOutputFormat>
+    <CoverletOutput>$(MSBuildThisFileDirectory)../../out/coverage/$(AssemblyName)/$(TargetFramework)/</CoverletOutput>
+  </PropertyGroup>
+  <!-- /coverlet & cobertura -->
 
 </Project>
