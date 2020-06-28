@@ -8,6 +8,10 @@
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\jaytwo.ejson\jaytwo.ejson.csproj" />
+  </ItemGroup>
+
   <!--
     // https://docs.microsoft.com/en-us/dotnet/standard/frameworks
     // preprocessor symbols for free:
@@ -50,10 +54,6 @@
   <ItemGroup Condition="'$(TargetFramework)' == 'net45'">
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Extensions" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\jaytwo.ejson\jaytwo.ejson.csproj" />
   </ItemGroup>
 
   <ItemGroup>
