@@ -13,11 +13,19 @@
     <PackageReference Include="jaytwo.SolutionResolution" Version="0.1.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="2.1.*" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="2.1.*" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
-    <PackageReference Include="Moq" Version="4.10.1" />
-    <PackageReference Include="xunit" Version="2.4.0" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
   </ItemGroup>
+
+  <!-- test packages for netcoreapp2.1 -->
+  <ItemGroup>
+    <!-- required older versions -->
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
+    
+    <!-- ok latest versions -->
+    <PackageReference Include="Moq" Version="4.14.4" />
+    <PackageReference Include="xunit" Version="2.4.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.2" PrivateAssets="All" />
+  </ItemGroup>
+  <!-- /test packages for netcoreapp2.1 -->
 
   <!-- stylecop -->
   <ItemGroup>

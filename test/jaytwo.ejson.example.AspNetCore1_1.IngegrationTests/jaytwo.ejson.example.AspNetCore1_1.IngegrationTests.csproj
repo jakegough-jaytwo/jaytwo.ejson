@@ -11,11 +11,17 @@
   <ItemGroup>
     <PackageReference Include="jaytwo.SolutionResolution" Version="0.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="1.1.*" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
+  </ItemGroup>
+
+  <!-- test packages for netcoreapp1.1 -->
+  <ItemGroup>
+    <!-- required older versions -->
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
     <PackageReference Include="Moq" Version="4.10.1" />
     <PackageReference Include="xunit" Version="2.4.0" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" PrivateAssets="All" />
   </ItemGroup>
+  <!-- /default test packages -->
 
   <!-- stylecop -->
   <ItemGroup>
