@@ -19,7 +19,6 @@
   <ItemGroup>
     <!-- required older versions -->
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
-    
     <!-- ok latest versions -->
     <PackageReference Include="Moq" Version="4.14.4" />
     <PackageReference Include="xunit" Version="2.4.1" />
