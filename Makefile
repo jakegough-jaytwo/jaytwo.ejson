@@ -42,10 +42,10 @@ unit-test:
 		dotnet test \
 		--results-directory ../../out/testResults \
 		--logger "trx;LogFileName=jaytwo.ejson.example.AspNetCore2_1.IngegrationTests.trx";
-	cd ./test/jaytwo.ejson.example.AspNetCore3_0.IngegrationTests; \
+	cd ./test/jaytwo.ejson.example.AspNetCore3_1.IngegrationTests; \
 		dotnet test \
 		--results-directory ../../out/testResults \
-		--logger "trx;LogFileName=jaytwo.ejson.example.AspNetCore3_0.IngegrationTests.trx";
+		--logger "trx;LogFileName=jaytwo.ejson.example.AspNetCore1_0.IngegrationTests.trx";
 	reportgenerator \
 		-reports:./out/coverage/**/coverage.cobertura.xml \
 		-targetdir:./out/coverage/ \
