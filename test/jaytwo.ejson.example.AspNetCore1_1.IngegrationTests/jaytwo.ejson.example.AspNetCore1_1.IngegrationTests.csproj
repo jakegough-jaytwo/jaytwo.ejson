@@ -9,7 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="jaytwo.SolutionResolution" Version="0.1.0" />
+    <PackageReference Include="jaytwo.SolutionResolution" Version="0.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="1.1.*" />
   </ItemGroup>
 

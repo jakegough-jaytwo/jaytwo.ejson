@@ -10,7 +10,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="jaytwo.SolutionResolution" Version="0.1.0" />
+    <PackageReference Include="jaytwo.SolutionResolution" Version="0.1.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="2.1.*" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="2.1.*" />
   </ItemGroup>
