@@ -35,6 +35,18 @@
     <PackageReference Include="Newtonsoft.Json" Version="9.*" />
   </ItemGroup>
 
+  <!-- sourcelink (only needed on the published package project) -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+  </PropertyGroup>
+  <!-- /sourcelink -->
+  
   <!-- stylecop -->
   <ItemGroup>
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" PrivateAssets="All" />
