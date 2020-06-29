@@ -31,4 +31,4 @@ RUN wget -q https://packages.microsoft.com/config/debian/10/packages-microsoft-p
 FROM base AS builder
 WORKDIR /build
 COPY . /build
-RUN make deps restore
+RUN make deps restore build
