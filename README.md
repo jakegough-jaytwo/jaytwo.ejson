@@ -12,12 +12,14 @@
     <img src="https://img.shields.io/nuget/v/jaytwo.ejson.svg?logo=nuget&label=jaytwo.ejson" /></a>
   <a href="https://www.nuget.org/packages/jaytwo.ejson/" alt="NuGet Package jaytwo.ejson (beta)">
     <img src="https://img.shields.io/nuget/vpre/jaytwo.ejson.svg?logo=nuget&label=jaytwo.ejson" /></a>
-    
+  <br />
+
   <a href="https://www.nuget.org/packages/jaytwo.ejson.Configuration/" alt="NuGet Package jaytwo.ejson.Configuration">
     <img src="https://img.shields.io/nuget/v/jaytwo.ejson.Configuration.svg?logo=nuget&label=jaytwo.ejson.Configuration" /></a>
   <a href="https://www.nuget.org/packages/jaytwo.ejson.Configuration/" alt="NuGet Package jaytwo.ejson.Configuration (beta)">
     <img src="https://img.shields.io/nuget/vpre/jaytwo.ejson.Configuration.svg?logo=nuget&label=jaytwo.ejson.Configuration" /></a>
-    
+  <br />
+
   <a href="https://www.nuget.org/packages/jaytwo.ejson.GlobalTool/" alt="NuGet Package jaytwo.ejson.GlobalTool">
     <img src="https://img.shields.io/nuget/v/jaytwo.ejson.GlobalTool.svg?logo=nuget&label=jaytwo.ejson.GlobalTool" /></a>
   <a href="https://www.nuget.org/packages/jaytwo.ejson.GlobalTool/" alt="NuGet Package jaytwo.ejson.GlobalTool (beta)">
