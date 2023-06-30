@@ -1,6 +1,6 @@
 library 'JenkinsBuilderLibrary'
 
-helper.gitHubUsername = 'jakegough'
+helper.gitHubUsername = 'jakegough-jaytwo'
 helper.gitHubRepository = 'jaytwo.ejson'
 helper.gitHubTokenCredentialsId = 'github-personal-access-token-jakegough'
 helper.nuGetCredentialsId = 'nuget-org-jaytwo'
@@ -41,4 +41,3 @@ helper.run('linux && make && docker', {
         }
     }
 })
-
