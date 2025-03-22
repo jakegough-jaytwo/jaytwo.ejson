@@ -7,9 +7,9 @@ namespace jaytwo.ejson
 {
     public interface IEJsonCrypto
     {
-        string GetDecryptedJson(string json, IPrivateKeyProvider keyProvider = null);
+        string GetDecryptedJson(string json, IPrivateKeyProvider? keyProvider = null);
 
-        string SaveDecryptedJson(string json, string outputFile, IPrivateKeyProvider keyProvider = null);
+        string SaveDecryptedJson(string json, string outputFile, IPrivateKeyProvider? keyProvider = null);
 
         string GetEncryptedJson(string json);
 
@@ -17,6 +17,6 @@ namespace jaytwo.ejson
 
         string GenerateKeyPair();
 
-        string SaveKeyPair(IPrivateKeyProvider keyProvider = null);
+        string SaveKeyPair(IPrivateKeyProvider? keyProvider = null);
     }
 }

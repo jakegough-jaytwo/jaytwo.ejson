@@ -18,8 +18,8 @@ namespace jaytwo.ejson.Configuration.AspNet
         }
 
         internal ConfigurationLoader(
-            NameValueCollection appSettings,
-            ConnectionStringSettingsCollection connectionStrings)
+            NameValueCollection? appSettings,
+            ConnectionStringSettingsCollection? connectionStrings)
         {
             _appSettings = appSettings ?? ConfigurationManager.AppSettings;
             _connectionStrings = connectionStrings ?? ConfigurationManager.ConnectionStrings;
@@ -46,7 +46,7 @@ namespace jaytwo.ejson.Configuration.AspNet
             }
         }
 
-        private static IDictionary<string, object> GetSection(IDictionary<string, object> values, string key)
+        private static IDictionary<string, object>? GetSection(IDictionary<string, object> values, string key)
         {
             if (values.TryGetValue(key, out object appSettingsValues))
             {

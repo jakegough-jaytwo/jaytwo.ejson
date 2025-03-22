@@ -7,7 +7,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 using jaytwo.ejson.Configuration.AspNetCore;
-using Newtonsoft.Json;
 
 namespace jaytwo.ejson.Configuration.AspNet
 {
@@ -21,7 +20,7 @@ namespace jaytwo.ejson.Configuration.AspNet
         {
         }
 
-        internal EjsonLoader(IEJsonCrypto ejsonCrypto)
+        internal EjsonLoader(IEJsonCrypto? ejsonCrypto)
         {
             _ejsonCrypto = ejsonCrypto ?? new EJsonCrypto();
             _configurationLoader = new ConfigurationLoader();
@@ -34,7 +33,7 @@ namespace jaytwo.ejson.Configuration.AspNet
                 var keyProvider = GetKeyProvider();
                 var json = _ejsonCrypto.GetDecryptedJsonFromFile(filename, keyProvider);
                 var dictionary = new JavaScriptSerializer().DeserializeObject(json) as Dictionary<string, object>;
-                _configurationLoader.Load(dictionary, true, true);
+                _configurationLoader.Load(dictionary!, true, true);
             }
             else
             {

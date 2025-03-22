@@ -28,13 +28,13 @@ namespace jaytwo.ejson.Internal
 
         private static readonly Regex _regex = new Regex("EJ[[](?<V>[^:]+)[:](?<P>[^:]+)[:](?<N>[^:]+)[:](?<M>[^:]+)[]]", RegexOptions.Compiled);
 
-        public string SchemaVersion { get; set; }
+        public string? SchemaVersion { get; set; }
 
-        public string PublicKeyBase64 { get; set; }
+        public string? PublicKeyBase64 { get; set; }
 
-        public string NonceBase64 { get; set; }
+        public string? NonceBase64 { get; set; }
 
-        public string EncryptedMessageBase64 { get; set; }
+        public string? EncryptedMessageBase64 { get; set; }
 
         public static bool TryCreate(string secret, out BoxedMessage result)
         {
@@ -45,14 +45,14 @@ namespace jaytwo.ejson.Internal
             }
             catch
             {
-                result = null;
+                result = new BoxedMessage();
                 return false;
             }
         }
 
-        public static bool IsBoxedMessage(string value)
+        public static bool IsBoxedMessage(string? value)
         {
-            return _regex.IsMatch(value);
+            return !string.IsNullOrEmpty(value) && _regex.IsMatch(value);
         }
 
         public static BoxedMessage Create(string boxedMessageAsString)

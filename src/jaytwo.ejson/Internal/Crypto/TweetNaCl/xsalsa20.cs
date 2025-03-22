@@ -1,4 +1,4 @@
-﻿// https://github.com/search?q=tweetnacl+filename%3Axsalsa20.cs&type=Code
+// https://github.com/search?q=tweetnacl+filename%3Axsalsa20.cs&type=Code
 
 #pragma warning disable SA1311 // Static readonly fields must begin with upper-case letter
 #pragma warning disable SA1307 // Accessible fields must begin with upper-case letter
@@ -14,7 +14,7 @@ namespace jaytwo.ejson.Crypto.TweetNaCl
     {
         public static readonly byte[] sigma =
         {
-            (byte) 'e', (byte) 'x', (byte) 'p', (byte) 'a', (byte) 'n', (byte) 'd', (byte) ' ', (byte) '3', (byte) '2', (byte) '-', (byte) 'b', (byte) 'y', (byte) 't', (byte) 'e', (byte) ' ', (byte) 'k'
+            (byte) 'e', (byte) 'x', (byte) 'p', (byte) 'a', (byte) 'n', (byte) 'd', (byte) ' ', (byte) '3', (byte) '2', (byte) '-', (byte) 'b', (byte) 'y', (byte) 't', (byte) 'e', (byte) ' ', (byte) 'k',
         };
 
         internal readonly int crypto_stream_xsalsa20_ref_KEYBYTES = 32;

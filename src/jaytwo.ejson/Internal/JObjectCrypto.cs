@@ -68,10 +68,10 @@ namespace jaytwo.ejson.Internal
                 try
                 {
                     var valueStirng = jToken.Value<string>();
-                    if (!BoxedMessage.IsBoxedMessage(valueStirng))
+                    if (!BoxedMessage.IsBoxedMessage(valueStirng) && !string.IsNullOrEmpty(valueStirng))
                     {
-                        var encryptedValue = _boxedMessageCrypto.Encrypt(valueStirng, publicKey).ToString();
-                        ((JProperty)jToken.Parent).Value = encryptedValue;
+                        var encryptedValue = _boxedMessageCrypto.Encrypt(valueStirng!, publicKey).ToString();
+                        ((JProperty)jToken.Parent!).Value = encryptedValue;
                     }
                 }
                 catch
@@ -96,10 +96,10 @@ namespace jaytwo.ejson.Internal
                 try
                 {
                     var valueStirng = jToken.Value<string>();
-                    if (BoxedMessage.IsBoxedMessage(valueStirng) && BoxedMessage.TryCreate(valueStirng, out BoxedMessage boxedMessage))
+                    if (BoxedMessage.IsBoxedMessage(valueStirng) && BoxedMessage.TryCreate(valueStirng!, out var boxedMessage))
                     {
                         var decryptedValue = _boxedMessageCrypto.Decrypt(boxedMessage, privateKey);
-                        ((JProperty)jToken.Parent).Value = decryptedValue;
+                        ((JProperty)jToken.Parent!).Value = decryptedValue;
                     }
                 }
                 catch

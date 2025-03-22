@@ -7,9 +7,9 @@ deps:
 	dotnet tool install -g dotnet-reportgenerator-globaltool
 
 clean: 
-	find . -name bin | xargs --no-run-if-empty rm -vrf
-	find . -name obj | xargs --no-run-if-empty rm -vrf
-	rm -rf out
+	rm -rf `find . -type d -name bin`
+	rm -rf `find . -type d -name obj`
+	rm -rf `find . -type d -name out`
 
 restore:
 	dotnet restore . --verbosity minimal
@@ -33,19 +33,18 @@ unit-test:
 		dotnet test \
 		--results-directory ../../out/testResults \
 		--logger "trx;LogFileName=jaytwo.ejson.GlobalTool.Tests.trx"
-#	TODO: figure out how to get .NET Core 1.1 in the dockerfile
-#	cd ./test/jaytwo.ejson.example.AspNetCore1_1.IngegrationTests; \
-#		dotnet test \
-#		--results-directory ../../out/testResults \
-#		--logger "trx;LogFileName=jaytwo.ejson.example.AspNetCore1_1.IngegrationTests.trx";
-	cd ./test/jaytwo.ejson.example.AspNetCore2_1.IngegrationTests; \
-		dotnet test \
-		--results-directory ../../out/testResults \
-		--logger "trx;LogFileName=jaytwo.ejson.example.AspNetCore2_1.IngegrationTests.trx";
 	cd ./test/jaytwo.ejson.example.AspNetCore3_0.IngegrationTests; \
 		dotnet test \
 		--results-directory ../../out/testResults \
 		--logger "trx;LogFileName=jaytwo.ejson.example.AspNetCore3_0.IngegrationTests.trx";
+	cd ./test/jaytwo.ejson.example.AspNetCore6_0.IngegrationTests; \
+		dotnet test \
+		--results-directory ../../out/testResults \
+		--logger "trx;LogFileName=jaytwo.ejson.example.AspNetCore6_0.IngegrationTests.trx";
+	cd ./test/jaytwo.ejson.example.AspNetCore8_0.IngegrationTests; \
+		dotnet test \
+		--results-directory ../../out/testResults \
+		--logger "trx;LogFileName=jaytwo.ejson.example.AspNetCore8_0.IngegrationTests.trx";
 	reportgenerator \
 		-reports:./out/coverage/**/coverage.cobertura.xml \
 		-targetdir:./out/coverage/ \
@@ -80,8 +79,7 @@ docker-build:
 DOCKER_RUN_MAKE_TARGETS?=run
 docker-run:
 	docker run --name ${DOCKER_BUILDER_CONTAINER} ${DOCKER_BUILDER_TAG} make ${DOCKER_RUN_MAKE_TARGETS} || EXIT_CODE=$$? ; \
-	docker cp ${DOCKER_BUILDER_CONTAINER}:build/out ./ || echo "Container not found: ${DOCKER_BUILDER_CONTAINER}"; \
-	docker rm ${DOCKER_BUILDER_CONTAINER} || echo "Container not found: ${DOCKER_BUILDER_CONTAINER}"}; \
+	docker rm ${DOCKER_BUILDER_CONTAINER} || echo "No container to clean up: ${DOCKER_BUILDER_CONTAINER}"}; \
 	exit $$EXIT_CODE
 
 docker-unit-test-only: DOCKER_RUN_MAKE_TARGETS=unit-test
@@ -100,5 +98,5 @@ docker-pack-beta-only: docker-run
 docker-pack-beta: docker-build docker-pack-beta-only
 
 docker-clean:
-	docker rm ${DOCKER_BUILDER_CONTAINER} || echo "Container not found: ${DOCKER_BUILDER_CONTAINER}"
-	docker rmi ${DOCKER_BUILDER_TAG} || echo "Image not found: ${DOCKER_BUILDER_TAG}"
+	docker rm ${DOCKER_BUILDER_CONTAINER} || echo "No container to clean up: ${DOCKER_BUILDER_CONTAINER}"
+	docker rmi ${DOCKER_BUILDER_TAG} || echo "No image to clean up: ${DOCKER_BUILDER_TAG}"

@@ -1,4 +1,4 @@
-﻿// https://github.com/search?q=tweetnacl+filename%3Apoly1305.cs&type=Code
+// https://github.com/search?q=tweetnacl+filename%3Apoly1305.cs&type=Code
 
 #pragma warning disable SA1310 // Field names must not contain underscore
 #pragma warning disable SA1401 // Fields must be private
@@ -12,7 +12,7 @@ namespace jaytwo.ejson.Crypto.TweetNaCl
     {
         internal static readonly int[] minusp =
         {
-            5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 252
+            5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 252,
         };
 
         internal readonly int CRYPTO_BYTES = 16;

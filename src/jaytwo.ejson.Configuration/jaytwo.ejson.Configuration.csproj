@@ -1,94 +1,39 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net45;netstandard1.3;netstandard1.6;netstandard2.0;netstandard2.1</TargetFrameworks>
-    <VersionPrefix>0.1.6</VersionPrefix>
+    <TargetFrameworks>net462;netstandard2.1;net6.0;net8.0</TargetFrameworks>
+    <VersionPrefix>0.1.7</VersionPrefix>
     <RepositoryUrl>https://github.com/jakegough/jaytwo.ejson</RepositoryUrl>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(TargetFramework)' == 'net45'">
-    <DefineConstants>$(DefineConstants);NETFRAMEWORK</DefineConstants>
-  </PropertyGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.*" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.*" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.*" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="8.*" />
+  </ItemGroup>
 
-  <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard1.3'">
-    <DefineConstants>$(DefineConstants);NETSTANDARD</DefineConstants>
-    <DefineConstants>$(DefineConstants);NETSTANDARD1</DefineConstants>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard1.6'">
-    <DefineConstants>$(DefineConstants);NETSTANDARD</DefineConstants>
-    <DefineConstants>$(DefineConstants);NETSTANDARD1</DefineConstants>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <DefineConstants>$(DefineConstants);NETSTANDARD</DefineConstants>
-    <DefineConstants>$(DefineConstants);NETSTANDARD2</DefineConstants>
-    <DefineConstants>$(DefineConstants);NETSTANDARD2_0</DefineConstants>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
-    <DefineConstants>$(DefineConstants);NETSTANDARD</DefineConstants>
-    <DefineConstants>$(DefineConstants);NETSTANDARD2</DefineConstants>
-    <DefineConstants>$(DefineConstants);NETSTANDARD2_1</DefineConstants>
-  </PropertyGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'net45'">
-    <PackageReference Include="Newtonsoft.Json" Version="8.*" />
+  <ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.*" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.*" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="6.*" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="6.*" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.0.*" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.0.*" />
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="3.0.*" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="3.0.*" />    
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="3.0.*" />
   </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.1.*" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.1.*" />
-    <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.1.*" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="2.1.*" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.6' ">
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="1.1.*" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="1.1.*" />
-    <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="1.1.*" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="1.1.*" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.3' ">
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="1.1.*" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="1.1.*" />
-    <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="1.1.*" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="1.1.*" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'net45'">
+  
+  <ItemGroup Condition="'$(TargetFramework)' == 'net462'">
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Extensions" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\jaytwo.ejson\jaytwo.ejson.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <AdditionalFiles Include="$(ProjectDir)..\..\stylecop.json" Link="stylecop.json" />
-  </ItemGroup>
-
-  <PropertyGroup>
-    <StyleCopTreatErrorsAsWarnings>true</StyleCopTreatErrorsAsWarnings>
-    <CodeAnalysisRuleSet>$(ProjectDir)..\..\stylecop.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="StyleCop.Analyzers" Version="1.0.2">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="StyleCop.Analyzers.Error" Version="1.0.2" />
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,4 @@
-#if NETSTANDARD
+#if NETCORE
 using System;
 using System.IO;
 using Microsoft.Extensions.Configuration.Json;
@@ -15,7 +15,7 @@ namespace jaytwo.ejson.Configuration.AspNetCore
         {
         }
 
-        internal EJsonConfigurationProvider(EJsonConfigurationSource source, IEJsonCrypto eJsonCrypto)
+        internal EJsonConfigurationProvider(EJsonConfigurationSource source, IEJsonCrypto? eJsonCrypto)
             : base(source)
         {
             _eJsonCrypto = eJsonCrypto ?? new EJsonCrypto();
@@ -50,7 +50,7 @@ namespace jaytwo.ejson.Configuration.AspNetCore
             }
         }
 
-        private static IPrivateKeyProvider GetKeyProvider(EJsonConfigurationSource source)
+        private static IPrivateKeyProvider GetKeyProvider(EJsonConfigurationSource? source)
         {
             var result = new DefaultPrivateKeyProvider();
 

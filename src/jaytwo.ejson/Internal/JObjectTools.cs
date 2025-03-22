@@ -47,7 +47,7 @@ namespace jaytwo.ejson.Internal
             {
                 Formatting = Formatting.Indented,
                 IndentChar = ' ',
-                Indentation = 2
+                Indentation = 2,
             };
 
             jObject.WriteTo(jsonWriter);

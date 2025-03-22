@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -9,14 +9,14 @@ namespace jaytwo.ejson
         public const string EJsonKeyPrefixEnvironmentVairable = "EJSON_KEYPREFIX";
         public const string DefaultEJsonKeyEnvironmentVariablePrefix = "EJK_";
 
-        private readonly string _eJsonKeyEnvironmentVariablePrefix;
+        private readonly string? _eJsonKeyEnvironmentVariablePrefix;
 
         public EnvironmentPrivateKeyProvider()
             : this(null)
         {
         }
 
-        public EnvironmentPrivateKeyProvider(string eJsonKeyEnvironmentVariablePrefix)
+        public EnvironmentPrivateKeyProvider(string? eJsonKeyEnvironmentVariablePrefix)
         {
             _eJsonKeyEnvironmentVariablePrefix = eJsonKeyEnvironmentVariablePrefix;
 
@@ -42,14 +42,14 @@ namespace jaytwo.ejson
         {
             try
             {
-                privateKey = Environment.GetEnvironmentVariable(_eJsonKeyEnvironmentVariablePrefix + publicKey);
+                privateKey = Environment.GetEnvironmentVariable(_eJsonKeyEnvironmentVariablePrefix + publicKey)!;
                 return !string.IsNullOrWhiteSpace(privateKey);
             }
             catch
             {
             }
 
-            privateKey = null;
+            privateKey = string.Empty;
             return false;
         }
     }

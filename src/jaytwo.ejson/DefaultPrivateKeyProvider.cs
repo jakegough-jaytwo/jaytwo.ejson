@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using jaytwo.ejson.Internal;
@@ -10,11 +10,11 @@ namespace jaytwo.ejson
         private readonly IList<IPrivateKeyProvider> _providers;
 
         public DefaultPrivateKeyProvider()
-            : this((string)null, (string)null)
+            : this((string?)null, (string?)null)
         {
         }
 
-        public DefaultPrivateKeyProvider(string eJsonKeyEnvironmentVariablePrefix = null, string ejsonKeyDirectory = null)
+        public DefaultPrivateKeyProvider(string? eJsonKeyEnvironmentVariablePrefix = null, string? ejsonKeyDirectory = null)
             : this(
                   new EnvironmentPrivateKeyProvider(eJsonKeyEnvironmentVariablePrefix),
                   new FileSystemPrivateKeyProvider(ejsonKeyDirectory))
@@ -56,7 +56,7 @@ namespace jaytwo.ejson
                 }
             }
 
-            privateKey = null;
+            privateKey = string.Empty;
             return false;
         }
     }

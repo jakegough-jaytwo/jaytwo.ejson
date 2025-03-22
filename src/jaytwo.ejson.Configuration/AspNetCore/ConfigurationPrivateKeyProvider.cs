@@ -1,4 +1,4 @@
-﻿#if NETSTANDARD
+#if NETCORE
 using System;
 using Microsoft.Extensions.Configuration;
 
@@ -24,14 +24,14 @@ namespace jaytwo.ejson.Configuration.AspNetCore
         {
             try
             {
-                privateKey = _configuration[publicKey];
+                privateKey = _configuration[publicKey]!;
                 return !string.IsNullOrWhiteSpace(privateKey);
             }
             catch
             {
             }
 
-            privateKey = null;
+            privateKey = string.Empty;
             return false;
         }
     }

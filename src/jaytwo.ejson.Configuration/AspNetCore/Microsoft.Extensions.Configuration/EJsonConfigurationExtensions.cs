@@ -1,19 +1,12 @@
-#if NETSTANDARD
+#if NETCORE
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using jaytwo.ejson.Configuration.AspNetCore;
 using Microsoft.Extensions.FileProviders;
-using Microsoft.Extensions.Logging;
-
-#if NETSTANDARD2_1
 using Microsoft.Extensions.Hosting;
-#endif
-
-#if NETSTANDARD1 || NETSTANDARD2_0
-using IHostEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
-#endif
+using Microsoft.Extensions.Logging;
 
 #pragma warning disable SA1615 // Element return value must be documented
 namespace Microsoft.Extensions.Configuration
@@ -27,9 +20,9 @@ namespace Microsoft.Extensions.Configuration
         /// <summary>
         /// Adds the EJSON configuration provider from appsecrets.ejson and appsecrets.{env.EnvironmentName}.ejson to <paramref name="builder"/>.
         /// </summary>
-        public static IConfigurationBuilder AddEjsonAppSecrets(this IConfigurationBuilder builder, IHostEnvironment env = null, ILoggerFactory loggerFactory = null, IConfigurationSection configSection = null)
+        public static IConfigurationBuilder AddEjsonAppSecrets(this IConfigurationBuilder builder, IHostEnvironment env, ILoggerFactory? loggerFactory = null, IConfigurationSection? configSection = null)
         {
-            if (!builder.Properties.TryGetValue("FileProvider", out object handler))
+            if (!builder.Properties.TryGetValue("FileProvider", out var handler))
             {
                 builder.SetBasePath(env.ContentRootPath);
             }
@@ -61,12 +54,11 @@ namespace Microsoft.Extensions.Configuration
         /// <param name="configSection">Configuration section containing private keys.</param>
         /// <param name="loggerFactory">(Optional) Log target.</param>
         /// <returns>The <see cref="IConfigurationBuilder"/>.</returns>
-        public static IConfigurationBuilder AddEJsonFile(this IConfigurationBuilder builder, string path, bool optional = false, IConfigurationSection configSection = null, ILoggerFactory loggerFactory = null)
+        public static IConfigurationBuilder AddEJsonFile(this IConfigurationBuilder builder, string path, bool optional = false, IConfigurationSection? configSection = null, ILoggerFactory? loggerFactory = null)
         {
             return AddEJsonFile(builder, provider: null, path: path, optional: optional, configSection: configSection, loggerFactory: loggerFactory);
         }
 
-#if NETSTANDARD2
         /// <summary>
         /// Adds a EJSON configuration source to <paramref name="builder"/>.
         /// </summary>
@@ -78,7 +70,7 @@ namespace Microsoft.Extensions.Configuration
         /// <param name="configSection">(Optional) Configuration section containing private keys.</param>
         /// <param name="loggerFactory">(Optional) Log target.</param>
         /// <returns>The <see cref="IConfigurationBuilder"/>.</returns>
-        public static IConfigurationBuilder AddEJsonFile(this IConfigurationBuilder builder, IFileProvider provider, string path, bool optional, IConfigurationSection configSection, ILoggerFactory loggerFactory)
+        public static IConfigurationBuilder AddEJsonFile(this IConfigurationBuilder builder, IFileProvider? provider, string path, bool optional, IConfigurationSection? configSection, ILoggerFactory? loggerFactory)
         {
             if (builder == null)
             {
@@ -109,47 +101,6 @@ namespace Microsoft.Extensions.Configuration
         /// <param name="configureSource">Configures the source.</param>
         /// <returns>The <see cref="IConfigurationBuilder"/>.</returns>
         public static IConfigurationBuilder AddEJsonFile(this IConfigurationBuilder builder, Action<EJsonConfigurationSource> configureSource) => builder.Add(configureSource);
-#endif
-
-#if NETSTANDARD1
-        /// <summary>
-        /// Adds a EJSON configuration source to <paramref name="builder"/>.
-        /// </summary>
-        /// <param name="builder">The <see cref="IConfigurationBuilder"/> to add to.</param>
-        /// <param name="provider">The <see cref="IFileProvider"/> to use to access the file.</param>
-        /// <param name="path">Path relative to the base path stored in
-        /// <see cref="IConfigurationBuilder.Properties"/> of <paramref name="builder"/>.</param>
-        /// <param name="optional">Whether the file is optional.</param>
-        /// <param name="configSection">Configuration section containing private keys.</param>
-        /// <param name="loggerFactory">(Optional) Log target.</param>
-        /// <returns>The <see cref="IConfigurationBuilder"/>.</returns>
-        public static IConfigurationBuilder AddEJsonFile(this IConfigurationBuilder builder, IFileProvider provider, string path, bool optional, IConfigurationSection configSection, ILoggerFactory loggerFactory)
-        {
-            if (builder == null)
-            {
-                throw new ArgumentNullException(nameof(builder));
-            }
-
-            if (string.IsNullOrEmpty(path))
-            {
-                throw new ArgumentException("File path must be a non-empty string.", nameof(path));
-            }
-
-            var source = new EJsonConfigurationSource
-            {
-                ConfigSection = configSection,
-                LoggerFactory = loggerFactory,
-                FileProvider = provider,
-                Path = path,
-                Optional = optional,
-                ReloadOnChange = false,
-            };
-
-            source.ResolveFileProvider();
-            builder.Add(source);
-            return builder;
-        }
-#endif
     }
 }
 #endif

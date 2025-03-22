@@ -1,4 +1,4 @@
-﻿// https://github.com/aspnet/Configuration/blob/master/src/Config/ChainedConfigurationSource.cs
+// https://github.com/aspnet/Configuration/blob/master/src/Config/ChainedConfigurationSource.cs
 // TODO: figure out if this is kosher to include
 
 #if NETSTANDARD1

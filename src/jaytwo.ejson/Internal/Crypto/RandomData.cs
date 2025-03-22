@@ -22,7 +22,7 @@ namespace jaytwo.ejson.Crypto
 
 #if NETFRAMEWORK
         private static RNGCryptoServiceProvider Create() => new RNGCryptoServiceProvider();
-#elif NETSTANDARD
+#elif NETCORE
         private static RandomNumberGenerator Create() => RandomNumberGenerator.Create();
 #endif
     }

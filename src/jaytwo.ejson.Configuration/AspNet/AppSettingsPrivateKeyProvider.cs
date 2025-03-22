@@ -1,4 +1,4 @@
-﻿#if NETFRAMEWORK
+#if NETFRAMEWORK
 using System;
 using System.Configuration;
 using System.Linq;
@@ -33,7 +33,7 @@ namespace jaytwo.ejson.Configuration.AspNetCore
             {
             }
 
-            privateKey = null;
+            privateKey = string.Empty;
             return false;
         }
     }

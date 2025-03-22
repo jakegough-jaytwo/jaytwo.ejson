@@ -19,22 +19,22 @@ namespace jaytwo.ejson
         }
 
         internal EJsonCrypto(
-            IFileSystem fileSystem,
-            IJObjectCrypto jObjectCrypto,
-            IPublicKeyBox publicKeyBox)
+            IFileSystem? fileSystem,
+            IJObjectCrypto? jObjectCrypto,
+            IPublicKeyBox? publicKeyBox)
         {
             _fileSystem = fileSystem ?? new FileSystemWrapper();
             _jObjectCrypto = jObjectCrypto ?? new JObjectCrypto();
             _publicKeyBox = publicKeyBox ?? new PublicKeyBoxWrapper();
         }
 
-        public string GetDecryptedJson(string json, IPrivateKeyProvider keyProvider = null)
+        public string GetDecryptedJson(string json, IPrivateKeyProvider? keyProvider = null)
         {
             var jObject = GetDecryptJObject(json, keyProvider);
             return JObjectTools.GetJson(jObject);
         }
 
-        public string SaveDecryptedJson(string json, string outputFile, IPrivateKeyProvider keyProvider = null)
+        public string SaveDecryptedJson(string json, string outputFile, IPrivateKeyProvider? keyProvider = null)
         {
             var decryptedJson = GetDecryptedJson(json, keyProvider);
             _fileSystem.WriteAllText(outputFile, decryptedJson);
@@ -71,7 +71,7 @@ namespace jaytwo.ejson
             return output.ToString().Trim();
         }
 
-        public string SaveKeyPair(IPrivateKeyProvider keyProvider = null)
+        public string SaveKeyPair(IPrivateKeyProvider? keyProvider = null)
         {
             keyProvider = keyProvider ?? new DefaultPrivateKeyProvider();
 
@@ -90,24 +90,29 @@ namespace jaytwo.ejson
 
         private static string GetPublicKey(JObject jObject)
         {
-            if (jObject.TryGetValue("_public_key", out JToken value))
+            if (jObject.TryGetValue("_public_key", out var value))
             {
-                if (value.Type == JTokenType.String)
+                if (value?.Type == JTokenType.String)
                 {
-                    return value.Value<string>();
+                    var result = value.Value<string>();
+
+                    if (!string.IsNullOrEmpty(result))
+                    {
+                        return result!;
+                    }
                 }
             }
 
             throw new MissingPublicKeyException();
         }
 
-        private JObject GetDecryptJObject(string json, IPrivateKeyProvider keyProvider)
+        private JObject GetDecryptJObject(string json, IPrivateKeyProvider? keyProvider)
         {
             var jObject = JObjectTools.GetJObject(json);
             var publicKey = GetPublicKey(jObject);
 
             keyProvider = keyProvider ?? new DefaultPrivateKeyProvider();
-            if (keyProvider.TryGetPrivateKey(publicKey, out string privateKey))
+            if (keyProvider.TryGetPrivateKey(publicKey, out var privateKey))
             {
                 _jObjectCrypto.Decrypt(jObject, privateKey);
                 return jObject;

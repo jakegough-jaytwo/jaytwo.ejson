@@ -22,7 +22,7 @@ namespace jaytwo.ejson.GlobalTool
         {
         }
 
-        internal Program(IEJsonCrypto eJsonCrypto, TextWriter standardOut, TextWriter standardError)
+        internal Program(IEJsonCrypto? eJsonCrypto, TextWriter? standardOut, TextWriter? standardError)
         {
             _eJsonCrypto = eJsonCrypto ?? new EJsonCrypto();
             _standardOut = standardOut ?? Console.Out;
@@ -36,7 +36,7 @@ namespace jaytwo.ejson.GlobalTool
             var app = new CommandLineApplication();
             app.Name = "ejson";
             app.HelpOption("--help");
-            app.VersionOption("--version", GetType().Assembly.GetName().Version.ToString());
+            app.VersionOption("--version", GetType().Assembly.GetName().Version?.ToString());
             app.Out = _standardOut;
             app.Error = _standardError;
 

@@ -14,7 +14,7 @@ namespace jaytwo.ejson.example.AspNetCore3_0
     public class Startup
     {
         private readonly IConfiguration _configuration;
-        private readonly ILogger _logger;
+        private readonly ILogger? _logger;
 
         public Startup(IConfiguration configurationBeforeSecrets, IWebHostEnvironment env)
         {

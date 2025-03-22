@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text;
 using jaytwo.ejson.Internal.Sodium;
 
@@ -26,9 +26,9 @@ namespace jaytwo.ejson.Internal
         {
             if (boxedMessage.SchemaVersion == SchemaVersion)
             {
-                var nonce = Convert.FromBase64String(boxedMessage.NonceBase64);
-                var ephemeralPublicKey = Convert.FromBase64String(boxedMessage.PublicKeyBase64);
-                var cipherText = Convert.FromBase64String(boxedMessage.EncryptedMessageBase64);
+                var nonce = Convert.FromBase64String(boxedMessage.NonceBase64!);
+                var ephemeralPublicKey = Convert.FromBase64String(boxedMessage.PublicKeyBase64!);
+                var cipherText = Convert.FromBase64String(boxedMessage.EncryptedMessageBase64!);
                 var decryptedBytes = _publicKeyBox.Open(cipherText, nonce, privateKey, ephemeralPublicKey);
                 var decryptedString = _encoding.GetString(decryptedBytes);
                 return decryptedString;
