@@ -18,7 +18,8 @@ namespace jaytwo.ejson.example.AspNetCore3_0.IngegrationTests
                 variable: "EJK_3d953564513b09af30c9c9724c52770a2ffd13862710de857f5ef75e69350e52",
                 value: "edadd0dc3f1765d78122f752ca5c01292916cba2e7e09fe796f5dcc2423faadd");
 
-            var contentRoot = new SlnFileResolver().ResolvePathRelativeToSln("examples/jaytwo.ejson.example.AspNetCore3_0");
+            var projectRootNamespace = typeof(example.AspNetCore3_0.Program).Namespace;
+            var contentRoot = new SlnFileResolver().ResolvePathRelativeToSln($"examples/{projectRootNamespace}");
             builder.UseContentRoot(contentRoot);
         }
     }

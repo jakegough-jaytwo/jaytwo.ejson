@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System;
 
-namespace jaytwo.ejson.Exceptions
+namespace jaytwo.ejson.Exceptions;
+
+public class MissingPublicKeyException : Exception
 {
-    public class MissingPublicKeyException : Exception
+    public MissingPublicKeyException()
     {
-        public MissingPublicKeyException()
-        {
-        }
     }
 }

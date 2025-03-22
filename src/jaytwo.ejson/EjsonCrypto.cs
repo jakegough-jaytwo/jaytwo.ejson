@@ -112,13 +112,24 @@ namespace jaytwo.ejson
             var publicKey = GetPublicKey(jObject);
 
             keyProvider = keyProvider ?? new DefaultPrivateKeyProvider();
-            if (keyProvider.TryGetPrivateKey(publicKey, out var privateKey))
+            if (!keyProvider.TryGetPrivateKey(publicKey, out var privateKey))
+            {
+                throw new PrivateKeyNotFoundException(publicKey);
+            }
+
+            try
             {
                 _jObjectCrypto.Decrypt(jObject, privateKey);
                 return jObject;
             }
-
-            throw new InvalidOperationException($"Could not find private key for: {publicKey}");
+            catch (InvalidKeyException ex)
+            {
+                throw new DecryptionFailedException(publicKey, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new DecryptionFailedException(publicKey, ex);
+            }
         }
 
         private JObject GetEncryptedJObject(string json)

@@ -20,7 +20,7 @@ namespace jaytwo.ejson.example.AspNetCore6_0.IngegrationTests
             var client = _fixture.CreateClient();
             var expectedSecret = "rosebud was the sled";
             var expectedEnvironmentSpecificSecret = "Development";
-            var expectedNamespace = typeof(example.AspNetCore6_0.Startup).Assembly.GetName().Name;
+            var expectedNamespace = typeof(example.AspNetCore6_0.Program).Assembly.GetName().Name;
 
             // Act
             using (var response = await client.GetAsync("/"))

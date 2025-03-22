@@ -133,10 +133,14 @@ namespace jaytwo.ejson
             {
                 var publicKeyPath = Path.Combine(keyDir, publicKey);
 
-                // 64 hex characters, 32-bits... 100 is just a sanity check in case it has a byte order mark something else nuts
-                if (_fileSystem.FileExists(publicKeyPath) && _fileSystem.GetFileLength(publicKeyPath) < 100)
+                // 64 hex characters, 32-bits... 10 to 100 is just a sanity check in case it has a byte order mark something else nuts
+                if (_fileSystem.FileExists(publicKeyPath)
+                    && _fileSystem.GetFileLength(publicKeyPath) > 10
+                    && _fileSystem.GetFileLength(publicKeyPath) < 100)
                 {
-                    privateKey = _fileSystem.ReadAllText(publicKeyPath).Trim();
+                    var fileContent = _fileSystem.ReadAllText(publicKeyPath);
+
+                    privateKey = RemoveFinalNewline(fileContent);
                     return !string.IsNullOrWhiteSpace(privateKey);
                 }
             }
@@ -147,5 +151,9 @@ namespace jaytwo.ejson
             privateKey = string.Empty;
             return false;
         }
+
+        // TODO: see how Shopify ejson handles this: https://github.com/Shopify/ejson and/or see how flexible their implementation is
+        // we don't want to just Trim() because we don't want to cause incompatibility with the original Shopify ejson
+        private string RemoveFinalNewline(string input) => input.TrimEnd('\n', '\r');
     }
 }

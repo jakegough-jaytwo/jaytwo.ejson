@@ -14,35 +14,20 @@ namespace jaytwo.ejson.example.AspNetCore3_0
     public class Startup
     {
         private readonly IConfiguration _configuration;
-        private readonly ILogger? _logger;
 
         public Startup(IConfiguration configurationBeforeSecrets, IWebHostEnvironment env)
         {
-            _logger = GetEarlyInitializationLogger();
+            var environmentName = env.EnvironmentName;
 
-            /*
-             * AddEjsonAppSecrets() is an opinionated extension method to setup EJSON app secrets.  It will:
-             *   a) call `builder.SetBasePath(Directory.GetCurrentDirectory())` if not previously set
-             *   b) configure files `appsecrets.json` and `appsecrets.{env}.json` for EJSON secrets
-             *   c) look in multiple places for private keys, including:
-             *     i)   upstream configuration (`configurationBeforeSecrets`) in a ConfigSection named 'ejson'
-             *     ii)  default EJSON bheavior (filesystem, environment variables -- see EJSON readme)
-             *   d) log success and failure with the optional `ILoggerFactory`
-             */
-
-            try
+            using (var loggerFactory = GetEarlyInitializationLoggerFactory())
             {
                 _configuration = new ConfigurationBuilder()
                     .AddConfiguration(configurationBeforeSecrets)
-                    .AddEjsonAppSecrets(env, configSection: configurationBeforeSecrets.GetSection("ejson"))
+                    .AddJsonFile("appsettings.json")
+                    .AddEJsonFile($"appsecrets.json", optional: false, loggerFactory: loggerFactory)
+                    .AddJsonFile($"appsettings.{environmentName}.json", optional: true)
+                    .AddEJsonFile($"appsecrets.{environmentName}.json", optional: true, loggerFactory: loggerFactory)
                     .Build();
-
-                _logger?.LogInformation(default(EventId), "Secrets loaded");
-            }
-            catch (Exception exception)
-            {
-                _logger?.LogError(default(EventId), exception, "Could not load secrets!");
-                _configuration = configurationBeforeSecrets;
             }
         }
 
@@ -78,17 +63,12 @@ namespace jaytwo.ejson.example.AspNetCore3_0
             });
         }
 
-        private ILogger GetEarlyInitializationLogger()
+        private static ILoggerFactory GetEarlyInitializationLoggerFactory()
         {
-            var loggerFactory = LoggerFactory.Create(builder =>
+            return LoggerFactory.Create(builder =>
             {
                 builder.AddConsole();
             });
-
-            using (loggerFactory)
-            {
-                return loggerFactory.CreateLogger("Initialization");
-            }
         }
     }
 }

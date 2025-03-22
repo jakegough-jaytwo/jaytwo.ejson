@@ -18,33 +18,6 @@ namespace Microsoft.Extensions.Configuration
     public static class EJsonConfigurationExtensions
     {
         /// <summary>
-        /// Adds the EJSON configuration provider from appsecrets.ejson and appsecrets.{env.EnvironmentName}.ejson to <paramref name="builder"/>.
-        /// </summary>
-        public static IConfigurationBuilder AddEjsonAppSecrets(this IConfigurationBuilder builder, IHostEnvironment env, ILoggerFactory? loggerFactory = null, IConfigurationSection? configSection = null)
-        {
-            if (!builder.Properties.TryGetValue("FileProvider", out var handler))
-            {
-                builder.SetBasePath(env.ContentRootPath);
-            }
-
-            builder.AddEJsonFile(
-                "appsecrets.json",
-                configSection: configSection,
-                loggerFactory: loggerFactory);
-
-            if (env != null)
-            {
-                builder.AddEJsonFile(
-                    $"appsecrets.{env.EnvironmentName}.json",
-                    optional: true,
-                    configSection: configSection,
-                    loggerFactory: loggerFactory);
-            }
-
-            return builder;
-        }
-
-        /// <summary>
         /// Adds the EJSON configuration provider at <paramref name="path"/> to <paramref name="builder"/>.
         /// </summary>
         /// <param name="builder">The <see cref="IConfigurationBuilder"/> to add to.</param>
@@ -100,7 +73,8 @@ namespace Microsoft.Extensions.Configuration
         /// <param name="builder">The <see cref="IConfigurationBuilder"/> to add to.</param>
         /// <param name="configureSource">Configures the source.</param>
         /// <returns>The <see cref="IConfigurationBuilder"/>.</returns>
-        public static IConfigurationBuilder AddEJsonFile(this IConfigurationBuilder builder, Action<EJsonConfigurationSource> configureSource) => builder.Add(configureSource);
+        public static IConfigurationBuilder AddEJsonFile(this IConfigurationBuilder builder, Action<EJsonConfigurationSource> configureSource)
+            => builder.Add(configureSource);
     }
 }
 #endif
