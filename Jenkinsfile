@@ -1,4 +1,4 @@
 library 'JenkinsBuilderLibrary'
 
-helper.loadNuGetProjectDefaults('jaytwo.ejson')
-helper.runNuGetProject()
+nugetProject.build(
+    gitHubRepository: 'jaytwo.ejson')
