@@ -73,6 +73,9 @@ pack-beta: pack
 
 nuget-check:
 	PACKED_NUPKG_FILES="$(call getNupkgFiles)"; \
+	if [ -z "$$PACKED_NUPKG_FILES" ]; then \
+		echo "No packages found to check." >&2; exit 1; \
+	fi; \
 	for nupkg in $$PACKED_NUPKG_FILES; do \
 		if [ -n "$$nupkg" ]; then \
 			nugetcheck \
@@ -81,7 +84,7 @@ nuget-check:
 				--same-major \
 				--fail-on-match \
 			&& echo "NuGetCheck OK: $$(basename $$nupkg)" \
-			|| echo "NuGetCheck Failed: $$(basename $$nupkg)"; \
+			|| { echo "NuGetCheck FAILED: $$(basename $$nupkg)" >&2; exit 1; }; \
 		fi; \
 	done
 
